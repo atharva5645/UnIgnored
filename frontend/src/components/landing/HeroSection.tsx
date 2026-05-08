@@ -1,15 +1,8 @@
 import React from 'react'
-import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Button } from '../ui'
-import { ArrowRight, Shield, Zap, Globe } from 'lucide-react'
-import { clsx } from 'clsx'
-
-import { useUIStore } from '../../store/uiStore'
 import { useAuthStore } from '../../store/authStore'
 
 export function HeroSection() {
-  const { darkMode } = useUIStore()
   const { user, isAuthenticated } = useAuthStore()
 
   const isStaff = user?.role === 'super_admin' || user?.role === 'zonal_admin' || user?.role === 'officer'
@@ -18,112 +11,97 @@ export function HeroSection() {
                         '/dashboard/citizen'
 
   return (
-    <section className="relative min-h-[90vh] flex flex-col items-center justify-center pt-20 px-4 overflow-hidden transition-colors duration-500">
-      {/* Clean Theme-Aware Background */}
-      <div className={clsx(
-        "absolute inset-0 pointer-events-none z-0 transition-all duration-1000",
-        darkMode ? "bg-[#020617]" : "bg-slate-50"
-      )}>
-        {/* Generated Hero Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/smart_city_hero_bg.png" 
-            alt="Smart City" 
-            className={clsx(
-              "w-full h-full object-cover transition-all duration-1000",
-              darkMode ? "opacity-30 grayscale-[0.3] brightness-[0.4] contrast-[1.1]" : "opacity-10 grayscale-0 brightness-110 contrast-100"
+    <section className="relative min-h-[720px] bg-[#ece9ff] overflow-hidden pt-20">
+      {/* Background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-20"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=2070&auto=format&fit=crop')",
+        }}
+      />
+
+      {/* Purple Overlay */}
+      <div className="absolute inset-0 bg-[#ebe7ff]/90" />
+
+      {/* Decorative Shapes */}
+      <div className="absolute left-0 top-0 h-full w-[120px] bg-white/10 backdrop-blur-sm" />
+      <div className="absolute right-0 top-0 h-full w-[120px] bg-white/10 backdrop-blur-sm" />
+
+      {/* Main Content */}
+      <div className="relative z-10 max-w-[1450px] mx-auto px-8 lg:px-14 xl:px-20 min-h-[720px] flex items-center justify-between gap-16">
+        {/* Left Content */}
+        <div className="max-w-[620px] pt-4">
+          <p className="text-[#6f42ff] font-extrabold tracking-[2px] uppercase text-[17px] mb-7">
+            24/7 Civic Monitoring Available
+          </p>
+
+          <h1 className="text-[72px] xl:text-[84px] leading-[1.02] font-extrabold text-slate-900 dark:text-slate-900 mb-8 tracking-[-3px]">
+            Professional
+            <br />
+            Civic Dashboard.
+          </h1>
+
+          <p className="text-slate-800 text-[21px] leading-[38px] mb-14 font-medium max-w-[680px]">
+            From complaint tracking to real-time civic issue monitoring,
+            UnIgnored helps citizens report, monitor, and resolve public
+            problems faster with complete transparency.
+          </p>
+
+          {/* Buttons */}
+          <div className="flex items-center gap-5 pt-2">
+            {!isAuthenticated ? (
+              <Link to="/login">
+                <button className="bg-[#6f42ff] hover:bg-[#5d35e2] transition-all duration-300 text-white font-bold uppercase tracking-[1px] px-10 py-5 rounded-sm text-[16px] shadow-[0_20px_60px_rgba(111,66,255,0.35)]">
+                  ⚡ REPORT AN ISSUE
+                </button>
+              </Link>
+            ) : isStaff ? (
+              <Link to={dashboardLink}>
+                <button className="bg-[#6f42ff] hover:bg-[#5d35e2] transition-all duration-300 text-white font-bold uppercase tracking-[1px] px-10 py-5 rounded-sm text-[16px] shadow-[0_20px_60px_rgba(111,66,255,0.35)]">
+                  ⚡ COMMAND CENTER
+                </button>
+              </Link>
+            ) : (
+              <Link to="/complaints/new">
+                <button className="bg-[#6f42ff] hover:bg-[#5d35e2] transition-all duration-300 text-white font-bold uppercase tracking-[1px] px-10 py-5 rounded-sm text-[16px] shadow-[0_20px_60px_rgba(111,66,255,0.35)]">
+                  ⚡ REPORT AN ISSUE
+                </button>
+              </Link>
             )}
-          />
-          <div className={clsx(
-            "absolute inset-0",
-            darkMode ? "bg-gradient-to-b from-[#020617] via-transparent to-[#020617]" : "bg-gradient-to-b from-slate-50 via-transparent to-slate-50"
-          )} />
+
+            <button className="border border-slate-900/20 text-slate-900 px-10 py-5 text-[16px] font-semibold backdrop-blur-md bg-white/30 hover:bg-white/50 transition-all duration-300 rounded-sm">
+              📞 (555) 123-4567
+            </button>
+          </div>
         </div>
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-500/5 rounded-full -z-10" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-500/5 rounded-full -z-10" />
+
+        {/* Right Image */}
+        <div className="relative flex items-center justify-center pr-6 hidden lg:flex">
+          {/* Curved Shape */}
+          <div className="absolute -top-12 -left-10 w-[100px] h-[100px] bg-[#ece9ff] rounded-full z-20" />
+
+          <div className="relative w-[540px] xl:w-[580px] h-[640px] overflow-hidden rounded-tl-[280px] rounded-tr-[280px] shadow-[0_40px_80px_rgba(0,0,0,0.18)]">
+            <img
+              src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1974&auto=format&fit=crop"
+              alt="dashboard"
+              className="w-full h-full object-cover scale-[1.02]"
+            />
+          </div>
+        </div>
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-        className="relative z-10 text-center max-w-5xl mx-auto"
-      >
-        <Badge className="mb-6 bg-primary-500/10 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 border border-primary-500/20 px-4 py-2">
-          ✨ Transforming Civic Engagement with AI
-        </Badge>
-        
-        <h1 className="text-5xl md:text-8xl font-black font-display leading-[1.1] text-slate-900 dark:text-white mb-8">
-          Report. Track. <br />
-          <span className="gradient-text animate-pulse-glow">Resolve.</span>
-        </h1>
-        
-        <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-          The all-in-one platform for citizens to voice concerns, track resolutions in real-time, 
-          and help authorities build smarter cities.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-          {!isAuthenticated ? (
-            <Link to="/login">
-              <Button size="xl" glow rightIcon={<ArrowRight size={20} />}>
-                Choose Your Mode & Start
-              </Button>
-            </Link>
-          ) : isStaff ? (
-            <Link to={dashboardLink}>
-              <Button size="xl" glow rightIcon={<ArrowRight size={20} />}>
-                {user?.role === 'officer' ? 'Enter Duty Desk' : 'Enter Command Center'}
-              </Button>
-            </Link>
-          ) : (
-            <>
-              <Link to="/complaints/new">
-                <Button size="xl" glow rightIcon={<ArrowRight size={20} />}>
-                  Report an Issue Now
-                </Button>
-              </Link>
-              <Link to="/dashboard/citizen">
-                <Button variant="secondary" size="xl">
-                  My Dashboard
-                </Button>
-              </Link>
-            </>
-          )}
-        </div>
-
-        {/* Floating Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {[
-            { icon: <Zap className="text-yellow-500 dark:text-yellow-400" />, label: 'Fast Resolution', desc: 'Average 48hr fix time' },
-            { icon: <Shield className="text-emerald-500 dark:text-emerald-400" />, label: 'Verified Proof', desc: 'Resolution with images' },
-            { icon: <Globe className="text-primary-500 dark:text-primary-400" />, label: 'Citizen Power', desc: '100% Transparency' },
-          ].map((feature, i) => (
-            <div 
-              key={i}
-              className="relative overflow-hidden bg-white/80 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-white/10 flex items-center gap-4 text-left shadow-lg dark:shadow-[0_0_15px_rgba(0,0,0,0.05)]"
-            >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-slate-100 dark:bg-white/5 rounded-full -mr-12 -mt-12" />
-              <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-slate-100 dark:bg-white/5 rounded-full" />
-              <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center relative z-10">
-                {feature.icon}
-              </div>
-              <div className="relative z-10">
-                <p className="text-sm font-bold text-slate-900 dark:text-white">{feature.label}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-500">{feature.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
+      {/* Floating Action Buttons */}
+      <div className="absolute right-6 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-3 hidden sm:flex">
+        <Link to="/analytics">
+          <button className="bg-[#316bff] text-white px-7 py-4 text-[16px] font-bold shadow-xl rounded-sm hover:bg-[#255cff] transition-all duration-300 w-full text-left">
+            ⚡ Live Reports
+          </button>
+        </Link>
+        <button className="bg-white text-black px-7 py-4 text-[16px] font-semibold shadow-xl rounded-sm hover:bg-gray-100 transition-all duration-300 text-left">
+          👁 Customize
+        </button>
+      </div>
     </section>
-  )
-}
-
-function Badge({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <span className={clsx('inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2', className)}>
-      {children}
-    </span>
   )
 }
