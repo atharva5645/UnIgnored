@@ -24,11 +24,11 @@ export function LiveTicker() {
   }, [])
 
   return (
-    <div className="bg-dark-950 border-y border-white/5 py-3 relative overflow-hidden">
+    <div className="bg-slate-100 dark:bg-dark-950 border-y border-slate-200 dark:border-white/5 py-3 relative overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 flex items-center gap-6">
         <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-primary-500/10 border border-primary-500/20 whitespace-nowrap">
           <span className="w-2 h-2 bg-primary-500 rounded-full animate-pulse" />
-          <span className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Live Updates</span>
+          <span className="text-[10px] font-bold text-primary-500 dark:text-primary-400 uppercase tracking-widest">Live Updates</span>
         </div>
         
         <div className="flex-1 overflow-hidden relative h-5">
@@ -38,14 +38,14 @@ export function LiveTicker() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -20, opacity: 0 }}
-              className="text-sm text-slate-400 absolute inset-0"
+              className="text-sm text-slate-600 dark:text-slate-400 absolute inset-0"
             >
               {TICKER_MESSAGES[index]}
             </motion.p>
           </AnimatePresence>
         </div>
 
-        <div className="hidden lg:flex items-center gap-6 text-[10px] font-bold text-slate-600 uppercase tracking-widest whitespace-nowrap">
+        <div className="hidden lg:flex items-center gap-6 text-[10px] font-bold text-slate-500 dark:text-slate-600 uppercase tracking-widest whitespace-nowrap">
           <span>Active Officers: 142</span>
           <span>SLA Compliance: 94.2%</span>
           <span>API Latency: 24ms</span>

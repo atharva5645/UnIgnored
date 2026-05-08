@@ -43,16 +43,8 @@ export default function LoginPage() {
     }
   }
 
-  const handleOtpChange = (val: string, index: number) => {
-    if (val.length > 1) return
-    const newOtp = [...otp]
-    newOtp[index] = val
-    setOtp(newOtp)
-    if (val && index < 5) document.getElementById(`otp-${index + 1}`)?.focus()
-  }
-
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#020617] flex items-center justify-center p-4 relative overflow-hidden transition-colors duration-500">
       {/* Background Decor */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-500/5 rounded-full" />
       
@@ -70,16 +62,16 @@ export default function LoginPage() {
           <p className="text-slate-500 mt-2">Log in to track your reports and earn points</p>
         </div>
 
-        <Card className="p-8 shadow-2xl border-slate-200 dark:border-white/10">
+        <Card className="p-8 shadow-2xl border-slate-200 dark:border-white/10 bg-white dark:bg-transparent">
           <AnimatePresence mode="wait">
             {step === 'role' && (
               <motion.div 
                 key="step-role"
                 initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -20 }}
               >
-                <h2 className="text-lg font-bold text-white mb-6">Select Your Role</h2>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Select Your Role</h2>
                 <div className="grid grid-cols-2 gap-4 mb-8">
                   {ROLES.map((r) => (
                     <button
@@ -89,12 +81,12 @@ export default function LoginPage() {
                         'flex flex-col items-center justify-center p-4 rounded-2xl border transition-all duration-300 text-left',
                         role === r.id 
                           ? 'bg-primary-500/10 border-primary-500 shadow-glow-blue' 
-                          : 'bg-white/5 border-white/5 hover:border-white/20'
+                          : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20'
                       )}
                     >
                       <span className="text-3xl mb-3">{r.icon}</span>
                       <span className={clsx('text-sm font-black', role === r.id ? 'text-primary-600 dark:text-primary-400' : 'text-slate-900 dark:text-white')}>{r.label}</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-500 mt-2 font-bold uppercase tracking-[0.2em] text-center">{r.desc}</span>
+                      <span className="text-[10px] text-slate-500 mt-2 font-bold uppercase tracking-[0.2em] text-center">{r.desc}</span>
                     </button>
                   ))}
                 </div>
@@ -108,27 +100,27 @@ export default function LoginPage() {
               <motion.div 
                 key="step-creds"
                 initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -20 }}
               >
                 <button 
                   onClick={() => setStep('role')}
-                  className="flex items-center gap-2 text-xs text-slate-500 hover:text-white mb-6 transition-colors"
+                  className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white mb-6 transition-colors"
                 >
                   <ChevronLeft size={14} /> Back to role selection
                 </button>
-                <h2 className="text-lg font-bold text-white mb-6">Login with {role.replace('_', ' ')} ID</h2>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Login with {role.replace('_', ' ')} ID</h2>
                 
                 <div className="space-y-4 mb-8">
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Email or Phone</label>
-                    <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus-within:border-primary-500/50 transition-all">
+                    <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus-within:border-primary-500/50 transition-all">
                       <Mail size={18} className="text-slate-500" />
                       <input 
                         placeholder="yourname@domain.com"
                         value={emailOrPhone}
                         onChange={e => setEmailOrPhone(e.target.value)}
-                        className="bg-transparent border-none outline-none text-sm text-white w-full placeholder:text-slate-700"
+                        className="bg-transparent border-none outline-none text-sm text-slate-900 dark:text-white w-full placeholder:text-slate-400"
                       />
                     </div>
                   </div>
@@ -138,17 +130,17 @@ export default function LoginPage() {
                   Send Verification Code
                 </Button>
 
-                <div className="mt-8 flex items-center gap-4 text-slate-700">
-                  <div className="h-px flex-1 bg-white/5" />
+                <div className="mt-8 flex items-center gap-4 text-slate-300 dark:text-slate-700">
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-white/5" />
                   <span className="text-[10px] font-bold uppercase tracking-widest">Or Continue With</span>
-                  <div className="h-px flex-1 bg-white/5" />
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-white/5" />
                 </div>
 
                 <div className="mt-6 grid grid-cols-2 gap-4">
-                  <button className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-sm text-white transition-all">
+                  <button className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/10 text-sm text-slate-900 dark:text-white transition-all">
                     <ShieldCheck size={18} className="text-primary-500" /> Gov ID
                   </button>
-                  <button className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-sm text-white transition-all">
+                  <button className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/10 text-sm text-slate-900 dark:text-white transition-all">
                     <Smartphone size={18} className="text-violet-500" /> DigiLocker
                   </button>
                 </div>
@@ -159,17 +151,17 @@ export default function LoginPage() {
               <motion.div 
                 key="step-otp"
                 initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -20 }}
               >
                 <button 
                   onClick={() => setStep('credentials')}
-                  className="flex items-center gap-2 text-xs text-slate-500 hover:text-white mb-6 transition-colors"
+                  className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white mb-6 transition-colors"
                 >
                   <ChevronLeft size={14} /> Change email/phone
                 </button>
-                <h2 className="text-lg font-bold text-white mb-2">Verify Account</h2>
-                <p className="text-sm text-slate-500 mb-8">We've sent a 6-digit code to <span className="text-white">{emailOrPhone}</span></p>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Verify Account</h2>
+                <p className="text-sm text-slate-500 mb-8">We've sent a 6-digit code to <span className="text-slate-900 dark:text-white font-bold">{emailOrPhone}</span></p>
                 
                 <div className="flex justify-between gap-2 mb-8">
                   {otp.map((digit, i) => (
@@ -178,7 +170,6 @@ export default function LoginPage() {
                       id={`otp-${i}`}
                       type="text"
                       inputMode="numeric"
-                      autoComplete="one-time-code"
                       value={digit}
                       onChange={e => {
                         const val = e.target.value.slice(-1);
@@ -209,12 +200,12 @@ export default function LoginPage() {
                 </Button>
 
                 <p className="mt-8 text-center text-xs text-slate-500">
-                  Didn't receive the code? <button className="text-primary-400 hover:underline" onClick={handleSendOTP}>Resend in 30s</button>
+                  Didn't receive the code? <button className="text-primary-500 hover:underline" onClick={handleSendOTP}>Resend in 30s</button>
                 </p>
                 
                 <div className="mt-6 p-4 rounded-xl bg-primary-500/5 border border-primary-500/10 text-center">
-                  <p className="text-[10px] text-primary-400 font-bold uppercase tracking-widest">Demo Testing Mode</p>
-                  <p className="text-xs text-slate-500 mt-1">Use OTP: <span className="text-white font-mono">123456</span></p>
+                  <p className="text-[10px] text-primary-500 dark:text-primary-400 font-bold uppercase tracking-widest">Demo Testing Mode</p>
+                  <p className="text-xs text-slate-500 mt-1">Use OTP: <span className="text-slate-900 dark:text-white font-mono font-bold">123456</span></p>
                 </div>
               </motion.div>
             )}

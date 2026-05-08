@@ -30,7 +30,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#020617] flex items-center justify-center p-4 relative overflow-hidden transition-colors duration-500">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-500/5 rounded-full" />
       
       <motion.div 
@@ -43,25 +43,25 @@ export default function RegisterPage() {
           <p className="text-slate-500 mt-2">Empowering citizens for a better tomorrow</p>
         </div>
 
-        <Card className="p-8 shadow-2xl border-slate-200 dark:border-white/10">
+        <Card className="p-8 shadow-2xl border-slate-200 dark:border-white/10 bg-white dark:bg-transparent">
           {/* Progress Tracker */}
           <div className="flex items-center justify-between mb-10">
             {[1, 2, 3].map((s) => (
               <React.Fragment key={s}>
                 <div className={clsx(
                   'w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-300',
-                  step >= s ? 'bg-primary-500 text-white shadow-glow-blue' : 'bg-white/5 text-slate-600 border border-white/10'
+                  step >= s ? 'bg-primary-500 text-white shadow-glow-blue' : 'bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-600 border border-slate-200 dark:border-white/10'
                 )}>
                   {step > s ? <CheckCircle2 size={18} /> : s}
                 </div>
-                {s < 3 && <div className={clsx('flex-1 h-0.5 mx-4 rounded-full', step > s ? 'bg-primary-500' : 'bg-white/5')} />}
+                {s < 3 && <div className={clsx('flex-1 h-0.5 mx-4 rounded-full', step > s ? 'bg-primary-500' : 'bg-slate-200 dark:bg-white/5')} />}
               </React.Fragment>
             ))}
           </div>
 
           {step === 1 && (
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-              <h2 className="text-xl font-bold text-white mb-6">Choose Your Role</h2>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Choose Your Role</h2>
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {[
                   { id: 'citizen', label: 'Citizen', icon: '👤', desc: 'Report issues' },
@@ -72,7 +72,7 @@ export default function RegisterPage() {
                     onClick={() => setRole(r.id as UserRole)}
                     className={clsx(
                       'p-6 rounded-2xl border transition-all duration-300 text-left',
-                      role === r.id ? 'bg-primary-500/10 border-primary-500' : 'bg-white/5 border-white/5 hover:border-white/20'
+                      role === r.id ? 'bg-primary-500/10 border-primary-500' : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20'
                     )}
                   >
                     <span className="text-4xl mb-4 block">{r.icon}</span>
@@ -89,15 +89,15 @@ export default function RegisterPage() {
 
           {step === 2 && (
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-              <h2 className="text-xl font-bold text-white mb-6">Personal Details</h2>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Personal Details</h2>
               <div className="space-y-4 mb-8">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Full Name</label>
-                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
                     <User size={18} className="text-slate-500" />
                     <input 
                       placeholder="John Doe" 
-                      className="bg-transparent border-none outline-none text-sm text-white w-full"
+                      className="bg-transparent border-none outline-none text-sm text-slate-900 dark:text-white w-full"
                       value={formData.name}
                       onChange={e => setFormData({...formData, name: e.target.value})}
                     />
@@ -105,11 +105,11 @@ export default function RegisterPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Email Address</label>
-                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
                     <Mail size={18} className="text-slate-500" />
                     <input 
                       placeholder="john@example.com" 
-                      className="bg-transparent border-none outline-none text-sm text-white w-full"
+                      className="bg-transparent border-none outline-none text-sm text-slate-900 dark:text-white w-full"
                       value={formData.email}
                       onChange={e => setFormData({...formData, email: e.target.value})}
                     />
@@ -117,11 +117,11 @@ export default function RegisterPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Phone Number</label>
-                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
                     <Phone size={18} className="text-slate-500" />
                     <input 
                       placeholder="+91 98765 43210" 
-                      className="bg-transparent border-none outline-none text-sm text-white w-full"
+                      className="bg-transparent border-none outline-none text-sm text-slate-900 dark:text-white w-full"
                       value={formData.phone}
                       onChange={e => setFormData({...formData, phone: e.target.value})}
                     />
@@ -137,28 +137,28 @@ export default function RegisterPage() {
 
           {step === 3 && (
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-              <h2 className="text-xl font-bold text-white mb-6">Identity Verification</h2>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Identity Verification</h2>
               <p className="text-sm text-slate-500 mb-8">Verification helps us maintain a secure and trustworthy community.</p>
               
               <div className="space-y-6 mb-8">
                 <div className="p-6 rounded-2xl border border-primary-500/20 bg-primary-500/5">
                   <div className="flex items-center gap-4 mb-4">
-                    <ShieldCheck size={24} className="text-primary-400" />
-                    <h3 className="text-white font-bold">Aadhaar Link (Recommended)</h3>
+                    <ShieldCheck size={24} className="text-primary-600 dark:text-primary-400" />
+                    <h3 className="text-slate-900 dark:text-white font-bold">Aadhaar Link (Recommended)</h3>
                   </div>
                   <input 
                     placeholder="Enter 12-digit Aadhaar Number" 
-                    className="w-full bg-dark-950/50 border border-white/10 rounded-xl px-4 py-3 text-white text-sm mb-4 outline-none focus:border-primary-500/50"
+                    className="w-full bg-slate-50 dark:bg-dark-950/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white text-sm mb-4 outline-none focus:border-primary-500/50"
                     value={formData.aadhaar}
                     onChange={e => setFormData({...formData, aadhaar: e.target.value})}
                   />
-                  <p className="text-[10px] text-slate-600">Your data is encrypted and handled according to government security standards.</p>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-600">Your data is encrypted and handled according to government security standards.</p>
                 </div>
 
                 <div className="flex items-start gap-3 px-2">
                   <input type="checkbox" id="terms" className="mt-1 accent-primary-500" />
                   <label htmlFor="terms" className="text-xs text-slate-500 leading-relaxed">
-                    I agree to the <Link to="/terms" className="text-primary-400">Terms of Service</Link> and <Link to="/privacy" className="text-primary-400">Privacy Policy</Link>. I understand that filing false reports is a punishable offense.
+                    I agree to the <Link to="/terms" className="text-primary-500 dark:text-primary-400">Terms of Service</Link> and <Link to="/privacy" className="text-primary-500 dark:text-primary-400">Privacy Policy</Link>. I understand that filing false reports is a punishable offense.
                   </label>
                 </div>
               </div>

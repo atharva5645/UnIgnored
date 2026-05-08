@@ -29,7 +29,7 @@ function Counter({ end, duration = 2 }: { end: number; duration?: number }) {
 
 export function LandingStats() {
   return (
-    <section className="py-20 px-4 bg-dark-900/50">
+    <section className="py-20 px-4 bg-slate-50 dark:bg-dark-900/50">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {[
@@ -45,15 +45,15 @@ export function LandingStats() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <div className={`glass p-8 rounded-[2.5rem] border border-white/5 relative overflow-hidden bg-gradient-to-br ${stat.color}`}>
+              <div className={`glass p-8 rounded-[2.5rem] border border-slate-200 dark:border-white/5 relative overflow-hidden bg-white dark:bg-transparent bg-gradient-to-br ${stat.color}`}>
                 <div className="text-4xl mb-4">{stat.icon}</div>
                 <div className="flex items-end gap-2">
-                  <h3 className="text-4xl font-black text-white font-display">
+                  <h3 className="text-4xl font-black text-slate-900 dark:text-white font-display">
                     <Counter end={stat.value} />
                     {stat.suffix}
                   </h3>
                   {stat.trend && (
-                    <span className="text-xs font-bold text-emerald-400 mb-1.5 flex items-center gap-0.5">
+                    <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1.5 flex items-center gap-0.5">
                       ↑{stat.trend}%
                     </span>
                   )}
@@ -61,7 +61,7 @@ export function LandingStats() {
                 <p className="text-xs text-slate-500 uppercase tracking-widest mt-2 font-bold">{stat.label}</p>
                 
                 {/* Decorative Elements */}
-                <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-white/5 rounded-full blur-2xl" />
+                <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-primary-500/5 rounded-full blur-2xl" />
               </div>
             </motion.div>
           ))}
