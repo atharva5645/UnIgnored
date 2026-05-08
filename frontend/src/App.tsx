@@ -19,21 +19,7 @@ const ProfilePage = lazy(() => import('./pages/Profile/ProfilePage'))
 const AboutPage = lazy(() => import('./pages/Landing/AboutPage'))
 const ContactPage = lazy(() => import('./pages/Landing/ContactPage'))
 
-// --- Auth Guard ---
-const ProtectedRoute = ({ children, role }: { children: React.ReactNode; role?: string }) => {
-  const { isAuthenticated, user } = useAuthStore()
-  
-  if (!isAuthenticated) return <Navigate to="/login" replace />
-  
-  // If a specific role is required, check it
-  if (role) {
-    const isSuper = user?.role === 'super_admin'
-    const hasRole = user?.role === role
-    if (!hasRole && !isSuper) return <Navigate to="/" replace />
-  }
-  
-  return <>{children}</>
-}
+import { ProtectedRoute } from './components/auth/ProtectedRoute'
 
 // --- Loading Fallback ---
 const PageLoader = () => (
@@ -49,58 +35,61 @@ const PageLoader = () => (
   </div>
 )
 
+import { ErrorBoundary } from './components/ErrorBoundary'
+
 export default function App() {
-  const { user } = useAuthStore()
   return (
-    <BrowserRouter>
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route path="/" element={<AppShell />}>
-            {/* Public Routes */}
-            <Route index element={<LandingPage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="register" element={<RegisterPage />} />
-            <Route path="analytics" element={<AnalyticsPage />} />
-            <Route path="about" element={<AboutPage />} />
-            <Route path="contact" element={<ContactPage />} />
-            <Route path="complaints/track/:id" element={<ComplaintTracking />} />
-            <Route path="complaints/map" element={<MapPage />} />
+    <ErrorBoundary>
+      <BrowserRouter>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<AppShell />}>
+              {/* Public Routes */}
+              <Route index element={<LandingPage />} />
+              <Route path="login" element={<LoginPage />} />
+              <Route path="register" element={<RegisterPage />} />
+              <Route path="analytics" element={<AnalyticsPage />} />
+              <Route path="about" element={<AboutPage />} />
+              <Route path="contact" element={<ContactPage />} />
+              <Route path="complaints/track/:id" element={<ComplaintTracking />} />
+              <Route path="complaints/map" element={<MapPage />} />
 
-            {/* Citizen Routes */}
-            <Route 
-              path="dashboard/citizen" 
-              element={<ProtectedRoute role="citizen"><UserDashboard /></ProtectedRoute>} 
-            />
-            <Route 
-              path="complaints/new" 
-              element={<ProtectedRoute><NewComplaint /></ProtectedRoute>} 
-            />
-            <Route 
-              path="profile" 
-              element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} 
-            />
+              {/* Citizen Routes */}
+              <Route 
+                path="dashboard/citizen" 
+                element={<ProtectedRoute allowedRoles={['citizen']}><UserDashboard /></ProtectedRoute>} 
+              />
+              <Route 
+                path="complaints/new" 
+                element={<ProtectedRoute><NewComplaint /></ProtectedRoute>} 
+              />
+              <Route 
+                path="profile" 
+                element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} 
+              />
 
-            {/* Officer Routes */}
-            <Route 
-              path="dashboard/officer" 
-              element={<ProtectedRoute role="officer"><OfficerDashboard /></ProtectedRoute>} 
-            />
+              {/* Officer Routes */}
+              <Route 
+                path="dashboard/officer" 
+                element={<ProtectedRoute allowedRoles={['officer']}><OfficerDashboard /></ProtectedRoute>} 
+              />
 
-            {/* Admin Routes */}
-            <Route 
-              path="dashboard/admin" 
-              element={
-                <ProtectedRoute>
-                  {user?.role === 'super_admin' || user?.role === 'zonal_admin' ? <AdminDashboard /> : <Navigate to="/" replace />}
-                </ProtectedRoute>
-              } 
-            />
+              {/* Admin Routes */}
+              <Route 
+                path="dashboard/admin" 
+                element={
+                  <ProtectedRoute allowedRoles={['super_admin', 'zonal_admin']}>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                } 
+              />
 
-            {/* Catch-all */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+              {/* Catch-all */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </ErrorBoundary>
   )
 }

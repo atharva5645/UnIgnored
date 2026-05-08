@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const http = require('http');
 const { Server } = require('socket.io');
+const { admin, db, auth } = require('./config/firebase-config');
 
 // Load environment variables
 dotenv.config();

@@ -14,6 +14,7 @@ import { Card, StatCard, Badge, Button, Avatar, ProgressBar } from '../../compon
 import { COMPLAINTS, WARDS, OFFICERS, STATUS_META } from '../../utils/mockData'
 import { clsx } from 'clsx'
 import { useAuthStore } from '../../store/authStore'
+import { useComplaints } from '../../hooks/useComplaints'
 import { format } from 'date-fns'
 
 const COLORS = ['#06b6d4', '#8b5cf6', '#10b981', '#f59e0b', '#f43f5e']
@@ -40,6 +41,7 @@ const categoryData = [
 export default function AdminDashboard() {
   const [tab, setTab] = useState<'analytics' | 'management' | 'users'>('analytics')
   const { user } = useAuthStore()
+  const { complaints } = useComplaints()
   const isZonal = user?.role === 'zonal_admin'
   const areaName = isZonal ? 'North Ward' : 'Central Hub'
   
@@ -93,7 +95,7 @@ export default function AdminDashboard() {
           <div className="space-y-8">
             {/* KPI Section */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <StatCard label="Live Complaints" value="1,284" icon="🔥" trend={14} color="from-rose-500/10 to-red-500/10" />
+              <StatCard label="Live Complaints" value={complaints.length.toString()} icon="🔥" trend={14} color="from-rose-500/10 to-red-500/10" />
               <StatCard label="Resolved Today" value="452" icon="✅" trend={8} color="from-emerald-500/10 to-green-500/10" />
               <StatCard label="Avg. Response" value="18.5m" icon="⚡" trend={-12} color="from-blue-500/10 to-cyan-500/10" />
               <StatCard label="Officer Capacity" value="84%" icon="👮" trend={2} color="from-amber-500/10 to-yellow-500/10" />
@@ -240,7 +242,7 @@ export default function AdminDashboard() {
                   </div>
                   
                   <div className="divide-y divide-white/5">
-                    {COMPLAINTS.slice(0, 8).map((c) => (
+                    {complaints.slice(0, 8).map((c) => (
                       <div key={c.id} className="p-6 flex items-center gap-6 hover:bg-white/5 transition-all group">
                         <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
                           {c.category === 'pothole' ? '🕳️' : '🗑️'}
@@ -344,7 +346,7 @@ export default function AdminDashboard() {
                           <Avatar name={o.name} src={o.avatar} size="sm" />
                           <div>
                             <p className="text-sm font-bold text-white">{o.name}</p>
-                            <p className="text-[10px] text-slate-500">{o.email || 'officer@civiceye.gov'}</p>
+                            <p className="text-[10px] text-slate-500">{o.email || 'officer@UnIgnored.gov'}</p>
                           </div>
                         </div>
                       </td>

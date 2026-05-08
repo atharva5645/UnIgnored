@@ -1,6 +1,6 @@
-# CivicEye: Smart Public Complaint & Issue Tracking System
+# UnIgnored: Smart Public Complaint & Issue Tracking System
 
-CivicEye is a high-fidelity, production-ready civic engagement platform designed to bridge the gap between citizens and local authorities. Built with a focus on transparency, speed, and premium user experience.
+UnIgnored is a high-fidelity, production-ready civic engagement platform designed to bridge the gap between citizens and local authorities. Built with a focus on transparency, speed, and premium user experience.
 
 ## 🚀 Tech Stack
 - **Framework**: React 18 + TypeScript (Strict)

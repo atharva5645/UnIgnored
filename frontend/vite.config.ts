@@ -11,8 +11,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'CivicEye - Smart Public Complaint System',
-        short_name: 'CivicEye',
+        name: 'UnIgnored - Smart Public Complaint System',
+        short_name: 'UnIgnored',
         description: 'Report, Track, and Resolve civic issues efficiently.',
         theme_color: '#06b6d4',
         icons: [

@@ -1,6 +1,6 @@
-# CivicEye Architecture Documentation
+# UnIgnored Architecture Documentation
 
-This document outlines the architectural design of the CivicEye frontend, specifically designed for scalability and future backend integration.
+This document outlines the architectural design of the UnIgnored frontend, specifically designed for scalability and future backend integration.
 
 ## 1. Project Structure
 

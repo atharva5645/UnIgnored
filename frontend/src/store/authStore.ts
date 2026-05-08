@@ -1,59 +1,47 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { User, UserRole } from '../types/user';
-import { MOCK_USER } from '../utils/mockData';
+import { User } from '../types/user';
+import { authService } from '../services/authService';
 
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  otpSent: boolean;
+  error: string | null;
   
-  login: (emailOrPhone: string, role: UserRole) => Promise<void>;
-  logout: () => void;
-  sendOTP: (emailOrPhone: string) => Promise<void>;
-  verifyOTP: (otp: string) => Promise<boolean>;
-  updateProfile: (data: Partial<User>) => void;
+  // Actions
+  setUser: (user: User | null) => void;
+  setLoading: (isLoading: boolean) => void;
+  setError: (error: string | null) => void;
+  clearError: () => void;
+  logout: () => Promise<void>;
 }
 
-export const useAuthStore = create<AuthState>()(
-  persist(
-    (set) => ({
-      user: null,
-      isAuthenticated: false,
-      isLoading: false,
-      otpSent: false,
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  isAuthenticated: false,
+  isLoading: true, // Start with loading while we check the listener
+  error: null,
 
-      login: async (emailOrPhone, role) => {
-        set({ isLoading: true });
-        // Simulation
-        await new Promise(r => setTimeout(r, 1000));
-        set({ 
-          user: { ...MOCK_USER, email: emailOrPhone, role }, 
-          isAuthenticated: true, 
-          isLoading: false 
-        });
-      },
+  setUser: (user) => set({ 
+    user, 
+    isAuthenticated: !!user, 
+    isLoading: false,
+    error: null 
+  }),
 
-      logout: () => set({ user: null, isAuthenticated: false }),
+  setLoading: (isLoading) => set({ isLoading }),
+  
+  setError: (error) => set({ error, isLoading: false }),
 
-      sendOTP: async (emailOrPhone) => {
-        set({ isLoading: true });
-        await new Promise(r => setTimeout(r, 1000));
-        set({ otpSent: true, isLoading: false });
-      },
+  clearError: () => set({ error: null }),
 
-      verifyOTP: async (otp) => {
-        set({ isLoading: true });
-        await new Promise(r => setTimeout(r, 800));
-        set({ isLoading: false });
-        return otp === '123456'; // Mock OTP
-      },
-
-      updateProfile: (data) => set((state) => ({
-        user: state.user ? { ...state.user, ...data } : null
-      })),
-    }),
-    { name: 'civiceye-auth' }
-  )
-);
+  logout: async () => {
+    try {
+      await authService.logout();
+      set({ user: null, isAuthenticated: false, error: null });
+    } catch (error) {
+      console.error("Logout failed:", error);
+      set({ error: "Logout failed" });
+    }
+  }
+}));

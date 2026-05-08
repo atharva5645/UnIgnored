@@ -4,7 +4,7 @@ import { User, UserRole } from '../types/user';
 import { Officer } from '../types/officer';
 
 /**
- * CivicEye API Service
+ * UnIgnored API Service
  * 
  * This service acts as the gateway for all data fetching. 
  * Currently, it uses mock data and simulated delays to mimic real API behavior.

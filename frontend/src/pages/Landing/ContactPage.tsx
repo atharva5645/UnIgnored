@@ -30,7 +30,7 @@ export default function ContactPage() {
 
             <div className="space-y-6">
               {[
-                { icon: <Mail size={20} />, label: 'Email Support', value: 'help@civiceye.gov.in' },
+                { icon: <Mail size={20} />, label: 'Email Support', value: 'help@UnIgnored.gov.in' },
                 { icon: <Phone size={20} />, label: 'Helpline', value: '+91 11 2345 6789' },
                 { icon: <MapPin size={20} />, label: 'Headquarters', value: 'NITI Aayog, Sansad Marg, New Delhi' },
               ].map((item, i) => (

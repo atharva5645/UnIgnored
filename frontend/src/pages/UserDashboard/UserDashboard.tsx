@@ -107,7 +107,7 @@ function KanbanBoard({ complaints }: { complaints: any[] }) {
               ))}
               {items.length === 0 && (
                 <div className="h-40 flex flex-col items-center justify-center text-slate-700">
-                  <div className="text-2xl mb-2">📭</div>
+                  <div className="text-2xl mb-2">\uD83D\uDCEB</div>
                   <p className="text-[10px] font-bold uppercase tracking-widest">No items here</p>
                 </div>
               )}
@@ -136,10 +136,10 @@ export default function UserDashboard() {
   const filtered = getFilteredComplaints()
 
   const stats = [
-    { label: 'Total Filed', value: myComplaints.length, icon: '📋', trend: 12 },
-    { label: 'Resolved', value: myComplaints.filter(c => ['resolved', 'verified'].includes(c.status)).length, icon: '✅', trend: 8, color: 'emerald' },
-    { label: 'Avg Time', value: '2.4d', icon: '⏱️', trend: -5, color: 'blue' },
-    { label: 'Rewards', value: user?.rewardPoints || 0, icon: '🏅', trend: 25, color: 'amber' },
+    { label: 'Total Filed', value: myComplaints.length, icon: '\uD83D\uDCCB', trend: 12 },
+    { label: 'Resolved', value: myComplaints.filter(c => ['resolved', 'verified'].includes(c.status)).length, icon: '\u2705', trend: 8, color: 'emerald' },
+    { label: 'Avg Time', value: '2.4d', icon: '\u23F1\uFE0F', trend: -5, color: 'blue' },
+    { label: 'Rewards', value: user?.rewardPoints || 0, icon: '\uD83C\uDFC5', trend: 25, color: 'amber' },
   ]
 
   return (
@@ -154,7 +154,7 @@ export default function UserDashboard() {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-3xl font-black text-slate-900 dark:text-white font-display">
-                Welcome back, <span className="gradient-text">{user?.name.split(' ')[0]}</span> 👋
+                Welcome back, <span className="gradient-text">{user?.name.split(' ')[0]}</span> \uD83D\uDC4B
               </h1>
               <Badge variant="info" className="animate-pulse bg-primary-500/10 text-primary-600 dark:text-primary-400 border border-primary-500/20">Active Resident</Badge>
             </div>
@@ -284,7 +284,7 @@ export default function UserDashboard() {
                   )}
                   {filtered.length === 0 && !loading && (
                     <div className="py-20 text-center">
-                      <div className="text-6xl mb-4">🔍</div>
+                      <div className="text-6xl mb-4">\uD83D\uDD0D</div>
                       <h3 className="text-xl font-bold text-white mb-2">No complaints found</h3>
                       <p className="text-slate-500">Try adjusting your search or filters</p>
                     </div>
@@ -327,7 +327,7 @@ export default function UserDashboard() {
                 ))}
                 <div className="flex flex-col items-center gap-2 opacity-30 grayscale">
                   <div className="w-14 h-14 rounded-2xl bg-white/5 border border-dashed border-white/20 flex items-center justify-center text-3xl">
-                    🔒
+                    \uD83D\uDD12
                   </div>
                   <span className="text-[10px] font-bold text-slate-600 text-center uppercase">10 Reports</span>
                 </div>

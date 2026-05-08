@@ -37,7 +37,7 @@ export default function AboutPage() {
             Building a <span className="gradient-text">Smater City,</span> <br /> One Report at a Time.
           </h1>
           <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
-            CivicEye is a revolutionary platform designed to empower citizens and streamline government responsiveness. 
+            UnIgnored is a revolutionary platform designed to empower citizens and streamline government responsiveness. 
             We believe that technology can bridge the gap between public needs and administrative action.
           </p>
         </div>
@@ -89,7 +89,7 @@ export default function AboutPage() {
         {/* Core Values */}
         <div className="mb-32">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-4">The CivicEye Principles</h2>
+            <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-4">The UnIgnored Principles</h2>
             <p className="text-slate-500">The values that drive our innovation and city management.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">

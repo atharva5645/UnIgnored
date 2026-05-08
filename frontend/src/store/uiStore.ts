@@ -50,6 +50,6 @@ export const useUIStore = create<UIState>()(
       setAccessibility: (key, value) => set({ [key]: value }),
       setSpeedMultiplier: (speed) => set({ speedMultiplier: speed }),
     }),
-    { name: 'civiceye-ui' }
+    { name: 'UnIgnored-ui' }
   )
 );

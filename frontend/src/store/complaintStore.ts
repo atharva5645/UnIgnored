@@ -1,78 +1,78 @@
 import { create } from 'zustand';
-import { Complaint, ComplaintStatus, ComplaintCategory } from '../types/complaint';
-import { COMPLAINTS } from '../utils/mockData';
+import { Complaint, ComplaintStatus } from '../types/complaint';
+import { complaintService } from '../services/complaintService';
 
 interface ComplaintState {
   complaints: Complaint[];
+  isLoading: boolean;
+  error: string | null;
   filterStatus: string;
   filterCategory: string;
   searchQuery: string;
   viewMode: 'list' | 'kanban' | 'map' | 'calendar';
   
+  // Actions
+  setComplaints: (complaints: Complaint[]) => void;
+  setLoading: (isLoading: boolean) => void;
+  setError: (error: string | null) => void;
   setFilter: (key: 'filterStatus' | 'filterCategory' | 'searchQuery', value: string) => void;
   setViewMode: (mode: 'list' | 'kanban' | 'map' | 'calendar') => void;
-  addComplaint: (complaint: Complaint) => void;
-  updateComplaintStatus: (id: string, status: ComplaintStatus) => void;
-  upvoteComplaint: (id: string) => void;
-  addComment: (id: string, text: string, author: string) => void;
+  
+  // Async Operations
+  addComplaint: (complaintData: any) => Promise<string>;
+  updateStatus: (id: string, status: ComplaintStatus, actor: string, actorRole: any, note: string) => Promise<void>;
+  deleteComplaint: (id: string) => Promise<void>;
   getFilteredComplaints: () => Complaint[];
-  simulateRealTimeUpdate: () => void;
 }
 
 export const useComplaintStore = create<ComplaintState>((set, get) => ({
-  complaints: COMPLAINTS,
+  complaints: [],
+  isLoading: false,
+  error: null,
   filterStatus: 'all',
   filterCategory: 'all',
   searchQuery: '',
   viewMode: 'list',
 
+  setComplaints: (complaints) => set({ complaints, isLoading: false }),
+  setLoading: (isLoading) => set({ isLoading }),
+  setError: (error) => set({ error, isLoading: false }),
   setFilter: (key, value) => set({ [key]: value }),
   setViewMode: (viewMode) => set({ viewMode }),
 
-  addComplaint: (complaint) => set((state) => ({ 
-    complaints: [complaint, ...state.complaints] 
-  })),
+  addComplaint: async (complaintData) => {
+    set({ isLoading: true, error: null });
+    try {
+      const id = await complaintService.submitComplaint(complaintData);
+      set({ isLoading: false });
+      return id;
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+      throw err;
+    }
+  },
 
-  updateComplaintStatus: (id, status) => set((state) => ({
-    complaints: state.complaints.map(c => 
-      c.id === id ? { 
-        ...c, 
-        status, 
-        updatedAt: new Date().toISOString(),
-        timeline: [...c.timeline, {
-          id: `t_${Date.now()}`,
-          status,
-          timestamp: new Date().toISOString(),
-          actor: 'System',
-          actorRole: 'system',
-          note: `Status updated to ${status.replace('_', ' ')}`
-        }]
-      } : c
-    )
-  })),
+  updateStatus: async (id, status, actor, actorRole, note) => {
+    set({ isLoading: true, error: null });
+    try {
+      await complaintService.updateStatus(id, status, actor, actorRole, note);
+      set({ isLoading: false });
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+      throw err;
+    }
+  },
 
-  upvoteComplaint: (id) => set((state) => ({
-    complaints: state.complaints.map(c => 
-      c.id === id ? { ...c, upvotes: c.upvotes + 1 } : c
-    )
-  })),
-
-  addComment: (id, text, author) => set((state) => ({
-    complaints: state.complaints.map(c => 
-      c.id === id ? { 
-        ...c, 
-        comments: [...c.comments, {
-          id: `cm_${Date.now()}`,
-          authorId: 'u1',
-          authorName: author,
-          authorRole: 'citizen',
-          text,
-          timestamp: new Date().toISOString(),
-          isInternal: false
-        }]
-      } : c
-    )
-  })),
+  deleteComplaint: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      await complaintService.deleteComplaint(id);
+      set({ isLoading: false });
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+      throw err;
+    }
+  },
 
   getFilteredComplaints: () => {
     const { complaints, filterStatus, filterCategory, searchQuery } = get();
@@ -83,52 +83,5 @@ export const useComplaintStore = create<ComplaintState>((set, get) => ({
                           c.referenceId.toLowerCase().includes(searchQuery.toLowerCase());
       return statusMatch && categoryMatch && searchMatch;
     });
-  },
-
-  simulateRealTimeUpdate: () => set((state) => {
-    const randomIndex = Math.floor(Math.random() * state.complaints.length);
-    const target = state.complaints[randomIndex];
-    
-    // 70% chance of upvote, 30% chance of status update
-    if (Math.random() > 0.3) {
-      return {
-        complaints: state.complaints.map((c, i) => 
-          i === randomIndex ? { ...c, upvotes: c.upvotes + 1 } : c
-        )
-      };
-    } else {
-      const nextStatus: Record<ComplaintStatus, ComplaintStatus> = {
-        submitted: 'under_review',
-        under_review: 'assigned',
-        assigned: 'in_progress',
-        in_progress: 'resolved',
-        resolved: 'verified',
-        verified: 'closed',
-        closed: 'closed',
-        escalated: 'in_progress',
-        rejected: 'closed'
-      };
-      
-      const status = nextStatus[target.status];
-      if (status === target.status) return state; // No change
-
-      return {
-        complaints: state.complaints.map((c, i) => 
-          i === randomIndex ? { 
-            ...c, 
-            status,
-            updatedAt: new Date().toISOString(),
-            timeline: [...c.timeline, {
-              id: `t_sim_${Date.now()}`,
-              status,
-              timestamp: new Date().toISOString(),
-              actor: 'AI Dispatcher',
-              actorRole: 'system',
-              note: `Automated status update: ${status.replace('_', ' ')}`
-            }]
-          } : c
-        )
-      };
-    }
-  })
+  }
 }));

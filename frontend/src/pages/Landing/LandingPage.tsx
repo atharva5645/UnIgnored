@@ -96,14 +96,14 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center text-xl">👁️</div>
-            <span className="font-bold text-xl text-slate-900 dark:text-white">CivicEye</span>
+            <span className="font-bold text-xl text-slate-900 dark:text-white">UnIgnored</span>
           </div>
           <div className="flex gap-8 text-sm text-slate-500">
             <Link to="/privacy" className="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy</Link>
             <Link to="/terms" className="hover:text-slate-900 dark:hover:text-white transition-colors">Terms</Link>
             <Link to="/contact" className="hover:text-slate-900 dark:hover:text-white transition-colors">Contact</Link>
           </div>
-          <p className="text-sm text-slate-600">© 2024 CivicEye. Government of India Initiative.</p>
+          <p className="text-sm text-slate-600">© 2024 UnIgnored. Government of India Initiative.</p>
         </div>
       </footer>
     </div>

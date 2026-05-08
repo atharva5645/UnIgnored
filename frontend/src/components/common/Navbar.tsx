@@ -43,7 +43,7 @@ export function Navbar() {
           </button>
           <Link to="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-brand-violet flex items-center justify-center text-xl shadow-glow-blue group-hover:scale-110 transition-transform">👁️</div>
-            <span className="font-display font-black text-2xl tracking-tight text-slate-900 dark:text-white">CivicEye</span>
+            <span className="font-display font-black text-2xl tracking-tight text-slate-900 dark:text-white">UnIgnored</span>
           </Link>
         </div>
 

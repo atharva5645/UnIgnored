@@ -5,14 +5,14 @@ import { Ward } from '../types/officer';
 import { subDays, subHours, subMinutes } from 'date-fns';
 
 export const CATEGORY_META: Record<ComplaintCategory, { label: string; icon: string; color: string }> = {
-  pothole: { label: 'Pothole', icon: '🕳️', color: 'bg-amber-500' },
-  garbage: { label: 'Garbage', icon: '🗑️', color: 'bg-emerald-500' },
-  water_leakage: { label: 'Water Leakage', icon: '💧', color: 'bg-blue-500' },
-  electricity: { label: 'Electricity', icon: '⚡', color: 'bg-yellow-500' },
-  street_light: { label: 'Street Light', icon: '💡', color: 'bg-indigo-500' },
-  drainage: { label: 'Drainage', icon: '🌊', color: 'bg-cyan-500' },
-  public_safety: { label: 'Public Safety', icon: '🛡️', color: 'bg-rose-500' },
-  other: { label: 'Other', icon: '❓', color: 'bg-slate-500' },
+  pothole: { label: 'Pothole', icon: '\uD83D\uDDA5\uFE0F', color: 'bg-amber-500' },
+  garbage: { label: 'Garbage', icon: '\uD83D\uDDD1\uFE0F', color: 'bg-emerald-500' },
+  water_leakage: { label: 'Water Leakage', icon: '\uD83D\uDCA7', color: 'bg-blue-500' },
+  electricity: { label: 'Electricity', icon: '\u26A1', color: 'bg-yellow-500' },
+  street_light: { label: 'Street Light', icon: '\uD83D\uDCA1', color: 'bg-indigo-500' },
+  drainage: { label: 'Drainage', icon: '\uD83C\uDF0A', color: 'bg-cyan-500' },
+  public_safety: { label: 'Public Safety', icon: '\uD83D\uDEE1\uFE0F', color: 'bg-rose-500' },
+  other: { label: 'Other', icon: '\u2753', color: 'bg-slate-500' },
 };
 
 export const STATUS_META: Record<ComplaintStatus, { label: string; bg: string; color: string }> = {
@@ -61,8 +61,8 @@ export const MOCK_USER: User = {
   avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun',
   addresses: [{ label: 'Home', address: 'Plot 42, Sector 12, Dwarka, Delhi', isDefault: true }],
   badges: [
-    { id: 'b1', name: 'First Responder', icon: '🎯', earnedAt: subDays(new Date(), 30).toISOString() },
-    { id: 'b2', name: 'Civic Hero', icon: '🦸', earnedAt: subDays(new Date(), 5).toISOString() }
+    { id: 'b1', name: 'First Responder', icon: '\uD83C\uDFAF', earnedAt: subDays(new Date(), 30).toISOString() },
+    { id: 'b2', name: 'Civic Hero', icon: '\uD83E\uDDB8', earnedAt: subDays(new Date(), 5).toISOString() }
   ],
   rewardPoints: 450, complaintsCount: 12, resolvedCount: 9, joinedAt: subDays(new Date(), 60).toISOString(),
   lastLoginAt: new Date().toISOString(), loginHistory: [], isVerified: true, aadhaarVerified: true,
@@ -125,6 +125,6 @@ export const COMPLAINTS: Complaint[] = Array.from({ length: 50 }).map((_, i) => 
 
 export const TESTIMONIALS = [
   { id: 't1', name: 'Rahul Verma', role: 'Citizen', text: 'The response time for the pothole report was amazing. Fixed in 48 hours!', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul' },
-  { id: 't2', name: 'Officer Priya', role: 'Field Officer', text: 'CivicEye helps me prioritize my tasks efficiently. Real-time tracking is a game changer.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Priya' },
+  { id: 't2', name: 'Officer Priya', role: 'Field Officer', text: 'UnIgnored helps me prioritize my tasks efficiently. Real-time tracking is a game changer.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Priya' },
   { id: 't3', name: 'Anita Desai', role: 'Citizen', text: 'I love how I can track every step of the resolution process. Transparency at its best.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anita' },
 ];
