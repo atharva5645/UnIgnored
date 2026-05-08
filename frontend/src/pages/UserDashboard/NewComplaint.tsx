@@ -18,7 +18,7 @@ import L from 'leaflet'
 // Fix Leaflet icon issue
 const DefaultIcon = L.divIcon({
   className: 'custom-div-icon',
-  html: `<div class="w-4 h-4 bg-primary-500 rounded-full border-2 border-white shadow-glow-blue"></div>`,
+  html: `<div class="w-4 h-4 bg-primary-500 rounded-none border-2 border-white shadow-glow-blue"></div>`,
   iconSize: [16, 16],
   iconAnchor: [8, 8]
 });
@@ -80,7 +80,7 @@ const ImageItem = ({ file, onRemove, onUploadComplete }: { file: File, onRemove:
   }, [file]);
 
   return (
-    <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 group bg-dark-900">
+    <div className="relative aspect-square rounded-none overflow-hidden border border-white/10 group bg-dark-900">
       {url ? (
         <motion.img 
           initial={{ opacity: 0, scale: 0.9 }} 
@@ -91,7 +91,7 @@ const ImageItem = ({ file, onRemove, onUploadComplete }: { file: File, onRemove:
         />
       ) : (
         <div className="w-full h-full bg-white/5 flex flex-col items-center justify-center p-4">
-          <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden mb-3">
+          <div className="w-full bg-white/10 h-1.5 rounded-none overflow-hidden mb-3">
             <motion.div 
               className="bg-primary-500 h-full shadow-glow-blue" 
               initial={{ width: '0%' }}
@@ -309,7 +309,7 @@ export default function NewComplaint() {
               {STEPS.map((s, i) => (
                 <div key={s.id} className="flex flex-col items-center gap-2 group cursor-pointer" onClick={() => step > i && setStep(i)}>
                   <div className={clsx(
-                    'w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-all duration-300',
+                    'w-10 h-10 rounded-none flex items-center justify-center text-lg transition-all duration-300',
                     step === i ? 'bg-primary-500 text-white shadow-glow-blue' : step > i ? 'text-primary-400' : 'text-slate-700'
                   )}>
                     {s.icon}
@@ -320,7 +320,7 @@ export default function NewComplaint() {
                   )}>
                     {s.title}
                   </span>
-                  {step === i && <motion.div layoutId="activeStep" className="w-1 h-1 rounded-full bg-primary-500 mt-1" />}
+                  {step === i && <motion.div layoutId="activeStep" className="w-1 h-1 rounded-none bg-primary-500 mt-1" />}
                 </div>
               ))}
             </div>
@@ -330,7 +330,7 @@ export default function NewComplaint() {
         <div className="grid lg:grid-cols-12 gap-10">
           {/* Main Content Card */}
           <div className="lg:col-span-8">
-            <Card className="p-10 border-white/5 bg-[#0A0D14]/80 backdrop-blur-xl min-h-[600px] flex flex-col rounded-[2.5rem]">
+            <Card className="p-10 border-white/5 bg-[#0A0D14]/80 backdrop-blur-xl min-h-[600px] flex flex-col rounded-none">
               <AnimatePresence mode="wait">
                 {step === 0 && (
                   <motion.div key="step0" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
@@ -347,14 +347,14 @@ export default function NewComplaint() {
                             key={type.id}
                             onClick={() => setReportType(type.id)}
                             className={clsx(
-                              'flex items-center gap-4 p-5 rounded-3xl border transition-all duration-300 text-left group',
+                              'flex items-center gap-4 p-5 rounded-none border transition-all duration-300 text-left group',
                               reportType === type.id 
                                 ? 'bg-primary-500/5 border-primary-500/50 shadow-glow-blue' 
                                 : 'bg-white/5 border-white/5 hover:border-white/10'
                             )}
                           >
                             <div className={clsx(
-                              'w-12 h-12 rounded-2xl flex items-center justify-center transition-colors',
+                              'w-12 h-12 rounded-none flex items-center justify-center transition-colors',
                               reportType === type.id ? 'bg-primary-500 text-white' : 'bg-white/5 text-slate-500'
                             )}>
                               {type.icon}
@@ -376,7 +376,7 @@ export default function NewComplaint() {
                             key={key}
                             onClick={() => setData({...data, category: key})}
                             className={clsx(
-                              'flex flex-col items-center justify-center p-6 rounded-3xl border transition-all duration-300 group aspect-square',
+                              'flex flex-col items-center justify-center p-6 rounded-none border transition-all duration-300 group aspect-square',
                               data.category === key 
                                 ? 'bg-primary-500/5 border-primary-500/50 shadow-glow-blue' 
                                 : 'bg-white/5 border-white/5 hover:border-white/10'
@@ -398,7 +398,7 @@ export default function NewComplaint() {
                     <h2 className="text-2xl font-bold text-white mb-2">Pin Location</h2>
                     <p className="text-slate-500 text-xs mb-8">Where exactly is this happening? You can use your current location.</p>
                     <div className="space-y-6">
-                      <div className="h-72 rounded-[2rem] bg-dark-900 border border-white/5 relative overflow-hidden">
+                      <div className="h-72 rounded-none bg-dark-900 border border-white/5 relative overflow-hidden">
                         <MapContainer 
                           center={[data.location.lat, data.location.lng]} 
                           zoom={16} 
@@ -428,13 +428,13 @@ export default function NewComplaint() {
                       <div className="space-y-4">
                         <textarea 
                           placeholder="Street name, landmark, building number..."
-                          className="w-full bg-dark-950/50 border border-white/5 rounded-2xl p-5 text-sm text-white focus:border-primary-500/50 outline-none transition-all resize-none"
+                          className="w-full bg-dark-950/50 border border-white/5 rounded-none p-5 text-sm text-white focus:border-primary-500/50 outline-none transition-all resize-none"
                           rows={4}
                           value={data.location.address}
                           onChange={e => setData({...data, location: {...data.location, address: e.target.value}})}
                         />
                         <select 
-                          className="w-full bg-dark-950/50 border border-white/5 rounded-2xl p-4 text-sm text-white outline-none"
+                          className="w-full bg-dark-950/50 border border-white/5 rounded-none p-4 text-sm text-white outline-none"
                           value={data.location.ward}
                           onChange={e => setData({...data, location: {...data.location, ward: e.target.value}})}
                         >
@@ -458,7 +458,7 @@ export default function NewComplaint() {
                     <p className="text-slate-500 text-xs mb-8">Visuals help officers understand and resolve issues faster.</p>
                     
                     {isCameraOpen ? (
-                      <div className="relative rounded-[2rem] overflow-hidden bg-black mb-6">
+                      <div className="relative rounded-none overflow-hidden bg-black mb-6">
                         <video ref={videoRef} autoPlay playsInline className="w-full aspect-video object-cover" />
                         <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-4">
                           <Button size="lg" glow onClick={capturePhoto}>
@@ -475,11 +475,11 @@ export default function NewComplaint() {
                         {files.map((file, i) => (
                           <ImageItem key={i} file={file} onRemove={() => removeFile(i)} onUploadComplete={handleUploadComplete} />
                         ))}
-                        <button onClick={startCamera} className="aspect-square flex flex-col items-center justify-center p-4 rounded-3xl border border-dashed border-white/10 bg-white/5 hover:bg-white/10 transition-all group">
+                        <button onClick={startCamera} className="aspect-square flex flex-col items-center justify-center p-4 rounded-none border border-dashed border-white/10 bg-white/5 hover:bg-white/10 transition-all group">
                           <Camera size={24} className="text-primary-500 mb-2 group-hover:scale-110 transition-transform" />
                           <span className="text-[10px] font-bold text-white uppercase tracking-widest">Take Photo</span>
                         </button>
-                        <button onClick={() => fileInputRef.current?.click()} className="aspect-square flex flex-col items-center justify-center p-4 rounded-3xl border border-dashed border-white/10 bg-white/5 hover:bg-white/10 transition-all group">
+                        <button onClick={() => fileInputRef.current?.click()} className="aspect-square flex flex-col items-center justify-center p-4 rounded-none border border-dashed border-white/10 bg-white/5 hover:bg-white/10 transition-all group">
                           <ImageIcon size={24} className="text-brand-violet mb-2 group-hover:scale-110 transition-transform" />
                           <span className="text-[10px] font-bold text-white uppercase tracking-widest">Upload Photo</span>
                         </button>
@@ -493,8 +493,8 @@ export default function NewComplaint() {
                     <h2 className="text-2xl font-bold text-white mb-2">Report Details</h2>
                     <p className="text-slate-500 text-xs mb-8">Add a title and detailed description to your report.</p>
                     <div className="space-y-6">
-                      <input placeholder="Short summary (e.g., Pothole near Central Market)" className="w-full bg-dark-950/50 border border-white/5 rounded-2xl px-5 py-4 text-sm text-white outline-none" value={data.title} onChange={e => setData({...data, title: e.target.value})} />
-                      <textarea placeholder="Describe the issue in detail..." className="w-full bg-dark-950/50 border border-white/5 rounded-2xl p-5 text-sm text-white outline-none resize-none" rows={6} value={data.description} onChange={e => setData({...data, description: e.target.value})} />
+                      <input placeholder="Short summary (e.g., Pothole near Central Market)" className="w-full bg-dark-950/50 border border-white/5 rounded-none px-5 py-4 text-sm text-white outline-none" value={data.title} onChange={e => setData({...data, title: e.target.value})} />
+                      <textarea placeholder="Describe the issue in detail..." className="w-full bg-dark-950/50 border border-white/5 rounded-none p-5 text-sm text-white outline-none resize-none" rows={6} value={data.description} onChange={e => setData({...data, description: e.target.value})} />
                     </div>
                   </motion.div>
                 )}
@@ -504,7 +504,7 @@ export default function NewComplaint() {
                     <h2 className="text-2xl font-bold text-white mb-2">Final Review</h2>
                     <p className="text-slate-500 text-xs mb-8">Verify the information before submitting to authorities.</p>
                     <div className="space-y-6">
-                      <div className="p-6 rounded-[2rem] bg-white/5 border border-white/5 space-y-6">
+                      <div className="p-6 rounded-none bg-white/5 border border-white/5 space-y-6">
                         
                         <div>
                           <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest block mb-2">Report Details</span>
@@ -550,7 +550,7 @@ export default function NewComplaint() {
 
                 {step === 5 && (
                   <motion.div key="step5" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex flex-col items-center justify-center text-center py-10">
-                    <div className="w-24 h-24 rounded-[2.5rem] bg-emerald-500/20 flex items-center justify-center text-5xl mb-6 shadow-glow-emerald animate-bounce">\u2705</div>
+                    <div className="w-24 h-24 rounded-none bg-emerald-500/20 flex items-center justify-center text-5xl mb-6 shadow-glow-emerald animate-bounce">✅</div>
                     <h2 className="text-3xl font-black text-white mb-4">Report Submitted!</h2>
                     <p className="text-slate-500 mb-10 max-w-sm text-sm">Your civic contribution has been registered. You'll receive real-time updates as we work on this.</p>
                     <Button className="w-full max-w-xs" size="lg" glow onClick={() => navigate('/dashboard/citizen')}>Return to Dashboard</Button>
@@ -561,7 +561,7 @@ export default function NewComplaint() {
               {step < 5 && (
                 <div className="mt-auto pt-10">
                   <Button 
-                    className="w-full rounded-2xl h-14 text-sm font-bold tracking-widest" 
+                    className="w-full rounded-none h-14 text-sm font-bold tracking-widest" 
                     size="lg" 
                     glow 
                     isLoading={loading}
@@ -581,9 +581,9 @@ export default function NewComplaint() {
 
           {/* Sidebar Area */}
           <div className="lg:col-span-4 space-y-6">
-            <Card className="p-8 border-white/5 bg-[#0A0D14]/80 backdrop-blur-xl rounded-[2.5rem]">
+            <Card className="p-8 border-white/5 bg-[#0A0D14]/80 backdrop-blur-xl rounded-none">
               <h3 className="text-sm font-bold text-white mb-6 uppercase tracking-[0.2em] flex items-center gap-3">
-                <div className="w-1.5 h-4 bg-primary-500 rounded-full" /> PRO TIPS
+                <div className="w-1.5 h-4 bg-primary-500 rounded-none" /> PRO TIPS
               </h3>
               <ul className="space-y-6">
                 {[
@@ -599,7 +599,7 @@ export default function NewComplaint() {
               </ul>
             </Card>
 
-            <Card className="p-8 border-primary-500/10 bg-primary-500/5 rounded-[2.5rem]">
+            <Card className="p-8 border-primary-500/10 bg-primary-500/5 rounded-none">
               <div className="flex items-center gap-3 mb-4">
                 <Shield size={20} className="text-primary-400" />
                 <h3 className="text-sm font-bold text-white uppercase tracking-widest">Safe Community</h3>

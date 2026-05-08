@@ -54,7 +54,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#020617] flex items-center justify-center p-4 relative overflow-hidden transition-colors duration-500">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-500/5 rounded-full" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-500/5 rounded-none" />
       
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -72,12 +72,12 @@ export default function RegisterPage() {
             {[1, 2].map((s) => (
               <React.Fragment key={s}>
                 <div className={clsx(
-                  'w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-300',
+                  'w-10 h-10 rounded-none flex items-center justify-center text-sm font-bold transition-all duration-300',
                   step >= s ? 'bg-primary-500 text-white shadow-glow-blue' : 'bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-600 border border-slate-200 dark:border-white/10'
                 )}>
                   {step > s ? <CheckCircle2 size={18} /> : s}
                 </div>
-                {s < 2 && <div className={clsx('flex-1 h-0.5 mx-4 rounded-full', step > s ? 'bg-primary-500' : 'bg-slate-200 dark:bg-white/5')} />}
+                {s < 2 && <div className={clsx('flex-1 h-0.5 mx-4 rounded-none', step > s ? 'bg-primary-500' : 'bg-slate-200 dark:bg-white/5')} />}
               </React.Fragment>
             ))}
           </div>
@@ -94,7 +94,7 @@ export default function RegisterPage() {
                     key={r.id}
                     onClick={() => setRole(r.id as UserRole)}
                     className={clsx(
-                      'p-6 rounded-2xl border transition-all duration-300 text-left',
+                      'p-6 rounded-none border transition-all duration-300 text-left',
                       role === r.id ? 'bg-primary-500/10 border-primary-500' : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20'
                     )}
                   >
@@ -116,7 +116,7 @@ export default function RegisterPage() {
 
               <button 
                 onClick={handleGoogleLogin}
-                className="mt-6 flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 text-sm text-slate-900 dark:text-white transition-all w-full"
+                className="mt-6 flex items-center justify-center gap-3 px-4 py-3 rounded-none bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 text-sm text-slate-900 dark:text-white transition-all w-full"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -134,7 +134,7 @@ export default function RegisterPage() {
               <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Create {role.replace('_', ' ')} Account</h2>
               
               {error && (
-                <div className="mb-6 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs flex items-center gap-3">
+                <div className="mb-6 p-3 rounded-none bg-red-500/10 border border-red-500/20 text-red-500 text-xs flex items-center gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
                   {error}
                 </div>
@@ -143,7 +143,7 @@ export default function RegisterPage() {
               <div className="space-y-4 mb-6">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Full Name</label>
-                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-none bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
                     <User size={18} className="text-slate-500" />
                     <input 
                       placeholder="John Doe" 
@@ -155,7 +155,7 @@ export default function RegisterPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Email Address</label>
-                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-none bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
                     <Mail size={18} className="text-slate-500" />
                     <input 
                       placeholder="john@example.com" 
@@ -167,7 +167,7 @@ export default function RegisterPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Password</label>
-                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                  <div className="flex items-center gap-3 w-full px-4 py-3 rounded-none bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
                     <Lock size={18} className="text-slate-500" />
                     <input 
                       type="password"

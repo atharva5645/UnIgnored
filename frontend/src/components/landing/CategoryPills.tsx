@@ -24,12 +24,12 @@ export function CategoryPills() {
             >
               <Link 
                 to={`/complaints/new?category=${key}`}
-                className="group flex flex-col items-center justify-center p-6 glass rounded-3xl border border-slate-200 dark:border-white/5 bg-white dark:bg-transparent hover:border-primary-500/50 hover:bg-primary-500/5 transition-all duration-300"
+                className="group flex flex-col items-center justify-center p-6 glass rounded-none border border-slate-200 dark:border-white/5 bg-white dark:bg-transparent hover:border-slate-900/50 hover:bg-slate-900/5 transition-all duration-300"
               >
                 <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                   {meta.icon}
                 </div>
-                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 group-hover:text-primary-500 dark:group-hover:text-white uppercase tracking-widest text-center">
+                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white uppercase tracking-widest text-center">
                   {meta.label}
                 </span>
               </Link>

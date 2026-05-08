@@ -1,0 +1,61 @@
+{
+  "landing": {
+    "hero": {
+      "title": "Professional Civic Dashboard",
+      "subtitle": "24/7 Civic Monitoring Available",
+      "description": "From complaint tracking to real-time civic issue monitoring, UnIgnored helps citizens report, monitor, and resolve public problems faster with complete transparency.",
+      "cta": "REPORT AN ISSUE",
+      "command": "COMMAND CENTER"
+    },
+    "stats": {
+      "complaints": "Complaints Filed",
+      "resolved": "Issues Resolved",
+      "officers": "Active Officers",
+      "resolution": "Avg Resolution Time"
+    }
+  },
+  "about": {
+    "title": "About CivicEye",
+    "mission": "Our Mission",
+    "missionText": "Empowering citizens and local authorities to build better communities through transparency and rapid response.",
+    "vision": "Our Vision",
+    "visionText": "A future where every civic issue is heard, tracked, and resolved with digital precision.",
+    "features": {
+      "track": "Real-time Tracking",
+      "trackDesc": "Monitor the status of your complaints from submission to resolution.",
+      "verify": "Verified Officers",
+      "verifyDesc": "Dedicated professionals assigned to handle each specific category of issues.",
+      "analytics": "Smart Analytics",
+      "analyticsDesc": "Data-driven insights to help city planners prioritize urban repairs."
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "getInTouch": "Get In Touch",
+    "description": "Have questions about CivicEye? Our team is here to help you navigate the platform and ensure your voice is heard.",
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send Message"
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?"
+  },
+  "dashboard": {
+    "citizen": "Citizen Dashboard",
+    "admin": "Admin Dashboard",
+    "officer": "Officer Dashboard",
+    "myComplaints": "My Complaints",
+    "newComplaint": "Report New Issue",
+    "translation": "Translation Hub"
+  }
+}

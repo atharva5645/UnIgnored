@@ -82,7 +82,7 @@ function KanbanBoard({ complaints }: { complaints: any[] }) {
               <Badge variant="info">{items.length}</Badge>
             </div>
             
-            <div className="flex-1 space-y-4 p-2 rounded-3xl bg-dark-900/50 border border-white/5 min-h-[400px]">
+            <div className="flex-1 space-y-4 p-2 rounded-none bg-dark-900/50 border border-white/5 min-h-[400px]">
               {items.map(c => (
                 <Link to={`/complaints/track/${c.referenceId}`} key={c.id}>
                   <Card hover className="p-4 bg-white/5 border-white/5 hover:border-primary-500/30">
@@ -180,7 +180,7 @@ export default function UserDashboard() {
               transition={{ delay: i * 0.1 }}
             >
               {loading ? (
-                <Skeleton className="h-32 rounded-[2.5rem]" />
+                <Skeleton className="h-32 rounded-none" />
               ) : (
                 <StatCard {...s} value={s.value.toString()} />
               )}
@@ -193,7 +193,7 @@ export default function UserDashboard() {
           <div className="lg:col-span-8 space-y-8">
             {/* View Controls & Filter */}
             <Card className="p-4 border-white/5 bg-white/5 flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-2 bg-dark-950/50 p-1 rounded-2xl border border-white/5">
+              <div className="flex items-center gap-2 bg-dark-950/50 p-1 rounded-none border border-white/5">
                 {[
                   { id: 'list', icon: <List size={16} />, label: 'List' },
                   { id: 'kanban', icon: <Layout size={16} />, label: 'Kanban' },
@@ -204,7 +204,7 @@ export default function UserDashboard() {
                     key={v.id}
                     onClick={() => setViewMode(v.id as any)}
                     className={clsx(
-                      'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300',
+                      'flex items-center gap-2 px-4 py-2 rounded-none text-xs font-bold transition-all duration-300',
                       viewMode === v.id ? 'bg-primary-500 text-white shadow-glow-blue' : 'text-slate-500 hover:text-white'
                     )}
                   >
@@ -218,7 +218,7 @@ export default function UserDashboard() {
                   <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
                   <input 
                     placeholder="Search your reports..."
-                    className="w-full bg-dark-950/50 border border-white/5 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:border-primary-500/50 outline-none transition-all"
+                    className="w-full bg-dark-950/50 border border-white/5 rounded-none pl-10 pr-4 py-2 text-sm text-white focus:border-primary-500/50 outline-none transition-all"
                     value={searchQuery}
                     onChange={e => setFilter('searchQuery', e.target.value)}
                   />
@@ -238,7 +238,7 @@ export default function UserDashboard() {
                   exit={{ opacity: 0 }}
                   className="space-y-4"
                 >
-                  {loading ? Array(5).fill(0).map((_, i) => <Skeleton key={i} className="h-24 rounded-3xl" />) : (
+                  {loading ? Array(5).fill(0).map((_, i) => <Skeleton key={i} className="h-24 rounded-none" />) : (
                     filtered.map((c, i) => (
                       <motion.div 
                         key={c.id}
@@ -247,8 +247,8 @@ export default function UserDashboard() {
                         transition={{ delay: i * 0.05 }}
                       >
                         <Link to={`/complaints/track/${c.referenceId}`}>
-                          <div className="glass p-5 rounded-[2rem] border border-white/5 hover:border-primary-500/30 transition-all duration-300 group cursor-pointer flex flex-col sm:flex-row sm:items-center gap-6">
-                            <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform shadow-inner">
+                          <div className="glass p-5 rounded-none border border-white/5 hover:border-primary-500/30 transition-all duration-300 group cursor-pointer flex flex-col sm:flex-row sm:items-center gap-6">
+                            <div className="w-16 h-16 rounded-none bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform shadow-inner">
                               {CATEGORY_META[c.category].icon}
                             </div>
                             
@@ -273,7 +273,7 @@ export default function UserDashboard() {
                                 <p className="text-[10px] text-slate-600 font-bold uppercase tracking-tighter">Engagement</p>
                                 <p className="text-sm font-bold text-white mt-1">👍 {c.upvotes}</p>
                               </div>
-                              <button className="p-2 rounded-xl bg-white/5 text-slate-500 hover:text-white transition-colors">
+                              <button className="p-2 rounded-none bg-white/5 text-slate-500 hover:text-white transition-colors">
                                 <ChevronRight size={20} />
                               </button>
                             </div>
@@ -319,14 +319,14 @@ export default function UserDashboard() {
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     className="flex flex-col items-center gap-2"
                   >
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400/20 to-orange-500/20 flex items-center justify-center text-3xl shadow-glow-violet border border-amber-500/20">
+                    <div className="w-14 h-14 rounded-none bg-gradient-to-br from-amber-400/20 to-orange-500/20 flex items-center justify-center text-3xl shadow-glow-violet border border-amber-500/20">
                       {b.icon}
                     </div>
                     <span className="text-[10px] font-bold text-slate-400 text-center leading-tight uppercase">{b.name}</span>
                   </motion.div>
                 ))}
                 <div className="flex flex-col items-center gap-2 opacity-30 grayscale">
-                  <div className="w-14 h-14 rounded-2xl bg-white/5 border border-dashed border-white/20 flex items-center justify-center text-3xl">
+                  <div className="w-14 h-14 rounded-none bg-white/5 border border-dashed border-white/20 flex items-center justify-center text-3xl">
                     \uD83D\uDD12
                   </div>
                   <span className="text-[10px] font-bold text-slate-600 text-center uppercase">10 Reports</span>
@@ -347,7 +347,7 @@ export default function UserDashboard() {
                   { icon: <Share2 size={16} />, label: 'Invite Neighbors' },
                   { icon: <FileText size={16} />, label: 'View Public Forum' },
                 ].map((item, i) => (
-                  <button key={i} className="w-full flex items-center justify-between p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all text-left">
+                  <button key={i} className="w-full flex items-center justify-between p-4 rounded-none bg-white/5 hover:bg-white/10 border border-white/5 transition-all text-left">
                     <div className="flex items-center gap-3">
                       <span className="text-slate-400">{item.icon}</span>
                       <span className="text-sm text-slate-300 font-medium">{item.label}</span>

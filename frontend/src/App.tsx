@@ -18,6 +18,7 @@ const AnalyticsPage = lazy(() => import('./pages/Analytics/AnalyticsPage'))
 const ProfilePage = lazy(() => import('./pages/Profile/ProfilePage'))
 const AboutPage = lazy(() => import('./pages/Landing/AboutPage'))
 const ContactPage = lazy(() => import('./pages/Landing/ContactPage'))
+const TranslationPage = lazy(() => import('./pages/AdminDashboard/TranslationPage'))
 
 import { ProtectedRoute } from './components/auth/ProtectedRoute'
 
@@ -80,6 +81,14 @@ export default function App() {
                 element={
                   <ProtectedRoute allowedRoles={['super_admin', 'zonal_admin']}>
                     <AdminDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="translation" 
+                element={
+                  <ProtectedRoute allowedRoles={['super_admin']}>
+                    <TranslationPage />
                   </ProtectedRoute>
                 } 
               />

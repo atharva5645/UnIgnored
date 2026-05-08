@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { StatCard } from '../ui'
+import { useTranslation } from 'react-i18next'
 
 function Counter({ end, duration = 2 }: { end: number; duration?: number }) {
   const [count, setCount] = useState(0)
@@ -28,15 +28,17 @@ function Counter({ end, duration = 2 }: { end: number; duration?: number }) {
 }
 
 export function LandingStats() {
+  const { t } = useTranslation()
+
   return (
     <section className="py-20 px-4 bg-slate-50 dark:bg-dark-900/50">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { label: 'Complaints Filed', value: 12842, icon: '📋', trend: 12, color: 'from-blue-500/10 to-cyan-500/10' },
-            { label: 'Issues Resolved', value: 10250, icon: '✅', trend: 8, color: 'from-green-500/10 to-emerald-500/10' },
-            { label: 'Active Officers', value: 142, icon: '👮', trend: 3, color: 'from-amber-500/10 to-orange-500/10' },
-            { label: 'Avg Resolution Time', value: 48, icon: '⏱️', suffix: ' hrs', color: 'from-violet-500/10 to-purple-500/10' },
+            { label: t('landing.stats.complaints'), value: 12842, icon: '📋', trend: 12, color: 'bg-white dark:bg-slate-900' },
+            { label: t('landing.stats.resolved'), value: 10250, icon: '✅', trend: 8, color: 'bg-white dark:bg-slate-900' },
+            { label: t('landing.stats.officers'), value: 142, icon: '👮', trend: 3, color: 'bg-white dark:bg-slate-900' },
+            { label: t('landing.stats.resolution'), value: 48, icon: '⏱️', suffix: ' hrs', color: 'bg-white dark:bg-slate-900' },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -45,7 +47,7 @@ export function LandingStats() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <div className={`glass p-8 rounded-[2.5rem] border border-slate-200 dark:border-white/5 relative overflow-hidden bg-white dark:bg-transparent bg-gradient-to-br ${stat.color}`}>
+              <div className={`glass p-8 rounded-none border border-slate-200 dark:border-white/5 relative overflow-hidden bg-white dark:bg-transparent bg-gradient-to-br ${stat.color}`}>
                 <div className="text-4xl mb-4">{stat.icon}</div>
                 <div className="flex items-end gap-2">
                   <h3 className="text-4xl font-black text-slate-900 dark:text-white font-display">
@@ -61,7 +63,7 @@ export function LandingStats() {
                 <p className="text-xs text-slate-500 uppercase tracking-widest mt-2 font-bold">{stat.label}</p>
                 
                 {/* Decorative Elements */}
-                <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-primary-500/5 rounded-full blur-2xl" />
+                <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-primary-500/5 rounded-none blur-2xl" />
               </div>
             </motion.div>
           ))}

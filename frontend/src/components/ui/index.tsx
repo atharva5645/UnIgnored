@@ -39,7 +39,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         whileTap={{ scale: 0.98 }}
         className={cn(
-          'relative inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none active:scale-95',
+          'relative inline-flex items-center justify-center gap-2 rounded-none font-medium transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none active:scale-95',
           variants[variant],
           sizes[size],
           className
@@ -61,7 +61,7 @@ export const Card = ({ children, className, hover, onClick }: { children: React.
     whileHover={hover ? { y: -5, scale: 1.01 } : {}}
     onClick={onClick}
     className={cn(
-      'glass rounded-[2rem] p-6 overflow-hidden relative transition-all duration-500',
+      'glass rounded-none p-6 overflow-hidden relative transition-all duration-500',
       className
     )}
   >
@@ -79,7 +79,7 @@ export const Badge = ({ children, variant = 'default', className }: { children: 
     info: 'bg-primary-500/20 text-primary-500 dark:text-primary-400',
   };
   return (
-    <span className={cn('px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider', styles[variant], className)}>
+    <span className={cn('px-3 py-1 rounded-none text-[10px] font-bold uppercase tracking-wider', styles[variant], className)}>
       {children}
     </span>
   );
@@ -91,7 +91,7 @@ export const Avatar = ({ src, name, size = 'md', className }: { src?: string; na
   const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2);
   
   return (
-    <div className={cn('rounded-xl overflow-hidden bg-gradient-to-br from-primary-500 to-brand-violet flex items-center justify-center text-white font-bold shadow-premium', sizes[size], className)}>
+    <div className={cn('rounded-none overflow-hidden bg-slate-900 dark:bg-white flex items-center justify-center text-white dark:text-slate-900 font-bold shadow-premium', sizes[size], className)}>
       {src ? <img src={src} alt={name} className="w-full h-full object-cover" /> : initials}
     </div>
   );
@@ -103,7 +103,7 @@ export const StatCard = ({ label, value, icon, trend, color }: { label: string; 
     <div className="flex justify-between items-start">
       <span className="text-3xl filter grayscale-[0.2]">{icon}</span>
       {trend !== undefined && (
-        <span className={cn('text-[10px] font-black px-2 py-1 rounded-lg', trend >= 0 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-rose-500/10 text-rose-600 dark:text-rose-400')}>
+        <span className={cn('text-[10px] font-black px-2 py-1 rounded-none', trend >= 0 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-rose-500/10 text-rose-600 dark:text-rose-400')}>
           {trend >= 0 ? '↑' : '↓'} {Math.abs(trend)}%
         </span>
       )}
@@ -127,7 +127,7 @@ export const ProgressBar = ({ value, max = 100, color = 'bg-primary-500', showLa
           <span className="text-slate-900 dark:text-white">{Math.round(percent)}%</span>
         </div>
       )}
-      <div className="h-2 bg-slate-100 dark:bg-dark-700 rounded-full overflow-hidden border border-slate-200 dark:border-white/5">
+      <div className="h-2 bg-slate-100 dark:bg-dark-700 rounded-none overflow-hidden border border-slate-200 dark:border-white/5">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: `${percent}%` }}
@@ -141,5 +141,5 @@ export const ProgressBar = ({ value, max = 100, color = 'bg-primary-500', showLa
 
 // --- Skeleton ---
 export const Skeleton = ({ className }: { className?: string }) => (
-  <div className={cn('animate-pulse bg-slate-200 dark:bg-white/5 rounded-2xl', className)} />
+  <div className={cn('animate-pulse bg-slate-200 dark:bg-white/5 rounded-none', className)} />
 );

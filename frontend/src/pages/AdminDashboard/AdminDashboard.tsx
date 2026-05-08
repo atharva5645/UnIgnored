@@ -72,7 +72,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-white/5 w-fit mb-8">
+        <div className="flex items-center gap-2 p-1.5 rounded-none bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-white/5 w-fit mb-8">
           {[
             { id: 'analytics', label: 'Live Analytics', icon: <TrendingUp size={16} /> },
             { id: 'management', label: 'Complaint Desk', icon: <ClipboardList size={16} /> },
@@ -82,7 +82,7 @@ export default function AdminDashboard() {
               key={t.id}
               onClick={() => setTab(t.id as any)}
               className={clsx(
-                'flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300',
+                'flex items-center gap-2 px-6 py-2.5 rounded-none text-xs font-bold transition-all duration-300',
                 tab === t.id ? 'bg-primary-500 text-white shadow-glow-blue' : 'text-slate-500 hover:text-white'
               )}
             >
@@ -227,9 +227,9 @@ export default function AdminDashboard() {
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-                        <input placeholder="Filter by ID, Title or Location..." className="bg-dark-950/50 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:border-primary-500/50 outline-none w-80" />
+                        <input placeholder="Filter by ID, Title or Location..." className="bg-dark-950/50 border border-white/10 rounded-none pl-10 pr-4 py-2 text-sm text-white focus:border-primary-500/50 outline-none w-80" />
                       </div>
-                      <select className="bg-dark-950/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                      <select className="bg-dark-950/50 border border-white/10 rounded-none px-4 py-2 text-xs text-white outline-none">
                         <option>All Status</option>
                         <option>New Submission</option>
                         <option>Escalated</option>
@@ -244,7 +244,7 @@ export default function AdminDashboard() {
                   <div className="divide-y divide-white/5">
                     {complaints.slice(0, 8).map((c) => (
                       <div key={c.id} className="p-6 flex items-center gap-6 hover:bg-white/5 transition-all group">
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                        <div className="w-12 h-12 rounded-none bg-white/5 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
                           {c.category === 'pothole' ? '🕳️' : '🗑️'}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -278,7 +278,7 @@ export default function AdminDashboard() {
                   </h3>
                   <div className="space-y-4">
                     {[1, 2].map(i => (
-                      <div key={i} className="bg-dark-950/50 p-4 rounded-2xl border border-brand-rose/10">
+                      <div key={i} className="bg-dark-950/50 p-4 rounded-none border border-brand-rose/10">
                         <div className="flex items-center justify-between mb-2">
                           <Badge variant="error">SLA BREACH</Badge>
                           <span className="text-[10px] text-slate-600">2m ago</span>
@@ -321,7 +321,7 @@ export default function AdminDashboard() {
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
-                  <input placeholder="Search users..." className="bg-dark-950/50 border border-white/5 rounded-xl pl-10 pr-4 py-2 text-xs text-white focus:border-primary-500/50 outline-none w-64" />
+                  <input placeholder="Search users..." className="bg-dark-950/50 border border-white/5 rounded-none pl-10 pr-4 py-2 text-xs text-white focus:border-primary-500/50 outline-none w-64" />
                 </div>
                 <Button size="sm">Add User</Button>
               </div>

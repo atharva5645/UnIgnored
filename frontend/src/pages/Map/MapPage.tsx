@@ -84,11 +84,11 @@ export default function MapPage() {
       <div className="absolute top-20 left-6 z-10 flex flex-col gap-3">
         <button 
           onClick={() => setSidebarOpen(!isSidebarOpen)}
-          className="p-3 glass rounded-2xl border border-white/10 text-white hover:bg-white/10 transition-all shadow-2xl"
+          className="p-3 glass rounded-none border border-white/10 text-white hover:bg-white/10 transition-all shadow-2xl"
         >
           <Layers size={20} />
         </button>
-        <button className="p-3 glass rounded-2xl border border-white/10 text-white hover:bg-white/10 transition-all shadow-2xl">
+        <button className="p-3 glass rounded-none border border-white/10 text-white hover:bg-white/10 transition-all shadow-2xl">
           <Navigation size={20} />
         </button>
       </div>

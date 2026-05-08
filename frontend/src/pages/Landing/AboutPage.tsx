@@ -1,14 +1,15 @@
-import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { Card, Badge, Button } from '../../components/ui'
 import { Shield, Target, Users, Zap, Globe, Heart, CheckCircle2, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function AboutPage() {
+  const { t } = useTranslation()
   const values = [
-    { icon: <Target className="text-primary-500" />, title: 'Transparency', desc: 'Every report is public and trackable. No hidden delays, no ignored concerns.' },
-    { icon: <Zap className="text-yellow-500" />, title: 'Efficiency', desc: 'AI-powered routing ensures your complaint reaches the right department in seconds.' },
-    { icon: <Shield className="text-emerald-500" />, title: 'Accountability', desc: 'Officers are rated on resolution speed and quality, ensuring high performance.' },
+    { icon: <Target className="text-primary-500" />, title: t('about.features.track'), desc: t('about.features.trackDesc') },
+    { icon: <Zap className="text-yellow-500" />, title: t('about.features.verify'), desc: t('about.features.verifyDesc') },
+    { icon: <Shield className="text-emerald-500" />, title: t('about.features.analytics'), desc: t('about.features.analyticsDesc') },
   ]
 
   const milestones = [
@@ -34,11 +35,10 @@ export default function AboutPage() {
             <Globe size={14} className="text-primary-500 dark:text-primary-400" /> Shaping the Future of Governance
           </motion.div>
           <h1 className="text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-8 font-display leading-tight">
-            Building a <span className="gradient-text">Smater City,</span> <br /> One Report at a Time.
+            {t('about.title')}
           </h1>
           <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
             UnIgnored is a revolutionary platform designed to empower citizens and streamline government responsiveness. 
-            We believe that technology can bridge the gap between public needs and administrative action.
           </p>
         </div>
 
@@ -46,11 +46,9 @@ export default function AboutPage() {
         <Card className="p-12 mb-24 relative overflow-hidden bg-primary-500/5 border-slate-200 dark:border-primary-500/20">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-6">Our Mission</h2>
+              <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-6">{t('about.mission')}</h2>
               <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-                To create a transparent, data-driven ecosystem where every citizen feels heard and every public 
-                resource is utilized with maximum efficiency. We're not just tracking complaints; we're 
-                building a legacy of trust.
+                {t('about.missionText')}
               </p>
               <div className="space-y-4">
                 {['Direct interaction with authorities', 'Real-time resolution proof', 'Public satisfaction rankings'].map(item => (

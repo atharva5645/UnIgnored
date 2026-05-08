@@ -26,8 +26,8 @@ export function LiveTicker() {
   return (
     <div className="bg-slate-100 dark:bg-dark-950 border-y border-slate-200 dark:border-white/5 py-3 relative overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 flex items-center gap-6">
-        <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-primary-500/10 border border-primary-500/20 whitespace-nowrap">
-          <span className="w-2 h-2 bg-primary-500 rounded-full animate-pulse" />
+        <div className="flex items-center gap-2 px-3 py-1 rounded-none bg-primary-500/10 border border-primary-500/20 whitespace-nowrap">
+          <span className="w-2 h-2 bg-primary-500 rounded-none animate-pulse" />
           <span className="text-[10px] font-bold text-primary-500 dark:text-primary-400 uppercase tracking-widest">Live Updates</span>
         </div>
         

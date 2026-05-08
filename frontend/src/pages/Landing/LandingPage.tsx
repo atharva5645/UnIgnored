@@ -28,7 +28,7 @@ export default function LandingPage() {
             viewport={{ once: true }}
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-brand-amber/10 flex items-center justify-center text-2xl text-brand-amber">🏆</div>
+              <div className="w-12 h-12 rounded-none bg-brand-amber/10 flex items-center justify-center text-2xl text-brand-amber">🏆</div>
               <h3 className="text-xl font-bold text-brand-amber uppercase tracking-widest">Public Leaderboard</h3>
             </div>
             <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-8 leading-tight">
@@ -53,7 +53,7 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="glass p-6 rounded-3xl border border-slate-200 dark:border-white/5 flex items-center justify-between group bg-white dark:bg-transparent hover:bg-slate-50 dark:hover:bg-white/5 transition-all"
+                className="glass p-6 rounded-none border border-slate-200 dark:border-white/5 flex items-center justify-between group bg-white dark:bg-transparent hover:bg-slate-50 dark:hover:bg-white/5 transition-all"
               >
                 <div className="flex items-center gap-6">
                   <span className="text-3xl font-black text-slate-300 dark:text-slate-800 font-display">0{i + 1}</span>
@@ -77,15 +77,15 @@ export default function LandingPage() {
 
       {/* Final CTA */}
       <section className="py-32 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary-500/5" />
-        <div className="max-w-4xl mx-auto relative z-10 text-center glass p-16 rounded-[4rem] border border-slate-200 dark:border-white/10 shadow-2xl bg-white/80 dark:bg-transparent backdrop-blur-xl">
+        <div className="absolute inset-0 bg-slate-500/5" />
+        <div className="max-w-4xl mx-auto relative z-10 text-center glass p-16 rounded-none border border-slate-200 dark:border-white/10 shadow-2xl bg-white/80 dark:bg-transparent backdrop-blur-xl">
           <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-8">Ready to make a difference?</h2>
           <p className="text-xl text-slate-600 dark:text-slate-400 mb-12">
             Join 50,000+ citizens and officers working together to build a better future.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/register"><Button size="xl" glow>Create Your Account</Button></Link>
-            <Link to="/about"><Button variant="ghost" size="xl">Learn More</Button></Link>
+            <Link to="/register"><Button size="xl" glow className="bg-slate-900 hover:bg-slate-800 text-white border-none shadow-2xl">Create Your Account</Button></Link>
+            <Link to="/about"><Button variant="ghost" size="xl" className="text-slate-900 dark:text-white">Learn More</Button></Link>
           </div>
         </div>
       </section>
@@ -95,7 +95,7 @@ export default function LandingPage() {
         {/* Simplified for brevity, usually a complex footer component */}
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center text-xl">👁️</div>
+            <div className="w-8 h-8 rounded-none bg-primary-500 flex items-center justify-center text-xl">👁️</div>
             <span className="font-bold text-xl text-slate-900 dark:text-white">UnIgnored</span>
           </div>
           <div className="flex gap-8 text-sm text-slate-500">

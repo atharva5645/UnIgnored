@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import 'leaflet/dist/leaflet.css'
 import App from './App'
 import './styles/index.css'
+import './i18n'
 import { AuthProvider } from './context/AuthContext'
 
 console.log('UnIgnored: Main Entry Point Loaded')

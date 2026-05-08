@@ -1,4 +1,4 @@
-import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { Card, Button, Badge } from '../../components/ui'
 import { Link } from 'react-router-dom'
@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 
 export default function ContactPage() {
+  const { t } = useTranslation()
   return (
     <div className="min-h-screen bg-white dark:bg-dark-950 pt-32 pb-20 px-6 relative overflow-hidden transition-colors duration-500">
       {/* Background Decor */}
@@ -20,11 +21,10 @@ export default function ContactPage() {
           {/* Left: Contact Info */}
           <div className="space-y-12">
             <div>
-              <Badge variant="info" className="mb-4">Get in Touch</Badge>
-              <h1 className="text-5xl font-black text-slate-900 dark:text-white mb-6 font-display">Let's Talk <br />Citizenship.</h1>
+              <Badge variant="info" className="mb-4">{t('contact.getInTouch')}</Badge>
+              <h1 className="text-5xl font-black text-slate-900 dark:text-white mb-6 font-display">{t('contact.title')}</h1>
               <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-md">
-                Have questions about the platform, partnership opportunities, or need help with a report? 
-                Our team is here to help 24/7.
+                {t('contact.description')}
               </p>
             </div>
 
@@ -41,7 +41,7 @@ export default function ContactPage() {
                   transition={{ delay: i * 0.1 }}
                   className="flex items-center gap-6 group cursor-pointer"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center text-primary-500 border border-slate-200 dark:border-white/5 group-hover:border-primary-500/50 transition-all">
+                  <div className="w-12 h-12 rounded-none bg-slate-100 dark:bg-white/5 flex items-center justify-center text-primary-500 border border-slate-200 dark:border-white/5 group-hover:border-primary-500/50 transition-all">
                     {item.icon}
                   </div>
                   <div>
@@ -56,7 +56,7 @@ export default function ContactPage() {
               <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Social Channels</p>
               <div className="flex gap-4">
                 {[<Twitter size={20} />, <Github size={20} />, <Linkedin size={20} />].map((icon, i) => (
-                  <button key={i} className="p-4 rounded-2xl bg-slate-100 dark:bg-white/5 text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 transition-all border border-slate-200 dark:border-white/5">
+                  <button key={i} className="p-4 rounded-none bg-slate-100 dark:bg-white/5 text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 transition-all border border-slate-200 dark:border-white/5">
                     {icon}
                   </button>
                 ))}
@@ -67,7 +67,7 @@ export default function ContactPage() {
           {/* Right: Contact Form */}
           <Card className="p-10 border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-2xl relative">
             <div className="flex items-center gap-3 mb-10">
-              <div className="w-10 h-10 rounded-xl bg-primary-500/20 flex items-center justify-center text-primary-500">
+              <div className="w-10 h-10 rounded-none bg-primary-500/20 flex items-center justify-center text-primary-500">
                 <MessageSquare size={20} />
               </div>
               <h2 className="text-xl font-bold text-slate-900 dark:text-white uppercase tracking-widest">Send a Message</h2>
@@ -76,18 +76,18 @@ export default function ContactPage() {
             <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Full Name</label>
-                  <input placeholder="John Doe" className="w-full bg-slate-50 dark:bg-dark-950/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none transition-all" />
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">{t('contact.form.name')}</label>
+                  <input placeholder="John Doe" className="w-full bg-slate-50 dark:bg-dark-950/50 border border-slate-200 dark:border-white/10 rounded-none px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none transition-all" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Email Address</label>
-                  <input placeholder="john@example.com" className="w-full bg-slate-50 dark:bg-dark-950/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none transition-all" />
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">{t('contact.form.email')}</label>
+                  <input placeholder="john@example.com" className="w-full bg-slate-50 dark:bg-dark-950/50 border border-slate-200 dark:border-white/10 rounded-none px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none transition-all" />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Subject</label>
-                <select className="w-full bg-slate-50 dark:bg-dark-950/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white outline-none">
+                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">{t('contact.form.subject')}</label>
+                <select className="w-full bg-slate-50 dark:bg-dark-950/50 border border-slate-200 dark:border-white/10 rounded-none px-4 py-3 text-sm text-slate-900 dark:text-white outline-none">
                   <option>Partnership Inquiry</option>
                   <option>Technical Support</option>
                   <option>Press & Media</option>
@@ -96,7 +96,7 @@ export default function ContactPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Message</label>
+                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">{t('contact.form.message')}</label>
                 <textarea 
                   placeholder="Tell us how we can help..." 
                   className="w-full bg-slate-50 dark:bg-dark-950/50 border border-slate-200 dark:border-white/10 rounded-2xl p-4 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none transition-all resize-none"
@@ -105,7 +105,7 @@ export default function ContactPage() {
               </div>
 
               <Button size="xl" className="w-full" glow>
-                Send Inquiry <Send size={18} className="ml-2" />
+                {t('contact.form.send')} <Send size={18} className="ml-2" />
               </Button>
             </form>
 

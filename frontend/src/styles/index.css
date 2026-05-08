@@ -42,7 +42,7 @@
   }
 
   .input-field {
-    @apply w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-700;
+    @apply w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-none px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-700;
   }
 
   .custom-scrollbar::-webkit-scrollbar {
@@ -55,7 +55,7 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-white/10 rounded-full hover:bg-white/20;
+    @apply bg-white/10 rounded-none hover:bg-white/20;
   }
 }
 
@@ -77,11 +77,11 @@
 }
 
 .leaflet-container {
-  @apply rounded-[2.5rem] !bg-dark-950;
+  @apply rounded-none !bg-dark-950;
 }
 
 .leaflet-popup-content-wrapper {
-  @apply !bg-dark-900 !text-white !rounded-2xl !border !border-white/10 !shadow-2xl;
+  @apply !bg-dark-900 !text-white !rounded-none !border !border-white/10 !shadow-2xl;
 }
 
 .leaflet-popup-tip {

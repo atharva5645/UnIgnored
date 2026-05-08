@@ -90,7 +90,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#020617] flex items-center justify-center p-4 relative overflow-hidden transition-colors duration-500">
       {/* Background Decor */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-500/5 rounded-full" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-500/5 rounded-none" />
       
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -99,7 +99,7 @@ export default function LoginPage() {
       >
         <div className="text-center mb-10">
           <Link to="/" className="inline-flex items-center gap-2 mb-6 group">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-500 to-brand-violet flex items-center justify-center text-2xl shadow-glow-blue group-hover:scale-110 transition-transform">👁️</div>
+            <div className="w-12 h-12 rounded-none bg-gradient-to-br from-primary-500 to-brand-violet flex items-center justify-center text-2xl shadow-glow-blue group-hover:scale-110 transition-transform">👁️</div>
             <span className="font-display font-black text-3xl tracking-tight text-slate-900 dark:text-white">UnIgnored</span>
           </Link>
           <h1 className="text-3xl font-black text-slate-900 dark:text-white">Welcome Back</h1>
@@ -122,7 +122,7 @@ export default function LoginPage() {
                       key={r.id}
                       onClick={() => setRole(r.id)}
                       className={clsx(
-                        'flex flex-col items-center justify-center p-4 rounded-2xl border transition-all duration-300 text-left',
+                        'flex flex-col items-center justify-center p-4 rounded-none border transition-all duration-300 text-left',
                         role === r.id 
                           ? 'bg-primary-500/10 border-primary-500 shadow-glow-blue' 
                           : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20'
@@ -156,7 +156,7 @@ export default function LoginPage() {
                 <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Login with {role.replace('_', ' ')} ID</h2>
                 
                 {error && (
-                  <div className="mb-6 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs flex items-center gap-3">
+                  <div className="mb-6 p-3 rounded-none bg-red-500/10 border border-red-500/20 text-red-500 text-xs flex items-center gap-3">
                     <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
                     {error}
                   </div>
@@ -165,7 +165,7 @@ export default function LoginPage() {
                 <form onSubmit={handleLogin} className="space-y-4 mb-8">
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Email Address</label>
-                    <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus-within:border-primary-500/50 transition-all">
+                    <div className="flex items-center gap-3 w-full px-4 py-3 rounded-none bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus-within:border-primary-500/50 transition-all">
                       <Mail size={18} className="text-slate-500" />
                       <input 
                         type="email"
@@ -180,7 +180,7 @@ export default function LoginPage() {
 
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Password</label>
-                    <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus-within:border-primary-500/50 transition-all">
+                    <div className="flex items-center gap-3 w-full px-4 py-3 rounded-none bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus-within:border-primary-500/50 transition-all">
                       <Lock size={18} className="text-slate-500" />
                       <input 
                         type="password"
@@ -202,7 +202,7 @@ export default function LoginPage() {
 
                   <button 
                     onClick={handleGoogleLogin}
-                    className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 text-sm text-slate-900 dark:text-white transition-all w-full mb-4"
+                    className="flex items-center justify-center gap-3 px-4 py-3 rounded-none bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 text-sm text-slate-900 dark:text-white transition-all w-full mb-4"
                   >
                     <svg className="w-5 h-5" viewBox="0 0 24 24">
                       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -220,10 +220,10 @@ export default function LoginPage() {
                   </div>
 
                   <div className="mt-4 grid grid-cols-2 gap-4">
-                    <button className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/10 text-sm text-slate-900 dark:text-white transition-all">
+                    <button className="flex items-center justify-center gap-3 px-4 py-3 rounded-none bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/10 text-sm text-slate-900 dark:text-white transition-all">
                       <ShieldCheck size={18} className="text-primary-500" /> Gov ID
                     </button>
-                    <button className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/10 text-sm text-slate-900 dark:text-white transition-all">
+                    <button className="flex items-center justify-center gap-3 px-4 py-3 rounded-none bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/10 text-sm text-slate-900 dark:text-white transition-all">
                       <Smartphone size={18} className="text-violet-500" /> DigiLocker
                     </button>
                   </div>

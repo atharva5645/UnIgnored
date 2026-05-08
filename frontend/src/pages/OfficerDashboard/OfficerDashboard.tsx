@@ -97,7 +97,7 @@ export default function OfficerDashboard() {
                 >
                   <Card className="p-6 border-white/5 bg-white/5 hover:border-primary-500/30 transition-all group">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-                      <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
+                      <div className="w-16 h-16 rounded-none bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
                         {CATEGORY_META[task.category].icon}
                       </div>
                       

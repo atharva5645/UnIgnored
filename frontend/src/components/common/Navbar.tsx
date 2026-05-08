@@ -6,6 +6,7 @@ import { useAuthStore } from '../../store/authStore'
 import { useUIStore } from '../../store/uiStore'
 import { Avatar, Button, Badge } from '../ui'
 import { clsx } from 'clsx'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 export function Navbar() {
   const { user, isAuthenticated, logout } = useAuthStore()
@@ -42,7 +43,9 @@ export function Navbar() {
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-brand-violet flex items-center justify-center text-xl shadow-glow-blue group-hover:scale-110 transition-transform">👁️</div>
+            <div className="w-10 h-10 rounded-xl bg-primary-500 flex items-center justify-center text-xl shadow-glow-blue group-hover:scale-110 transition-transform text-slate-900 font-black">
+              👁️
+            </div>
             <span className="font-display font-black text-2xl tracking-tight text-slate-900 dark:text-white">UnIgnored</span>
           </Link>
         </div>
@@ -63,7 +66,7 @@ export function Navbar() {
               placeholder="Search complaints, wards, or officers..." 
               className="bg-transparent border-none outline-none text-sm text-slate-900 dark:text-white w-full placeholder:text-slate-400 dark:placeholder:text-slate-600"
             />
-            <div className="flex items-center gap-1 bg-white dark:bg-white/5 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-white/10">
+            <div className="flex items-center gap-1 bg-white dark:bg-white/5 px-2 py-0.5 rounded-none border border-slate-200 dark:border-white/10">
               <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-tighter">Ctrl K</span>
             </div>
           </div>
@@ -71,12 +74,14 @@ export function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-3">
-          <button onClick={toggleDarkMode} className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all border border-transparent hover:border-slate-200 dark:hover:border-white/10">
+          <LanguageSwitcher />
+          
+          <button onClick={toggleDarkMode} className="p-2.5 rounded-none hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all border border-transparent hover:border-slate-200 dark:hover:border-white/10">
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           
           <div className="relative">
-            <button className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all relative border border-transparent hover:border-slate-200 dark:hover:border-white/10">
+            <button className="p-2.5 rounded-none hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all relative border border-transparent hover:border-slate-200 dark:hover:border-white/10">
               <Bell size={20} />
               {notifications.length > 0 && (
                 <span className="absolute top-2 right-2 w-2 h-2 bg-brand-rose rounded-full animate-pulse" />
@@ -90,7 +95,7 @@ export function Navbar() {
             <div className="relative">
               <button 
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-3 p-1 pr-3 rounded-2xl hover:bg-slate-100 dark:hover:bg-white/5 transition-all border border-transparent hover:border-slate-200 dark:hover:border-white/10"
+                className="flex items-center gap-3 p-1 pr-3 rounded-none hover:bg-slate-100 dark:hover:bg-white/5 transition-all border border-transparent hover:border-slate-200 dark:hover:border-white/10"
               >
                 <Avatar name={user!.name} src={user?.avatar} size="sm" />
                 <div className="hidden lg:block text-left">
@@ -107,7 +112,7 @@ export function Navbar() {
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      className="absolute right-0 mt-3 w-64 glass border border-slate-300 dark:border-white/10 rounded-3xl shadow-2xl z-20 p-2"
+                      className="absolute right-0 mt-3 w-64 glass border border-slate-300 dark:border-white/10 rounded-none shadow-2xl z-20 p-2"
                     >
                       <div className="p-4 border-b border-slate-200 dark:border-white/5 mb-2">
                         <p className="text-sm font-bold text-slate-900 dark:text-white">{user?.email}</p>
@@ -126,7 +131,7 @@ export function Navbar() {
                           <button 
                             key={item.label}
                             onClick={() => { navigate(item.path); setProfileOpen(false); }}
-                            className="w-full flex items-center gap-3 px-3 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-all"
+                            className="w-full flex items-center gap-3 px-3 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-none transition-all"
                           >
                             {item.icon} {item.label}
                           </button>
@@ -137,7 +142,7 @@ export function Navbar() {
                       
                       <button 
                         onClick={() => { logout(); navigate('/'); setProfileOpen(false); }}
-                        className="w-full flex items-center gap-3 px-3 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 rounded-xl transition-all font-bold"
+                        className="w-full flex items-center gap-3 px-3 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 rounded-none transition-all font-bold"
                       >
                         <LogOut size={16} /> Sign Out
                       </button>
@@ -148,8 +153,8 @@ export function Navbar() {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <Link to="/login"><Button variant="ghost" size="sm" className="text-slate-900 dark:text-white">Sign In</Button></Link>
-              <Link to="/register"><Button size="sm">Get Started</Button></Link>
+              <Link to="/login"><Button variant="ghost" size="sm" className="text-slate-900 dark:text-white rounded-xl">Sign In</Button></Link>
+              <Link to="/register"><Button size="sm" className="rounded-xl">Get Started</Button></Link>
             </div>
           )}
         </div>

@@ -24,8 +24,8 @@ export function ActivityFeed() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <div className="glass p-5 rounded-3xl border border-slate-200 dark:border-white/5 flex items-center gap-6 bg-white dark:bg-transparent hover:bg-slate-50 dark:hover:bg-white/5 transition-all group">
-                <div className="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+              <div className="glass p-5 rounded-none border border-slate-200 dark:border-white/5 flex items-center gap-6 bg-white dark:bg-transparent hover:bg-slate-50 dark:hover:bg-white/5 transition-all group">
+                <div className="w-14 h-14 rounded-none bg-slate-100 dark:bg-white/5 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
                   {CATEGORY_META[c.category].icon}
                 </div>
                 <div className="flex-1 min-w-0">
