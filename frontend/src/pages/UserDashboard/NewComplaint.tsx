@@ -128,6 +128,7 @@ export default function NewComplaint() {
   const [data, setData] = useState<any>({
     category: '',
     subCategory: '',
+    societyName: '',
     location: { address: '', ward: '', lat: 28.6139, lng: 77.2090 },
     media: [],
     title: '',
@@ -391,6 +392,28 @@ export default function NewComplaint() {
                           </button>
                         ))}
                       </div>
+
+                      <AnimatePresence>
+                        {reportType === 'area' && (
+                          <motion.div 
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="mt-8 overflow-hidden"
+                          >
+                            <label className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] mb-3 block">
+                              SOCIETY / AREA NAME
+                            </label>
+                            <input 
+                              type="text"
+                              value={data.societyName}
+                              onChange={(e) => setData({ ...data, societyName: e.target.value })}
+                              placeholder="e.g. Green Valley Apartments, Sector 15 Residents"
+                              className="w-full p-6 rounded-[24px] bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:border-primary-500 transition-all duration-300 text-sm placeholder:text-slate-400 dark:placeholder:text-slate-600 font-medium"
+                            />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
 
                     <div>
@@ -539,20 +562,6 @@ export default function NewComplaint() {
                       </div>
                     ) : (
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                        {files.map((file, i) => (
-                          <ImageItem key={i} file={file} onRemove={() => removeFile(i)} onUploadComplete={handleUploadComplete} />
-                        ))}
-                        <button onClick={startCamera} className="aspect-square flex flex-col items-center justify-center p-4 rounded-[32px] border border-dashed border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all group">
-                          <Camera size={24} className="text-primary-500 mb-2 group-hover:scale-110 transition-transform" />
-                          <span className="text-[10px] font-bold text-slate-900 dark:text-white uppercase tracking-widest">Take Photo</span>
-                        </button>
-                        <button onClick={() => fileInputRef.current?.click()} className="aspect-square flex flex-col items-center justify-center p-4 rounded-[32px] border border-dashed border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all group">
-                          <ImageIcon size={24} className="text-brand-violet mb-2 group-hover:scale-110 transition-transform" />
-                          <span className="text-[10px] font-bold text-slate-900 dark:text-white uppercase tracking-widest">Upload Photo</span>
-                        </button>
-                      </div>
-                    )}
-                  </motion.div>
                 )}
 
                 {step === 3 && (
