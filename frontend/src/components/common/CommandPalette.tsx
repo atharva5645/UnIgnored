@@ -132,7 +132,7 @@ export function CommandPalette() {
                   <span className="px-2 py-1 rounded-lg bg-white dark:bg-white/10 border border-black/10 dark:border-white/10 text-black dark:text-white shadow-sm">ENTER</span> Select
                 </div>
               </div>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">CivicEye v2.0</p>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">UnIgnored v2.0</p>
             </div>
           </motion.div>
         </div>

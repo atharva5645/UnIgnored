@@ -15,7 +15,7 @@
     }
   },
   "about": {
-    "title": "About CivicEye",
+    "title": "About UnIgnored",
     "mission": "Our Mission",
     "missionText": "Empowering citizens and local authorities to build better communities through transparency and rapid response.",
     "vision": "Our Vision",
@@ -32,7 +32,7 @@
   "contact": {
     "title": "Contact Us",
     "getInTouch": "Get In Touch",
-    "description": "Have questions about CivicEye? Our team is here to help you navigate the platform and ensure your voice is heard.",
+    "description": "Have questions about UnIgnored? Our team is here to help you navigate the platform and ensure your voice is heard.",
     "form": {
       "name": "Full Name",
       "email": "Email Address",

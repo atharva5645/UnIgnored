@@ -8,7 +8,8 @@ import { Button, Card, Badge, ProgressBar } from '../../components/ui'
 import { 
   ChevronLeft, ChevronRight, MapPin, Camera, Mic, Info, 
   CheckCircle2, Shield, AlertTriangle, Image as ImageIcon,
-  Clock, Award, Trash2, Edit3, Send, User, Users
+  Clock, Award, Trash2, Edit3, Send, User, Users, Map as MapIcon,
+  Clipboard, Eye, Bell
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { storageService } from '../../services/storageService'
@@ -19,8 +20,8 @@ import L from 'leaflet'
 const DefaultIcon = L.divIcon({
   className: 'custom-div-icon',
   html: `<div class="relative w-10 h-10 flex items-center justify-center">
-    <div class="absolute w-10 h-10 bg-blue-500/20 rounded-full animate-ping"></div>
-    <div class="absolute w-8 h-8 bg-blue-500 rounded-full border-[6px] border-white shadow-[0_0_20px_rgba(59,130,246,0.5)] z-10"></div>
+    <div class="absolute w-10 h-10 bg-[#00d1ff]/20 rounded-full animate-ping"></div>
+    <div class="absolute w-8 h-8 bg-[#00d1ff] rounded-full border-[6px] border-white shadow-[0_0_20px_rgba(0,209,255,0.5)] z-10"></div>
     <div class="absolute w-2 h-2 bg-white rounded-full z-20"></div>
   </div>`,
   iconSize: [40, 40],
@@ -28,11 +29,11 @@ const DefaultIcon = L.divIcon({
 });
 
 const STEPS = [
-  { id: 'category', title: 'CATEGORY', icon: '\uD83D\uDCCB' },
-  { id: 'location', title: 'LOCATION', icon: '\uD83D\uDCCD' },
-  { id: 'media', title: 'EVIDENCE', icon: '\uD83D\uDCF8' },
-  { id: 'details', title: 'DETAILS', icon: '\u270F\uFE0F' },
-  { id: 'review', title: 'REVIEW', icon: '\uD83D\uDC41\uFE0F' },
+  { id: 'category', title: 'CATEGORY', icon: <Clipboard />, color: 'text-orange-500' },
+  { id: 'location', title: 'LOCATION', icon: <MapPin />, color: 'text-pink-500' },
+  { id: 'media', title: 'EVIDENCE', icon: <Camera />, color: 'text-slate-500' },
+  { id: 'details', title: 'DETAILS', icon: <Edit3 />, color: 'text-orange-500' },
+  { id: 'review', title: 'REVIEW', icon: <Eye />, color: 'text-purple-500' },
 ]
 
 function RecenterMap({ lat, lng }: { lat: number; lng: number }) {
@@ -146,6 +147,18 @@ export default function NewComplaint() {
   const { addComplaint } = useComplaintStore()
   const { user } = useAuthStore()
 
+  // Local override for categories to match image exactly
+  const DISPLAY_CATEGORIES = [
+    { id: 'pothole', label: 'POTHOLE', icon: '🕳️' },
+    { id: 'garbage', label: 'GARBAGE', icon: '🗑️' },
+    { id: 'water', label: 'WATER LEAKAGE', icon: '💧' },
+    { id: 'electricity', label: 'ELECTRICITY', icon: '⚡' },
+    { id: 'street_light', label: 'STREET LIGHT', icon: '💡' },
+    { id: 'drainage', label: 'DRAINAGE', icon: '🌊' },
+    { id: 'safety', label: 'PUBLIC SAFETY', icon: '🛡️' },
+    { id: 'other', label: 'OTHER', icon: '❓' },
+  ]
+
   useEffect(() => {
     if (step === 5 && submittedId) {
       const timer = setTimeout(() => {
@@ -252,6 +265,7 @@ export default function NewComplaint() {
         isAnonymous: data.isAnonymous,
         isRecurring: false,
         reportType: reportType,
+        societyName: reportType === 'area' ? data.societyName : '',
         tags: [data.category],
         estimatedResolutionDays: 3,
         slaDeadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
@@ -319,27 +333,31 @@ export default function NewComplaint() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#020617] pb-20 pt-24 px-6 transition-colors duration-500">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] pb-20 pt-28 px-6 transition-colors duration-500">
       <div className="max-w-[1600px] mx-auto">
         {/* Horizontal Progress Steps */}
         {step < 5 && (
           <div className="mb-12 border-b border-slate-200 dark:border-white/5 pb-8">
-            <div className="flex items-center justify-center gap-12 sm:gap-24">
+            <div className="flex items-center justify-center gap-10 sm:gap-20">
               {STEPS.map((s, i) => (
-                <div key={s.id} className="flex flex-col items-center gap-2 group cursor-pointer" onClick={() => step > i && setStep(i)}>
+                <div key={s.id} className="flex flex-col items-center gap-3 group cursor-pointer" onClick={() => step > i && setStep(i)}>
                   <div className={clsx(
-                    'w-12 h-12 rounded-2xl flex items-center justify-center text-xl transition-all duration-500',
-                    step === i ? 'bg-primary-500 text-white shadow-glow-cyan scale-110' : step > i ? 'text-primary-500' : 'text-slate-400 dark:text-slate-800'
+                    'w-14 h-14 rounded-[20px] flex items-center justify-center transition-all duration-500 border-2',
+                    step === i 
+                      ? 'bg-[#00d1ff] border-[#00d1ff] text-white shadow-[0_0_20px_rgba(0,209,255,0.3)]' 
+                      : 'bg-white dark:bg-white/5 border-slate-50 dark:border-white/10'
                   )}>
-                    {s.icon}
+                    {React.cloneElement(s.icon as React.ReactElement, {
+                      size: 20,
+                      className: step === i ? 'text-white' : s.color
+                    })}
                   </div>
                   <span className={clsx(
-                    'text-xs font-bold tracking-[0.2em] uppercase',
-                    step === i ? 'text-slate-900 dark:text-white' : step > i ? 'text-primary-500' : 'text-slate-400 dark:text-slate-700'
+                    'text-[10px] font-black tracking-[0.2em] uppercase',
+                    step === i ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-600'
                   )}>
                     {s.title}
                   </span>
-                  {step === i && <motion.div layoutId="activeStep" className="w-1 h-1 rounded-[32px] bg-primary-500 mt-1" />}
                 </div>
               ))}
             </div>
@@ -352,43 +370,36 @@ export default function NewComplaint() {
               <AnimatePresence mode="wait">
                 {step === 0 && (
                   <motion.div key="step0" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                    <div className="mb-10">
-                      <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">How are you reporting?</h2>
-                      <p className="text-slate-600 dark:text-slate-400 text-sm">Individual reports are for personal issues. Society reports gather area-wide attention faster.</p>
+                      <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">How are you reporting?</h2>
+                      <p className="text-slate-500 text-xs mb-8">Individual reports are for personal issues. Society reports gather area-wide attention faster.</p>
                       
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         {[
-                          { id: 'individual', label: 'Individual Report', desc: 'REPORT ISSUES THAT DIRECTLY IMPACT YOU OR YOUR PROPERTY.', icon: <User size={32} /> },
-                          { id: 'area', label: 'Area/Community Issue', desc: 'REPORT PUBLIC INFRASTRUCTURE ISSUES OR COMMUNITY CONCERNS.', icon: <Users size={32} /> },
+                          { id: 'individual', label: 'Individual Report', desc: 'Standard report for single concerns.', icon: <User size={24} /> },
+                          { id: 'area', label: 'Society / Area Report', desc: 'Collective voice for high-priority fixes.', icon: <Users size={24} /> },
                         ].map((type) => (
                           <button
                             key={type.id}
                             onClick={() => setReportType(type.id as any)}
                             className={clsx(
-                              'flex items-center gap-6 p-8 rounded-[40px] border transition-all duration-500 text-left group relative overflow-hidden',
+                              'flex items-center gap-4 p-6 rounded-[32px] border transition-all duration-300 text-left group relative',
                               reportType === type.id 
-                                ? 'bg-black/5 dark:bg-primary-500/10 border-black dark:border-primary-500 scale-[1.02]' 
-                                : 'bg-white dark:bg-[#0f172a] border-slate-200 dark:border-white/5 hover:border-black dark:hover:border-primary-500/30'
+                                ? 'bg-[#00d1ff]/5 border-[#00d1ff] shadow-sm' 
+                                : 'bg-white dark:bg-white/5 border-slate-100 dark:border-white/10 hover:border-slate-200'
                             )}
                           >
                             <div className={clsx(
-                              'w-20 h-20 rounded-3xl flex items-center justify-center transition-all duration-500',
+                              'w-12 h-12 rounded-2xl flex items-center justify-center transition-all',
                                reportType === type.id 
-                                ? 'bg-primary-500 text-white shadow-glow-cyan' 
-                                : 'bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-600'
+                                ? 'bg-[#00d1ff] text-white' 
+                                : 'bg-slate-100 dark:bg-white/5 text-slate-400'
                             )}>
                               {type.icon}
                             </div>
-                            <div className="flex-1">
-                               <h4 className={clsx('text-xl font-black tracking-tight uppercase', reportType === type.id ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-600')}>{type.label}</h4>
-                              <p className="text-xs font-bold text-slate-500 dark:text-slate-500 mt-2 leading-tight tracking-wider uppercase">{type.desc}</p>
+                            <div>
+                               <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">{type.label}</h4>
+                               <p className="text-[10px] text-slate-500 mt-1 font-medium">{type.desc}</p>
                             </div>
-                            {reportType === type.id && (
-                              <motion.div 
-                                layoutId="activeReporting"
-                                className="absolute inset-0 border-2 border-primary-500 rounded-[40px] pointer-events-none shadow-glow-cyan-inset"
-                              />
-                            )}
                           </button>
                         ))}
                       </div>
@@ -414,39 +425,43 @@ export default function NewComplaint() {
                           </motion.div>
                         )}
                       </AnimatePresence>
-                    </div>
 
-                    <div>
-                      <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-8 font-display">Select Category</h2>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-                        {Object.entries(CATEGORY_META).map(([key, meta]) => (
+
+                    <div className="mt-12">
+                      <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-8">Select Category</h2>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        {DISPLAY_CATEGORIES.map((cat) => (
                           <button
-                            key={key}
-                            onClick={() => setData({...data, category: key})}
+                            key={cat.id}
+                            onClick={() => setData({...data, category: cat.id})}
                             className={clsx(
-                              'flex flex-col items-center justify-center p-8 rounded-[32px] border transition-all duration-500 group aspect-square relative overflow-hidden',
-                              data.category === key 
-                                ? 'bg-black/5 dark:bg-[#16213e] border-black dark:border-primary-500 scale-[1.05]' 
-                                : 'bg-white dark:bg-[#0f172a] border-slate-200 dark:border-white/5 hover:border-black dark:hover:border-primary-500/30'
+                              'flex flex-col items-center justify-center p-6 rounded-[24px] border transition-all duration-300 group aspect-square relative',
+                              data.category === cat.id 
+                                ? 'bg-[#00d1ff]/5 border-[#00d1ff] shadow-sm' 
+                                : 'bg-white dark:bg-white/5 border-slate-100 dark:border-white/10 hover:border-slate-200'
                             )}
                           >
-                            <span className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">{meta.icon}</span>
-                            <span className={clsx('text-xs font-black uppercase tracking-[0.2em] text-center', data.category === key ? 'text-primary-500 dark:text-primary-400' : 'text-slate-500 dark:text-slate-600')}>
-                              {meta.label}
+                            <span className="text-3xl mb-4 group-hover:scale-110 transition-transform">{cat.icon}</span>
+                            <span className={clsx('text-[10px] font-black uppercase tracking-widest text-center', data.category === cat.id ? 'text-[#00d1ff]' : 'text-slate-400')}>
+                              {cat.label}
                             </span>
-                            {data.category === key && (
-                              <motion.div 
-                                layoutId="activeCategory"
-                                className={clsx(
-                                  "absolute inset-0 border-2 rounded-[32px] pointer-events-none",
-                                  "border-black dark:border-primary-500 shadow-glow-cyan"
-                                )}
-                              />
-                            )}
                           </button>
                         ))}
                       </div>
                     </div>
+                    <button
+                      onClick={() => setStep(step + 1)}
+                      disabled={!data.category}
+                      className={clsx(
+                        'mt-12 w-full py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest transition-all duration-300',
+                        data.category 
+                          ? 'bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98]' 
+                          : 'bg-slate-100 dark:bg-white/5 text-slate-400 cursor-not-allowed'
+                      )}
+                    >
+                      Continue
+                      <ChevronRight size={20} />
+                    </button>
                   </motion.div>
                 )}
 
@@ -498,7 +513,7 @@ export default function NewComplaint() {
                               e.stopPropagation();
                               window.open(`https://www.google.com/maps/search/?api=1&query=${data.location.lat},${data.location.lng}`, '_blank');
                             }}
-                            className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-2 border-black/5 dark:border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-primary-500 shadow-2xl px-6 h-12 flex items-center gap-3 rounded-[20px] hover:scale-105 transition-all duration-300"
+                            className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-2 border-black/5 dark:border-white/10 text-xs font-black uppercase tracking-[0.2em] text-primary-500 shadow-2xl px-6 h-12 flex items-center gap-3 rounded-[20px] hover:scale-105 transition-all duration-300"
                           >
                             <MapIcon size={16} /> Open in Maps
                           </Button>
@@ -508,7 +523,7 @@ export default function NewComplaint() {
                             glow
                             onClick={handleGetCurrentLocation}
                             isLoading={isFetchingLocation}
-                            className="bg-primary-500 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-glow-cyan px-6 h-12 flex items-center gap-3 rounded-[20px] hover:scale-105 transition-all duration-300"
+                            className="bg-primary-500 text-white text-xs font-black uppercase tracking-[0.2em] shadow-glow-cyan px-6 h-12 flex items-center gap-3 rounded-[20px] hover:scale-105 transition-all duration-300"
                           >
                             <MapPin size={16} /> 
                             {isFetchingLocation ? 'Tracking Signal...' : 'Auto-Detect GPS'}
@@ -538,7 +553,30 @@ export default function NewComplaint() {
                           <option value="West Ward">West Ward</option>
                         </select>
                       </div>
-                    </div>
+                      </div>
+                      <div className="mt-12 flex items-center gap-4">
+                        <button
+                          onClick={() => setStep(step - 1)}
+                          className="flex-1 py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest bg-slate-100 dark:bg-white/5 text-slate-400 hover:bg-slate-200 transition-all duration-300"
+                        >
+                          <ChevronLeft size={20} />
+                          Back
+                        </button>
+                        <button
+                          onClick={() => setStep(step + 1)}
+                          disabled={!data.location.lat || !data.location.address}
+                          className={clsx(
+                            'flex-[2] py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest transition-all duration-300',
+                            data.location.lat && data.location.address
+                              ? 'bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98]' 
+                              : 'bg-slate-100 dark:bg-white/5 text-slate-400 cursor-not-allowed'
+                          )}
+                        >
+                          Continue
+                          <ChevronRight size={20} />
+                        </button>
+                      </div>
+
                   </motion.div>
                 )}
 
@@ -562,6 +600,38 @@ export default function NewComplaint() {
                       </div>
                     ) : (
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                        {files.map((file, i) => (
+                          <ImageItem key={i} file={file} onRemove={() => removeFile(i)} onUploadComplete={handleUploadComplete} />
+                        ))}
+                        <button onClick={startCamera} className="aspect-square flex flex-col items-center justify-center p-4 rounded-[32px] border border-dashed border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all group">
+                          <Camera size={24} className="text-primary-500 mb-2 group-hover:scale-110 transition-transform" />
+                          <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-widest">Take Photo</span>
+                        </button>
+                        <button onClick={() => fileInputRef.current?.click()} className="aspect-square flex flex-col items-center justify-center p-4 rounded-[32px] border border-dashed border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all group">
+                          <ImageIcon size={24} className="text-brand-violet mb-2 group-hover:scale-110 transition-transform" />
+                          <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-widest">Upload Photo</span>
+                        </button>
+                      </div>
+
+                    )}
+                    
+                    <div className="mt-12 flex items-center gap-4">
+                      <button
+                        onClick={() => setStep(step - 1)}
+                        className="flex-1 py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest bg-slate-100 dark:bg-white/5 text-slate-400 hover:bg-slate-200 transition-all duration-300"
+                      >
+                        <ChevronLeft size={20} />
+                        Back
+                      </button>
+                      <button
+                        onClick={() => setStep(step + 1)}
+                        className="flex-[2] py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                      >
+                        Continue
+                        <ChevronRight size={20} />
+                      </button>
+                    </div>
+                  </motion.div>
                 )}
 
                 {step === 3 && (
@@ -569,8 +639,42 @@ export default function NewComplaint() {
                     <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Report Details</h2>
                     <p className="text-slate-500 text-xs mb-8">Add a title and detailed description to your report.</p>
                     <div className="space-y-6">
-                      <input placeholder="Short summary (e.g., Pothole near Central Market)" className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] px-5 py-4 text-sm text-slate-900 dark:text-white outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600" value={data.title} onChange={e => setData({...data, title: e.target.value})} />
-                      <textarea placeholder="Describe the issue in detail..." className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] p-5 text-sm text-slate-900 dark:text-white outline-none resize-none placeholder:text-slate-400 dark:placeholder:text-slate-600" rows={6} value={data.description} onChange={e => setData({...data, description: e.target.value})} />
+                      <input 
+                        placeholder="Short summary (e.g., Pothole near Central Market)" 
+                        className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] px-5 py-4 text-sm text-slate-900 dark:text-white outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600" 
+                        value={data.title} 
+                        onChange={e => setData({...data, title: e.target.value})} 
+                      />
+                      <textarea 
+                        placeholder="Describe the issue in detail..." 
+                        className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] p-5 text-sm text-slate-900 dark:text-white outline-none resize-none placeholder:text-slate-400 dark:placeholder:text-slate-600" 
+                        rows={6} 
+                        value={data.description} 
+                        onChange={e => setData({...data, description: e.target.value})} 
+                      />
+                    </div>
+                    
+                    <div className="mt-12 flex items-center gap-4">
+                      <button
+                        onClick={() => setStep(step - 1)}
+                        className="flex-1 py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest bg-slate-100 dark:bg-white/5 text-slate-400 hover:bg-slate-200 transition-all duration-300"
+                      >
+                        <ChevronLeft size={20} />
+                        Back
+                      </button>
+                      <button
+                        onClick={() => setStep(step + 1)}
+                        disabled={!data.title || !data.description}
+                        className={clsx(
+                          'flex-[2] py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest transition-all duration-300',
+                          data.title && data.description
+                            ? 'bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98]' 
+                            : 'bg-slate-100 dark:bg-white/5 text-slate-400 cursor-not-allowed'
+                        )}
+                      >
+                        Continue
+                        <ChevronRight size={20} />
+                      </button>
                     </div>
                   </motion.div>
                 )}
@@ -583,7 +687,7 @@ export default function NewComplaint() {
                       <div className="p-6 rounded-[32px] bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/5 space-y-6">
                         
                         <div>
-                          <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest block mb-2">Report Details</span>
+                          <span className="text-slate-500 text-xs font-bold uppercase tracking-widest block mb-2">Report Details</span>
                           <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">{data.title || "No Title Provided"}</h3>
                           <p className="text-sm text-slate-400 leading-relaxed">{data.description || "No description provided."}</p>
                         </div>
@@ -591,7 +695,7 @@ export default function NewComplaint() {
                         <div className="h-px w-full bg-white/5" />
 
                         <div>
-                          <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest block mb-2">Location</span>
+                          <span className="text-slate-500 text-xs font-bold uppercase tracking-widest block mb-2">Location</span>
                           <p className="text-sm text-slate-900 dark:text-white font-medium">{data.location.address || "No address specified."}</p>
                         </div>
 
@@ -599,26 +703,48 @@ export default function NewComplaint() {
 
                         <div className="space-y-4">
                           <div className="flex justify-between items-center">
-                            <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Category</span>
+                            <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">Category</span>
                             <span className="text-slate-900 dark:text-white font-bold flex items-center gap-2">
                               {CATEGORY_META[data.category as keyof typeof CATEGORY_META]?.icon}
                               {CATEGORY_META[data.category as keyof typeof CATEGORY_META]?.label || "Uncategorized"}
                             </span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Type</span>
-                            <span className="text-slate-900 dark:text-white font-bold capitalize">{reportType} Report</span>
+                            <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">Type</span>
+                            <div className="text-right">
+                              <span className="text-slate-900 dark:text-white font-bold capitalize block">{reportType} Report</span>
+                              {reportType === 'area' && data.societyName && (
+                                <span className="text-[10px] text-primary-500 font-bold uppercase tracking-widest">{data.societyName}</span>
+                              )}
+                            </div>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Ward</span>
+                            <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">Ward</span>
                             <span className="text-slate-900 dark:text-white font-bold">{data.location.ward || "Unknown Ward"}</span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Evidence</span>
+                            <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">Evidence</span>
                             <span className="text-slate-900 dark:text-white font-bold">{files.length} Photo{files.length !== 1 ? 's' : ''} Attached</span>
                           </div>
                         </div>
 
+                      </div>
+                      
+                      <div className="mt-12 flex items-center gap-4">
+                        <button
+                          onClick={() => setStep(step - 1)}
+                          className="flex-1 py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest bg-slate-100 dark:bg-white/5 text-slate-400 hover:bg-slate-200 transition-all duration-300"
+                        >
+                          <ChevronLeft size={20} />
+                          Back
+                        </button>
+                        <button
+                          onClick={handleSubmit}
+                          className="flex-[2] py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                        >
+                          SUBMIT REPORT
+                          <Send size={20} />
+                        </button>
                       </div>
                     </div>
                   </motion.div>
@@ -652,53 +778,36 @@ export default function NewComplaint() {
                 )}
               </AnimatePresence>
 
-              {step < 5 && (
-                <div className="mt-auto pt-10">
-                  <Button 
-                    className="w-full rounded-[32px] h-14 text-sm font-bold tracking-widest" 
-                    size="lg" 
-                    glow 
-                    isLoading={loading}
-                    disabled={
-                      (step === 0 && !data.category) ||
-                      (step === 1 && !data.location.address) ||
-                      (step === 3 && (!data.title || !data.description))
-                    }
-                    onClick={step === 4 ? handleSubmit : handleNext}
-                  >
-                    {step === 4 ? 'SUBMIT REPORT' : 'CONTINUE'} <ChevronRight size={18} className="ml-2" />
-                  </Button>
-                </div>
-              )}
+
             </Card>
           </div>
 
-          {/* Sidebar Area */}
+          {/* Sidebar Area matching screenshot */}
           <div className="lg:col-span-4 space-y-6">
-            <Card className="p-8 rounded-[32px]">
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-[0.2em] flex items-center gap-3">
-                <div className="w-1.5 h-4 bg-primary-500 rounded-[32px]" /> PRO TIPS
+            <Card className="p-8 rounded-[32px] border-slate-100 bg-white/50 backdrop-blur-sm">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                <Info size={18} className="text-[#00d1ff]" /> PRO TIPS
               </h3>
-              <ul className="space-y-6">
+              <ul className="space-y-4">
                 {[
-                  { icon: <Clock size={16} />, text: 'Reporting early helps prevent issue escalation.' },
-                  { icon: <ImageIcon size={16} />, text: 'Multiple angles in photos help officers locate the exact spot.' },
-                  { icon: <Award size={16} />, text: 'Top contributors earn "Civic Ambassador" badges.' },
+                  { icon: <Clock size={14} />, text: 'Reporting early helps prevent issue escalation.' },
+                  { icon: <ImageIcon size={14} />, text: 'Multiple angles in photos help officers locate the exact spot.' },
+                  { icon: <Award size={14} />, text: 'Top contributors earn "Civic Ambassador" badges.' },
                 ].map((tip, i) => (
-                  <li key={i} className="flex gap-4">
-                    <span className="text-slate-500 shrink-0 mt-0.5">{tip.icon}</span>
-                    <p className="text-[11px] text-slate-400 leading-relaxed font-medium uppercase tracking-tight">{tip.text}</p>
+                  <li key={i} className="flex gap-4 items-start">
+                    <span className="text-slate-400 shrink-0 mt-1">{tip.icon}</span>
+                    <p className="text-[11px] text-slate-500 leading-relaxed font-medium">{tip.text}</p>
                   </li>
                 ))}
               </ul>
             </Card>
 
-            <Card className="p-8 border-primary-500/10 bg-primary-500/5 rounded-[32px]">
+            <Card className="p-8 rounded-[32px] border-slate-100 bg-[#e0f7fa]/30 backdrop-blur-sm">
               <div className="flex items-center gap-3 mb-4">
-                <Shield size={20} className="text-primary-500" />
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest">Safe Community</h3>
+                <Shield size={20} className="text-[#00d1ff]" />
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Safe Community</h3>
               </div>
-              <p className="text-xs text-slate-500 leading-relaxed">
+              <p className="text-[11px] text-slate-500 leading-relaxed">
                 UnIgnored is a platform for genuine public concern. All submissions are monitored. 
                 Spam or false reporting may result in account suspension.
               </p>

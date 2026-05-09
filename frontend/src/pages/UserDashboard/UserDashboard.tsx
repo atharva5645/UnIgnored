@@ -320,7 +320,7 @@ export default function UserDashboard() {
               <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
                 <Award size={120} className="text-black dark:text-[#00d1ff]" />
               </div>
-              <h3 className="text-[10px] font-black text-black dark:text-white mb-10 uppercase tracking-[0.3em] flex items-center gap-3">
+              <h3 className="text-xs font-black text-black dark:text-white mb-10 uppercase tracking-[0.3em] flex items-center gap-3">
                 <Award size={16} className="text-amber-500" /> Honor Badges
               </h3>
               <div className="grid grid-cols-3 gap-6 relative z-10">
@@ -333,22 +333,22 @@ export default function UserDashboard() {
                     <div className="w-20 h-20 rounded-[24px] bg-slate-50 dark:bg-white/5 flex items-center justify-center text-4xl shadow-inner border border-black/5 dark:border-white/10 group/badge">
                       <span className="group-hover/badge:scale-125 transition-transform duration-500">{b.icon}</span>
                     </div>
-                    <span className="text-[10px] font-black text-slate-500 text-center leading-tight uppercase tracking-widest">{b.name}</span>
+                    <span className="text-xs font-black text-slate-500 text-center leading-tight uppercase tracking-widest">{b.name}</span>
                   </motion.div>
                 ))}
                 <div className="flex flex-col items-center gap-3 opacity-20 grayscale cursor-not-allowed">
                   <div className="w-20 h-20 rounded-[24px] bg-slate-100 dark:bg-white/5 border-2 border-dashed border-black/10 dark:border-white/20 flex items-center justify-center text-4xl">
                     🔒
                   </div>
-                  <span className="text-[10px] font-black text-slate-400 text-center uppercase tracking-widest">Locked</span>
+                  <span className="text-xs font-black text-slate-400 text-center uppercase tracking-widest">Locked</span>
                 </div>
               </div>
-              <Button variant="outline" size="md" className="w-full mt-10 border-2 border-black dark:border-white/10 font-black uppercase tracking-[0.2em] text-[10px]">Expand Portfolio</Button>
+              <Button variant="outline" size="md" className="w-full mt-10 border-2 border-black dark:border-white/10 font-black uppercase tracking-[0.2em] text-xs">Expand Portfolio</Button>
             </Card>
 
             {/* Quick Actions */}
             <Card className="p-8 border-2 border-black dark:border-white/5 bg-slate-50 dark:bg-white/5 shadow-premium">
-              <h3 className="text-[10px] font-black text-black dark:text-white mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
+              <h3 className="text-xs font-black text-black dark:text-white mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
                 <Plus size={16} className="text-black dark:text-[#00d1ff]" /> Terminal Links
               </h3>
               <div className="space-y-3">
@@ -361,7 +361,7 @@ export default function UserDashboard() {
                   <button key={i} className="w-full flex items-center justify-between p-5 rounded-[24px] bg-white dark:bg-[#020617] border-2 border-black/5 dark:border-white/10 hover:border-black dark:hover:border-[#00d1ff] transition-all duration-300 group text-left shadow-sm">
                     <div className="flex items-center gap-4">
                       <span className="text-slate-400 group-hover:text-black dark:group-hover:text-[#00d1ff] transition-colors">{item.icon}</span>
-                      <span className="text-[10px] text-slate-500 group-hover:text-black dark:group-hover:text-white font-black uppercase tracking-widest">{item.label}</span>
+                      <span className="text-xs text-slate-500 group-hover:text-black dark:group-hover:text-white font-black uppercase tracking-widest">{item.label}</span>
                     </div>
                     <ChevronRight size={16} className="text-slate-300 group-hover:translate-x-1 transition-transform" />
                   </button>

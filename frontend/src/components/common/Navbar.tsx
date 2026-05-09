@@ -49,11 +49,11 @@ export function Navbar() {
           <button onClick={toggleSidebar} className="lg:hidden text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-[16px] bg-black dark:bg-[#00d1ff] flex items-center justify-center shadow-premium group-hover:scale-110 transition-transform duration-500">
-              <Eye className="w-6 h-6 text-white dark:text-black" />
+          <Link to="/" className="flex items-center gap-4 group">
+            <div className="w-12 h-12 rounded-[18px] bg-black dark:bg-[#00d1ff] flex items-center justify-center shadow-premium group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+              <Eye className="w-7 h-7 text-white dark:text-black" />
             </div>
-            <span className="font-display font-black text-2xl tracking-tighter text-black dark:text-white uppercase">CivicEye</span>
+            <span className="font-display font-black text-3xl tracking-tighter text-black dark:text-white uppercase">UnIgnored</span>
           </Link>
         </div>
 

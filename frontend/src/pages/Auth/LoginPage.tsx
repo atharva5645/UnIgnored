@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { UserRole } from '../../types/user'
 import { Button, Card, Badge } from '../../components/ui'
-import { ChevronLeft, Mail, Phone, Lock, ArrowRight, ShieldCheck, Github, Smartphone } from 'lucide-react'
+import { ChevronLeft, Mail, Phone, Lock, ArrowRight, ShieldCheck, Github, Smartphone, Eye } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import { clsx } from 'clsx'
 import { signInAnonymously } from 'firebase/auth'
@@ -98,9 +98,11 @@ export default function LoginPage() {
         className="w-full max-w-md relative z-10"
       >
         <div className="text-center mb-10">
-          <Link to="/" className="inline-flex items-center gap-2 mb-6 group">
-            <div className="w-12 h-12 rounded-none bg-gradient-to-br from-primary-500 to-brand-violet flex items-center justify-center text-2xl shadow-glow-blue group-hover:scale-110 transition-transform">👁️</div>
-            <span className="font-display font-black text-3xl tracking-tight text-slate-900 dark:text-white">UnIgnored</span>
+          <Link to="/" className="inline-flex items-center gap-4 mb-8 group">
+            <div className="w-14 h-14 rounded-[20px] bg-black dark:bg-[#00d1ff] flex items-center justify-center shadow-glow-blue group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+              <Eye className="w-8 h-8 text-white dark:text-black" />
+            </div>
+            <span className="font-display font-black text-4xl tracking-tighter text-slate-900 dark:text-white uppercase">UnIgnored</span>
           </Link>
           <h1 className="text-3xl font-black text-slate-900 dark:text-white">Welcome Back</h1>
           <p className="text-slate-500 mt-2">Log in to track your reports and earn points</p>

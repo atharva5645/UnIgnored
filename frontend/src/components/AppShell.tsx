@@ -1,5 +1,5 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { Navbar } from './common/Navbar'
 import { CommandPalette } from './common/CommandPalette'
 import { useUIStore } from '../store/uiStore'
@@ -8,6 +8,8 @@ import { clsx } from 'clsx'
 
 export function AppShell() {
   const { darkMode, fontSize, dyslexicFont, rtl, highContrast } = useUIStore()
+  const location = useLocation()
+  const isAuthPage = ['/login', '/register'].includes(location.pathname)
 
   React.useEffect(() => {
     if (darkMode) {
@@ -29,7 +31,7 @@ export function AppShell() {
       highContrast && 'contrast-125 brightness-110'
     )} style={{ backgroundColor: darkMode ? '#020617' : '#f8fafc' }}>
       {/* Global Components */}
-      <Navbar />
+      {!isAuthPage && <Navbar />}
       <CommandPalette />
       <Toaster 
         position="top-right" 
