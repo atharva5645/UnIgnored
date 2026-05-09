@@ -135,6 +135,46 @@ export const complaintService = {
   },
 
   /**
+   * Assign a worker to a complaint
+   */
+  assignWorker: async (
+    complaintId: string,
+    workerId: string,
+    workerName: string,
+    officerName: string,
+    note: string
+  ): Promise<void> => {
+    try {
+      const docRef = doc(db, COMPLAINTS_COLLECTION, complaintId);
+      const snap = await getDoc(docRef);
+      if (!snap.exists()) throw new Error("Complaint not found");
+
+      const data = snap.data();
+      const timeline: TimelineEvent[] = data.timeline || [];
+
+      const newEvent: TimelineEvent = {
+        id: `t_${Date.now()}`,
+        status: 'in_progress',
+        timestamp: new Date().toISOString(),
+        actor: officerName,
+        actorRole: 'officer',
+        note: `Assigned to worker: ${workerName}. ${note}`
+      };
+
+      await updateDoc(docRef, {
+        status: 'in_progress',
+        assignedWorkerId: workerId,
+        assignedWorker: workerName,
+        timeline: [...timeline, newEvent],
+        updatedAt: serverTimestamp()
+      });
+    } catch (error) {
+      console.error("Error assigning worker:", error);
+      throw error;
+    }
+  },
+
+  /**
    * Subscribe to user's complaints (Realtime)
    */
   subscribeToUserComplaints: (citizenId: string, callback: (complaints: Complaint[]) => void) => {

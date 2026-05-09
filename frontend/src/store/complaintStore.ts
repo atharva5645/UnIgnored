@@ -21,6 +21,7 @@ interface ComplaintState {
   // Async Operations
   addComplaint: (complaintData: any) => Promise<string>;
   updateStatus: (id: string, status: ComplaintStatus, actor: string, actorRole: any, note: string) => Promise<void>;
+  assignWorker: (id: string, workerId: string, workerName: string, officerName: string, note: string) => Promise<void>;
   deleteComplaint: (id: string) => Promise<void>;
   getFilteredComplaints: () => Complaint[];
 }
@@ -56,6 +57,17 @@ export const useComplaintStore = create<ComplaintState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       await complaintService.updateStatus(id, status, actor, actorRole, note);
+      set({ isLoading: false });
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+      throw err;
+    }
+  },
+
+  assignWorker: async (id, workerId, workerName, officerName, note) => {
+    set({ isLoading: true, error: null });
+    try {
+      await complaintService.assignWorker(id, workerId, workerName, officerName, note);
       set({ isLoading: false });
     } catch (err: any) {
       set({ error: err.message, isLoading: false });

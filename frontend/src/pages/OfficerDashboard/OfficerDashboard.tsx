@@ -17,9 +17,11 @@ import { format } from 'date-fns'
 export default function OfficerDashboard() {
   const { user } = useAuthStore()
   const { complaints, updateStatus, assignWorker } = useComplaints()
-  const [view, setView] = useState<'tasks' | 'map' | 'performance'>('tasks')
   const [sortBySla, setSortBySla] = useState(false)
   const [viewAll, setViewAll] = useState(false)
+  const [activeWorkerForMessage, setActiveWorkerForMessage] = useState<any>(null)
+  const [messageText, setMessageText] = useState('')
+  const [isSending, setIsSending] = useState(false)
 
   const MOCK_WORKERS = [
     { id: 'w1', name: 'Rajesh Plumber', role: 'Plumbing Expert', workload: 2, phone: '+91 98765 43210' },
@@ -41,6 +43,18 @@ export default function OfficerDashboard() {
       console.error("Assignment failed:", err)
     }
   }
+
+  const handleSendMessage = () => {
+    if (!messageText.trim()) return
+    setIsSending(true)
+    // Simulate API call
+    setTimeout(() => {
+      setIsSending(false)
+      setActiveWorkerForMessage(null)
+      setMessageText('')
+      alert(`Message sent to ${activeWorkerForMessage.name}: ${messageText}`)
+    }, 1000)
+  }
   
   // Officers should see active tasks. For prototyping, we show 'submitted', 'under_review', 'assigned', 'in_progress'
   let myTasks = complaints.filter(c => 
@@ -60,7 +74,61 @@ export default function OfficerDashboard() {
   }
 
   return (
-    <div className="min-h-screen pb-20 pt-24 px-6">
+    <div className="min-h-screen pb-20 pt-24 px-6 relative">
+      {/* Messaging Modal */}
+      {activeWorkerForMessage && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            onClick={() => setActiveWorkerForMessage(null)}
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="relative w-full max-w-md bg-white dark:bg-[#0f172a] rounded-[32px] border border-slate-200 dark:border-white/10 shadow-2xl overflow-hidden"
+          >
+            <div className="p-8">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 rounded-full bg-primary-500/10 flex items-center justify-center text-2xl">
+                  💬
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white">Message {activeWorkerForMessage.name}</h3>
+                  <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">{activeWorkerForMessage.role}</p>
+                </div>
+              </div>
+              
+              <textarea 
+                value={messageText}
+                onChange={(e) => setMessageText(e.target.value)}
+                placeholder="Type your instructions here..."
+                className="w-full h-32 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 text-sm text-slate-800 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all resize-none"
+              />
+              
+              <div className="flex gap-3 mt-6">
+                <Button 
+                  variant="ghost" 
+                  className="flex-1"
+                  onClick={() => setActiveWorkerForMessage(null)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  className="flex-1 bg-primary-500 text-white"
+                  isLoading={isSending}
+                  onClick={handleSendMessage}
+                  rightIcon={<Send size={16} />}
+                >
+                  Send Task
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
       <div className="max-w-[1800px] mx-auto">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
@@ -120,7 +188,7 @@ export default function OfficerDashboard() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
                 >
-                   <Card className="p-6 border-slate-200 dark:border-white/5 hover:border-primary-500/30 transition-all group">
+                   <Card className="p-6 border-slate-200 dark:border-white/5 hover:border-primary-500/30 transition-all group !overflow-visible">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-6">
                        <div className="w-16 h-16 rounded-none bg-slate-100 dark:bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
                         {CATEGORY_META[task.category]?.icon || '❓'}
@@ -135,8 +203,8 @@ export default function OfficerDashboard() {
                           </Badge>
                           {task.assignedWorker && (
                              <Badge variant="success" className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                              Worker: {task.assignedWorker}
-                            </Badge>
+                               Worker: {task.assignedWorker}
+                             </Badge>
                           )}
                         </div>
                          <h4 className="text-lg font-bold text-slate-900 dark:text-white truncate group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
@@ -154,14 +222,14 @@ export default function OfficerDashboard() {
                         </Link>
                         
                         {!task.assignedWorker ? (
-                          <div className="relative group/assign">
+                          <div className="relative group/assign hover:z-50">
                             <Button 
                               size="sm" 
                               className="bg-primary-500/10 text-primary-400 border border-primary-500/20 hover:bg-primary-500/20 flex items-center gap-2"
                             >
                               Assign Worker
                             </Button>
-                            <div className="absolute right-0 bottom-full mb-2 w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 shadow-2xl rounded-xl p-2 hidden group-hover/assign:block z-50">
+                            <div className="absolute right-0 bottom-full mb-2 w-64 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 shadow-2xl rounded-xl p-2 hidden group-hover/assign:block z-50">
                               <p className="text-[10px] font-bold text-slate-500 px-3 py-2 uppercase tracking-widest">Available Workers</p>
                               {MOCK_WORKERS.map(worker => (
                                 <button
@@ -238,8 +306,22 @@ export default function OfficerDashboard() {
                   </div>
                   
                   <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100 dark:border-white/5">
-                    <Button variant="ghost" size="sm" className="h-8 text-[10px] flex-1">Call</Button>
-                    <Button variant="ghost" size="sm" className="h-8 text-[10px] flex-1">Message</Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-8 text-[10px] flex-1"
+                      onClick={() => window.location.href = `tel:${worker.phone}`}
+                    >
+                      Call
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-8 text-[10px] flex-1"
+                      onClick={() => setActiveWorkerForMessage(worker)}
+                    >
+                      Message
+                    </Button>
                   </div>
                 </Card>
               ))}

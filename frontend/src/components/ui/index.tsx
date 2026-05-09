@@ -21,7 +21,7 @@ interface ButtonProps extends HTMLMotionProps<"button"> {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading, glow, leftIcon, rightIcon, children, ...props }, ref) => {
     const variants = {
-      primary: 'bg-black text-white hover:bg-slate-900 dark:bg-[#00d1ff] dark:text-black dark:hover:bg-[#00e5ff] shadow-glow-white dark:shadow-glow-cyan',
+      primary: 'bg-black text-white hover:bg-slate-900 dark:bg-[#f59e0b] dark:text-black dark:hover:bg-[#fbbf24] shadow-glow-white dark:shadow-glow-cyan',
       secondary: 'bg-white text-black hover:bg-slate-100 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 border border-black dark:border-white/10',
       outline: 'border-2 border-black text-black hover:bg-slate-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10',
       ghost: 'text-slate-600 hover:text-black hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5',
@@ -76,7 +76,7 @@ export const Badge = ({ children, variant = 'default', className }: { children: 
     success: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400',
     warning: 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400',
     error: 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400',
-    info: 'bg-black text-white dark:bg-[#00d1ff] dark:text-black',
+    info: 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20',
   };
   return (
     <span className={cn('px-3 py-1 rounded-[32px] text-[10px] font-black uppercase tracking-widest', styles[variant], className)}>
@@ -91,7 +91,7 @@ export const Avatar = ({ src, name, size = 'md', className }: { src?: string; na
   const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2);
   
   return (
-    <div className={cn('rounded-[32px] overflow-hidden bg-black dark:bg-[#00d1ff] flex items-center justify-center text-white dark:text-black font-black shadow-premium border-2 border-white dark:border-[#020617]', sizes[size], className)}>
+    <div className={cn('rounded-[32px] overflow-hidden bg-black dark:bg-[#f59e0b] flex items-center justify-center text-white dark:text-black font-black shadow-premium border-2 border-white dark:border-[#020617]', sizes[size], className)}>
       {src ? <img src={src} alt={name} className="w-full h-full object-cover" /> : initials}
     </div>
   );
@@ -114,12 +114,12 @@ export const StatCard = ({ label, value, icon, trend, color }: { label: string; 
       <p className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">{label}</p>
       <h3 className="text-4xl font-black text-slate-900 dark:text-white font-display mt-1">{value}</h3>
     </div>
-    <div className="absolute top-0 right-0 w-32 h-32 bg-black/5 dark:bg-[#00d1ff]/5 rounded-full -mr-16 -mt-16 blur-3xl" />
+    <div className="absolute top-0 right-0 w-32 h-32 bg-black/5 dark:bg-[#f59e0b]/5 rounded-full -mr-16 -mt-16 blur-3xl" />
   </Card>
 );
 
 // --- ProgressBar ---
-export const ProgressBar = ({ value, max = 100, color = 'bg-black dark:bg-[#00d1ff]', showLabel }: { value: number; max?: number; color?: string; showLabel?: boolean }) => {
+export const ProgressBar = ({ value, max = 100, color = 'bg-black dark:bg-[#f59e0b]', showLabel }: { value: number; max?: number; color?: string; showLabel?: boolean }) => {
   const percent = Math.min((value / max) * 100, 100);
   return (
     <div className="w-full">

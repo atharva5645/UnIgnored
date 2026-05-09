@@ -79,6 +79,8 @@ export interface Complaint {
   citizenPhone: string;
   assignedOfficerId?: string;
   assignedOfficer?: string;
+  assignedWorkerId?: string;
+  assignedWorker?: string;
   assignedDepartment?: string;
   isAnonymous: boolean;
   isRecurring: boolean;

@@ -15,6 +15,7 @@ export const useComplaints = () => {
     setError,
     addComplaint,
     updateStatus,
+    assignWorker,
     deleteComplaint,
     getFilteredComplaints
   } = useComplaintStore();
@@ -78,6 +79,7 @@ export const useComplaints = () => {
     error,
     addComplaint,
     updateStatus,
+    assignWorker,
     deleteComplaint
   };
 };
