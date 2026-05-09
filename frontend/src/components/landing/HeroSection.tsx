@@ -39,7 +39,7 @@ export function HeroSection() {
           </p>
 
           <div className="flex items-center gap-4 mb-8">
-            <div className="w-14 h-14 bg-[#00d1ff] rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(0,210,255,0.4)] border-2 border-white/20">
+            <div className="w-14 h-14 bg-[#f59e0b] rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(0,210,255,0.4)] border-2 border-white/20">
               <Eye className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-6xl font-black tracking-tight text-slate-900 dark:text-white">
@@ -88,3 +88,4 @@ export function HeroSection() {
     </section>
   )
 }
+

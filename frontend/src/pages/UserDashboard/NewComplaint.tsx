@@ -12,7 +12,9 @@ import {
   Clipboard, Eye, Bell
 } from 'lucide-react'
 import { clsx } from 'clsx'
+import toast from 'react-hot-toast'
 import { storageService } from '../../services/storageService'
+import { useUIStore } from '../../store/uiStore'
 import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 
@@ -20,8 +22,8 @@ import L from 'leaflet'
 const DefaultIcon = L.divIcon({
   className: 'custom-div-icon',
   html: `<div class="relative w-10 h-10 flex items-center justify-center">
-    <div class="absolute w-10 h-10 bg-[#00d1ff]/20 rounded-full animate-ping"></div>
-    <div class="absolute w-8 h-8 bg-[#00d1ff] rounded-full border-[6px] border-white shadow-[0_0_20px_rgba(0,209,255,0.5)] z-10"></div>
+    <div class="absolute w-10 h-10 bg-[#f59e0b]/20 rounded-full animate-ping"></div>
+    <div class="absolute w-8 h-8 bg-[#f59e0b] rounded-full border-[6px] border-white shadow-[0_0_20px_rgba(0,209,255,0.5)] z-10"></div>
     <div class="absolute w-2 h-2 bg-white rounded-full z-20"></div>
   </div>`,
   iconSize: [40, 40],
@@ -101,7 +103,7 @@ const ImageItem = ({ file, onRemove, onUploadComplete }: { file: File, onRemove:
         <div className="w-full h-full bg-white/5 flex flex-col items-center justify-center p-4">
           <div className="w-full bg-white/10 h-1.5 rounded-[32px] overflow-hidden mb-3">
             <motion.div 
-              className="bg-primary-500 h-full shadow-glow-blue" 
+              className="bg-primary-500 h-full shadow-glow-amber" 
               initial={{ width: '0%' }}
               animate={{ width: `${progress}%` }}
               transition={{ ease: "linear", duration: 0.15 }}
@@ -146,6 +148,7 @@ export default function NewComplaint() {
   const navigate = useNavigate()
   const { addComplaint } = useComplaintStore()
   const { user } = useAuthStore()
+  const { addNotification } = useUIStore()
 
   // Local override for categories to match image exactly
   const DISPLAY_CATEGORIES = [
@@ -278,6 +281,20 @@ export default function NewComplaint() {
       }
 
       const newId = await addComplaint(complaintData)
+      toast.success("Intelligence filed! Admin has been alerted.", {
+        icon: '📢',
+        style: {
+          borderRadius: '16px',
+          background: '#333',
+          color: '#fff',
+        },
+      })
+      addNotification({
+        title: 'Report Submitted',
+        message: `Your report "${data.title}" has been filed successfully. Ref: ${newId}`,
+        type: 'info',
+        icon: '📢',
+      })
       setSubmittedId(newId)
       setStep(5)
     } catch (error) {
@@ -349,7 +366,7 @@ export default function NewComplaint() {
                   <div className={clsx(
                     'w-14 h-14 flex items-center justify-center transition-all duration-500',
                     step === i 
-                      ? 'bg-[#00d1ff] rounded-[18px] text-white shadow-lg' 
+                      ? 'bg-[#f59e0b] rounded-[18px] text-white shadow-lg' 
                       : 'text-slate-400'
                   )}>
                     {React.cloneElement(s.icon as React.ReactElement, {
@@ -385,14 +402,14 @@ export default function NewComplaint() {
                             className={clsx(
                               'flex items-center gap-6 p-8 rounded-[40px] border transition-all duration-500 text-left group relative',
                               reportType === type.id 
-                                ? 'bg-[#00d1ff]/5 border-[#00d1ff] shadow-[0_20px_40px_rgba(0,209,255,0.1)]' 
+                                ? 'bg-[#f59e0b]/5 border-[#f59e0b] shadow-[0_20px_40px_rgba(0,209,255,0.1)]' 
                                 : 'bg-slate-50/50 dark:bg-white/5 border-transparent hover:border-slate-200'
                             )}
                           >
                             <div className={clsx(
                               'w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500',
                                reportType === type.id 
-                                ? 'bg-[#00d1ff] text-white shadow-lg' 
+                                ? 'bg-[#f59e0b] text-white shadow-lg' 
                                 : 'bg-white dark:bg-white/5 shadow-sm text-slate-400'
                             )}>
                               {React.cloneElement(type.icon as React.ReactElement, { size: 28 })}
@@ -438,14 +455,14 @@ export default function NewComplaint() {
                             className={clsx(
                               'flex flex-col items-center justify-center p-8 rounded-[40px] border transition-all duration-500 group aspect-square relative',
                               data.category === cat.id 
-                                ? 'bg-white border-[#00d1ff] shadow-[0_20px_40px_rgba(0,209,255,0.1)] scale-105 z-10' 
+                                ? 'bg-white border-[#f59e0b] shadow-[0_20px_40px_rgba(0,209,255,0.1)] scale-105 z-10' 
                                 : 'bg-white border-slate-100 hover:border-slate-200 shadow-sm'
                             )}
                           >
                             <span className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-500">{cat.icon}</span>
                             <span className={clsx(
                               'text-[10px] font-black uppercase tracking-[0.1em] text-center',
-                              data.category === cat.id ? 'text-[#00d1ff]' : 'text-slate-400'
+                              data.category === cat.id ? 'text-[#f59e0b]' : 'text-slate-400'
                             )}>
                               {cat.label}
                             </span>
@@ -459,7 +476,7 @@ export default function NewComplaint() {
                       className={clsx(
                         'mt-12 w-full py-8 rounded-[32px] font-black text-xl tracking-widest uppercase transition-all duration-500',
                         data.category 
-                          ? 'bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.3)] hover:scale-[1.02] active:scale-95' 
+                          ? 'bg-[#f59e0b] text-white shadow-[0_20px_40px_rgba(0,209,255,0.3)] hover:scale-[1.02] active:scale-95' 
                           : 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-50'
                       )}
                     >
@@ -526,7 +543,7 @@ export default function NewComplaint() {
                             glow
                             onClick={handleGetCurrentLocation}
                             isLoading={isFetchingLocation}
-                            className="bg-primary-500 text-white text-xs font-black uppercase tracking-[0.2em] shadow-glow-cyan px-6 h-12 flex items-center gap-3 rounded-[20px] hover:scale-105 transition-all duration-300"
+                            className="bg-primary-500 text-white text-xs font-black uppercase tracking-[0.2em] shadow-glow-amber px-6 h-12 flex items-center gap-3 rounded-[20px] hover:scale-105 transition-all duration-300"
                           >
                             <MapPin size={16} /> 
                             {isFetchingLocation ? 'Tracking Signal...' : 'Auto-Detect GPS'}
@@ -571,7 +588,7 @@ export default function NewComplaint() {
                           className={clsx(
                             'flex-[2] py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest transition-all duration-300',
                             data.location.lat && data.location.address
-                              ? 'bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98]' 
+                              ? 'bg-[#f59e0b] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98]' 
                               : 'bg-slate-100 dark:bg-white/5 text-slate-400 cursor-not-allowed'
                           )}
                         >
@@ -628,7 +645,7 @@ export default function NewComplaint() {
                       </button>
                       <button
                         onClick={() => setStep(step + 1)}
-                        className="flex-[2] py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                        className="flex-[2] py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest bg-[#f59e0b] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                       >
                         Continue
                         <ChevronRight size={20} />
@@ -671,7 +688,7 @@ export default function NewComplaint() {
                         className={clsx(
                           'flex-[2] py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest transition-all duration-300',
                           data.title && data.description
-                            ? 'bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98]' 
+                            ? 'bg-[#f59e0b] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98]' 
                             : 'bg-slate-100 dark:bg-white/5 text-slate-400 cursor-not-allowed'
                         )}
                       >
@@ -743,7 +760,7 @@ export default function NewComplaint() {
                         </button>
                         <button
                           onClick={handleSubmit}
-                          className="flex-[2] py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                          className="flex-[2] py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest bg-[#f59e0b] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                         >
                           SUBMIT REPORT
                           <Send size={20} />
@@ -789,7 +806,7 @@ export default function NewComplaint() {
           <div className="lg:col-span-4 space-y-6">
             <Card className="p-10 rounded-[48px] border-slate-100 bg-white shadow-xl">
               <h3 className="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center gap-3">
-                <Info size={18} className="text-[#00d1ff]" /> PRO TIPS
+                <Info size={18} className="text-[#f59e0b]" /> PRO TIPS
               </h3>
               <ul className="space-y-4">
                 {[
@@ -807,7 +824,7 @@ export default function NewComplaint() {
 
             <Card className="p-10 rounded-[48px] border-transparent bg-[#e0f7fa]/50 backdrop-blur-sm shadow-xl">
               <div className="flex items-center gap-3 mb-4">
-                <Shield size={20} className="text-[#00d1ff]" />
+                <Shield size={20} className="text-[#f59e0b]" />
                 <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">Safe Community</h3>
               </div>
               <p className="text-[11px] text-slate-500 leading-relaxed font-black opacity-60">
@@ -822,3 +839,4 @@ export default function NewComplaint() {
     </div>
   )
 }
+

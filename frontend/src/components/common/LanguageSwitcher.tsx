@@ -25,9 +25,9 @@ export const LanguageSwitcher = () => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 rounded-[32px] bg-slate-50 dark:bg-white/5 hover:bg-black hover:text-white dark:hover:bg-[#00d1ff] dark:hover:text-black transition-all duration-300 border border-slate-200 dark:border-white/10 group"
+        className="flex items-center gap-2 px-4 py-2 rounded-[32px] bg-slate-50 dark:bg-white/5 hover:bg-black hover:text-white dark:hover:bg-[#f59e0b] dark:hover:text-black transition-all duration-300 border border-slate-200 dark:border-white/10 group"
       >
-        <Globe size={18} className="text-black dark:text-[#00d1ff] group-hover:text-inherit" />
+        <Globe size={18} className="text-black dark:text-[#f59e0b] group-hover:text-inherit" />
         <span className="text-sm font-black uppercase tracking-widest">
           {currentLanguage.native}
         </span>
@@ -58,7 +58,7 @@ export const LanguageSwitcher = () => {
                       <span className="text-xs opacity-50 uppercase tracking-tighter">{lang.name}</span>
                     </div>
                     {i18n.language === lang.code && (
-                      <div className="w-6 h-6 rounded-full bg-black dark:bg-[#00d1ff] flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-full bg-black dark:bg-[#f59e0b] flex items-center justify-center">
                         <Check size={14} className="text-white dark:text-black" />
                       </div>
                     )}
@@ -72,3 +72,4 @@ export const LanguageSwitcher = () => {
     </div>
   );
 };
+

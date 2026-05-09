@@ -63,7 +63,7 @@ export default function RegisterPage() {
       >
         <div className="text-center mb-10">
           <Link to="/" className="inline-flex items-center gap-4 mb-8 group">
-            <div className="w-14 h-14 rounded-[20px] bg-black dark:bg-[#00d1ff] flex items-center justify-center shadow-glow-blue group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+            <div className="w-14 h-14 rounded-[20px] bg-black dark:bg-[#f59e0b] flex items-center justify-center shadow-glow-amber group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
               <Eye className="w-8 h-8 text-white dark:text-black" />
             </div>
             <span className="font-display font-black text-4xl tracking-tighter text-slate-900 dark:text-white uppercase">UnIgnored</span>
@@ -79,7 +79,7 @@ export default function RegisterPage() {
               <React.Fragment key={s}>
                 <div className={clsx(
                   'w-10 h-10 rounded-none flex items-center justify-center text-sm font-bold transition-all duration-300',
-                  step >= s ? 'bg-primary-500 text-white shadow-glow-blue' : 'bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-600 border border-slate-200 dark:border-white/10'
+                  step >= s ? 'bg-primary-500 text-white shadow-glow-amber' : 'bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-600 border border-slate-200 dark:border-white/10'
                 )}>
                   {step > s ? <CheckCircle2 size={18} /> : s}
                 </div>
@@ -208,3 +208,4 @@ export default function RegisterPage() {
     </div>
   )
 }
+

@@ -21,7 +21,7 @@ interface ButtonProps extends HTMLMotionProps<"button"> {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading, glow, leftIcon, rightIcon, children, ...props }, ref) => {
     const variants = {
-      primary: 'bg-black text-white hover:bg-slate-900 dark:bg-[#f59e0b] dark:text-black dark:hover:bg-[#fbbf24] shadow-glow-white dark:shadow-glow-cyan',
+      primary: 'bg-black text-white hover:bg-slate-900 dark:bg-[#f59e0b] dark:text-black dark:hover:bg-[#fbbf24] shadow-glow-white dark:shadow-glow-amber',
       secondary: 'bg-white text-black hover:bg-slate-100 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 border border-black dark:border-white/10',
       outline: 'border-2 border-black text-black hover:bg-slate-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10',
       ghost: 'text-slate-600 hover:text-black hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5',

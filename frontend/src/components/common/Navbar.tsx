@@ -10,11 +10,22 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 
 export function Navbar() {
   const { user, isAuthenticated, logout } = useAuthStore()
-  const { darkMode, toggleDarkMode, toggleCommandPalette, notifications, sidebarOpen, toggleSidebar } = useUIStore()
+  const { darkMode, toggleDarkMode, toggleCommandPalette, notifications, sidebarOpen, toggleSidebar, addNotification, clearNotifications, markAllRead } = useUIStore()
   const [scrolled, setScrolled] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
   const [searchFocused, setSearchFocused] = useState(false)
+  const [notifOpen, setNotifOpen] = useState(false)
   const navigate = useNavigate()
+
+  const unreadCount = notifications.filter(n => !n.read).length
+
+  const getTimeAgo = (timestamp: string) => {
+    const seconds = Math.floor((Date.now() - new Date(timestamp).getTime()) / 1000)
+    if (seconds < 60) return 'Just now'
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`
+    return `${Math.floor(seconds / 86400)}d ago`
+  }
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20)
@@ -32,7 +43,7 @@ export function Navbar() {
           ? clsx(
               'border shadow-2xl backdrop-blur-xl transition-all duration-500',
               darkMode 
-                ? 'bg-[#020617]/80 border-white/10 shadow-glow-cyan/20' 
+                ? 'bg-[#020617]/80 border-white/10 shadow-glow-amber/20' 
                 : 'bg-white/80 border-black shadow-glow-white/20'
             )
           : clsx(
@@ -50,7 +61,7 @@ export function Navbar() {
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
           <Link to="/" className="flex items-center gap-4 group">
-            <div className="w-12 h-12 rounded-[18px] bg-[#00d1ff] flex items-center justify-center shadow-premium group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+            <div className="w-12 h-12 rounded-[18px] bg-[#f59e0b] flex items-center justify-center shadow-premium group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
               <Eye className="w-7 h-7 text-white" />
             </div>
             <span className="font-display font-black text-3xl tracking-tighter text-black dark:text-white uppercase">UnIgnored</span>
@@ -63,13 +74,13 @@ export function Navbar() {
             'flex items-center gap-3 w-full px-6 py-2.5 rounded-[20px] border transition-all duration-500',
             searchFocused 
               ? darkMode 
-                ? 'bg-white/10 border-[#00d1ff] shadow-glow-cyan/20' 
+                ? 'bg-white/10 border-[#f59e0b] shadow-glow-amber/20' 
                 : 'bg-slate-50 border-black shadow-lg'
               : darkMode 
                 ? 'bg-white/5 border-white/10' 
                 : 'bg-slate-50 border-slate-200'
           )}>
-            <Search size={18} className={searchFocused ? 'text-black dark:text-[#00d1ff]' : 'text-slate-400 dark:text-slate-500'} />
+            <Search size={18} className={searchFocused ? 'text-black dark:text-[#f59e0b]' : 'text-slate-400 dark:text-slate-500'} />
             <input 
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setSearchFocused(false)}
@@ -90,19 +101,105 @@ export function Navbar() {
           
           <button 
             onClick={toggleDarkMode} 
-            className="p-3 rounded-full hover:bg-black hover:text-white dark:hover:bg-[#00d1ff] dark:hover:text-black text-slate-500 dark:text-slate-400 transition-all duration-500 border border-transparent hover:border-black dark:hover:border-white/10"
+            className="p-3 rounded-full hover:bg-black hover:text-white dark:hover:bg-[#f59e0b] dark:hover:text-black text-slate-500 dark:text-slate-400 transition-all duration-500 border border-transparent hover:border-black dark:hover:border-white/10"
           >
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           
           <div className="relative">
-            <button className="p-3 rounded-full hover:bg-black hover:text-white dark:hover:bg-[#00d1ff] dark:hover:text-black text-slate-500 dark:text-slate-400 transition-all duration-500 relative border border-transparent hover:border-black dark:hover:border-white/10">
-              <Bell size={20} />
-              {notifications.length > 0 && (
-                <span className="absolute top-3 right-3 w-2 h-2 bg-brand-rose rounded-full border-2 border-white dark:border-[#020617] animate-pulse" />
-              )}
-            </button>
-          </div>
+              <button 
+                onClick={() => setNotifOpen(!notifOpen)}
+                className="p-3 rounded-full hover:bg-black hover:text-white dark:hover:bg-[#f59e0b] dark:hover:text-black text-slate-500 dark:text-slate-400 transition-all duration-500 relative border border-transparent hover:border-black dark:hover:border-white/10"
+              >
+                <Bell size={20} />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1.5 right-1.5 min-w-[18px] h-[18px] flex items-center justify-center bg-brand-rose text-white text-[9px] font-black rounded-full border-2 border-white dark:border-[#020617] animate-pulse px-1">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+
+              <AnimatePresence>
+                {notifOpen && (
+                  <>
+                    <div className="fixed inset-0 z-10" onClick={() => setNotifOpen(false)} />
+                    <motion.div 
+                      initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                      className="absolute right-0 mt-4 w-96 max-h-[480px] bg-white dark:bg-[#0f172a] border-2 border-black dark:border-white/10 rounded-[32px] shadow-2xl z-20 overflow-hidden flex flex-col"
+                    >
+                      {/* Header */}
+                      <div className="flex items-center justify-between px-6 py-4 border-b-2 border-black/5 dark:border-white/5">
+                        <div className="flex items-center gap-3">
+                          <h4 className="text-sm font-black text-black dark:text-white uppercase tracking-widest">Notifications</h4>
+                          {unreadCount > 0 && (
+                            <Badge variant="warning">{unreadCount} New</Badge>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {unreadCount > 0 && (
+                            <button onClick={() => markAllRead()} className="text-[10px] font-bold text-primary-500 hover:text-primary-600 uppercase tracking-wider">
+                              Mark Read
+                            </button>
+                          )}
+                          {notifications.length > 0 && (
+                            <button onClick={() => clearNotifications()} className="text-[10px] font-bold text-slate-400 hover:text-rose-500 uppercase tracking-wider ml-2">
+                              Clear
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Notification List */}
+                      <div className="overflow-y-auto flex-1 custom-scrollbar">
+                        {notifications.length === 0 ? (
+                          <div className="py-16 text-center">
+                            <div className="text-4xl mb-4 opacity-20 grayscale">🔔</div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">No notifications yet</p>
+                          </div>
+                        ) : (
+                          notifications.map((notif) => {
+                            const typeColors: Record<string, string> = {
+                              info: 'bg-blue-500',
+                              success: 'bg-emerald-500',
+                              warning: 'bg-amber-500',
+                              alert: 'bg-rose-500',
+                            }
+                            const timeAgo = getTimeAgo(notif.timestamp)
+                            return (
+                              <div 
+                                key={notif.id}
+                                className={clsx(
+                                  'px-6 py-4 border-b border-black/5 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer',
+                                  !notif.read && 'bg-primary-500/5 dark:bg-primary-500/5'
+                                )}
+                              >
+                                <div className="flex gap-3">
+                                  <div className="flex-shrink-0 mt-0.5">
+                                    <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center text-lg">
+                                      {notif.icon}
+                                    </div>
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-1">
+                                      {!notif.read && <div className={clsx('w-2 h-2 rounded-full', typeColors[notif.type] || 'bg-amber-500')} />}
+                                      <p className="text-xs font-black text-black dark:text-white truncate">{notif.title}</p>
+                                    </div>
+                                    <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">{notif.message}</p>
+                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1.5">{timeAgo}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          })
+                        )}
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
 
           <div className="h-8 w-px bg-slate-200 dark:bg-white/10 mx-2 hidden sm:block" />
 
@@ -178,7 +275,7 @@ export function Navbar() {
                 </Button>
               </Link>
               <Link to="/register">
-                <Button variant="primary" size="sm" className="rounded-full shadow-glow-white dark:shadow-glow-cyan font-black uppercase tracking-widest text-xs">
+                <Button variant="primary" size="sm" className="rounded-full shadow-glow-white dark:shadow-glow-amber font-black uppercase tracking-widest text-xs">
                   Join Now
                 </Button>
               </Link>
@@ -189,3 +286,4 @@ export function Navbar() {
     </motion.nav>
   )
 }
+

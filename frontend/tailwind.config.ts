@@ -71,10 +71,10 @@ export default {
       },
       backgroundImage: {
         'glass-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
-        'hero-mesh': 'radial-gradient(at 0% 0%, hsla(185, 100%, 50%, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, hsla(260, 100%, 50%, 0.15) 0px, transparent 50%)',
+        'hero-mesh': 'radial-gradient(at 0% 0%, hsla(38, 92%, 50%, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, hsla(45, 100%, 50%, 0.1) 0px, transparent 50%)',
       },
       boxShadow: {
-        'glow-blue': '0 0 0 2px rgba(6, 182, 212, 0.5)',
+        'glow-amber': '0 0 20px -5px rgba(245, 158, 11, 0.5)',
         'glow-violet': '0 0 0 2px rgba(139, 92, 246, 0.5)',
         'premium': '0 10px 30px -10px rgba(0, 0, 0, 0.3)',
       }

@@ -17,7 +17,7 @@ import { useAuthStore } from '../../store/authStore'
 import { useComplaints } from '../../hooks/useComplaints'
 import { format } from 'date-fns'
 
-const COLORS = ['#00d1ff', '#8b5cf6', '#10b981', '#f59e0b', '#f43f5e']
+const COLORS = ['#f59e0b', '#8b5cf6', '#10b981', '#f59e0b', '#f43f5e']
 
 const chartData = [
   { name: 'MON', count: 45, resolved: 32 },
@@ -55,7 +55,7 @@ export default function AdminDashboard() {
         >
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-[12px] bg-black dark:bg-[#00d1ff] flex items-center justify-center text-white dark:text-black">
+              <div className="w-10 h-10 rounded-[12px] bg-black dark:bg-[#f59e0b] flex items-center justify-center text-white dark:text-black">
                 <Shield size={20} />
               </div>
               <h1 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-[0.4em]">
@@ -79,7 +79,7 @@ export default function AdminDashboard() {
                 className={clsx(
                   'flex items-center gap-3 px-8 py-4 rounded-[18px] text-xs font-black uppercase tracking-widest transition-all duration-500',
                   tab === t.id 
-                    ? 'bg-black text-white dark:bg-[#00d1ff] dark:text-black shadow-premium' 
+                    ? 'bg-black text-white dark:bg-[#f59e0b] dark:text-black shadow-premium' 
                     : 'text-slate-400 hover:text-slate-800 dark:hover:text-white'
                 )}
               >
@@ -110,13 +110,13 @@ export default function AdminDashboard() {
                 <div className="flex items-center justify-between mb-12">
                   <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-[0.3em] flex items-center gap-4">
                     <div className="p-3 bg-slate-50 dark:bg-white/5 rounded-[12px]">
-                      <Activity size={20} className="text-slate-800 dark:text-[#00d1ff]" />
+                      <Activity size={20} className="text-slate-800 dark:text-[#f59e0b]" />
                     </div>
                     Signal Velocity
                   </h3>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-[#00d1ff]" />
+                      <div className="w-3 h-3 rounded-full bg-[#f59e0b]" />
                       <span className="text-[10px] font-black text-slate-400 uppercase">Incoming</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -130,8 +130,8 @@ export default function AdminDashboard() {
                     <AreaChart data={chartData}>
                       <defs>
                         <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#00d1ff" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#00d1ff" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
@@ -148,7 +148,7 @@ export default function AdminDashboard() {
                         itemStyle={{ color: '#fff', fontSize: '12px', fontWeight: 900 }}
                         labelStyle={{ color: '#64748b', marginBottom: '8px', fontSize: '10px' }}
                       />
-                      <Area type="monotone" dataKey="count" stroke="#00d1ff" strokeWidth={4} fillOpacity={1} fill="url(#colorCount)" />
+                      <Area type="monotone" dataKey="count" stroke="#f59e0b" strokeWidth={4} fillOpacity={1} fill="url(#colorCount)" />
                       <Area type="monotone" dataKey="resolved" stroke="#e2e8f0" strokeWidth={2} fill="transparent" />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -165,7 +165,7 @@ export default function AdminDashboard() {
                 </div>
                 <h3 className="text-xs font-black uppercase tracking-[0.3em] mb-12 flex items-center gap-4 relative z-10">
                   <div className="p-3 bg-white/10 rounded-[12px]">
-                    <Zap size={20} className="text-[#00d1ff]" />
+                    <Zap size={20} className="text-[#f59e0b]" />
                   </div>
                   Sector Distribution
                 </h3>
@@ -174,7 +174,7 @@ export default function AdminDashboard() {
                     <div key={cat.name} className="group cursor-pointer">
                       <div className="flex justify-between items-center mb-3">
                         <span className="text-[10px] font-black tracking-widest text-slate-400 group-hover:text-white transition-colors">{cat.name}</span>
-                        <span className="text-xs font-black text-[#00d1ff]">{cat.value}%</span>
+                        <span className="text-xs font-black text-[#f59e0b]">{cat.value}%</span>
                       </div>
                       <ProgressBar progress={cat.value} color={i === 0 ? 'info' : i === 1 ? 'secondary' : 'success'} size="sm" className="bg-white/5" />
                     </div>
@@ -195,15 +195,15 @@ export default function AdminDashboard() {
               <Card className="p-10 border-2 border-black dark:border-white/5 shadow-premium bg-white dark:bg-[#0f172a]">
                 <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-8 mb-12">
                   <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-[0.3em] flex items-center gap-4">
-                    <div className="p-3 bg-black dark:bg-[#00d1ff] rounded-[12px] text-white dark:text-black">
+                    <div className="p-3 bg-black dark:bg-[#f59e0b] rounded-[12px] text-white dark:text-black">
                       <ClipboardList size={20} />
                     </div>
                     Active Registry
                   </h3>
                   <div className="flex flex-wrap items-center gap-4">
                     <div className="relative group min-w-[300px]">
-                      <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black dark:group-focus-within:text-[#00d1ff] transition-colors" />
-                      <input placeholder="SEARCH LEDGER..." className="w-full bg-slate-50 dark:bg-white/5 border-2 border-black/5 dark:border-white/10 rounded-[24px] pl-12 pr-6 py-3 text-xs font-bold text-slate-800 dark:text-white focus:border-slate-800 dark:focus:border-[#00d1ff] outline-none shadow-inner" />
+                      <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black dark:group-focus-within:text-[#f59e0b] transition-colors" />
+                      <input placeholder="SEARCH LEDGER..." className="w-full bg-slate-50 dark:bg-white/5 border-2 border-black/5 dark:border-white/10 rounded-[24px] pl-12 pr-6 py-3 text-xs font-bold text-slate-800 dark:text-white focus:border-slate-800 dark:focus:border-[#f59e0b] outline-none shadow-inner" />
                     </div>
                     <Button size="xl" variant="outline" className="border-2 border-black dark:border-white/10"><Download size={18} /></Button>
                   </div>
@@ -248,7 +248,7 @@ export default function AdminDashboard() {
                             <span className="text-[10px] font-black text-slate-400 uppercase">{format(new Date(c.createdAt), 'MMM d, HH:mm')}</span>
                           </td>
                           <td className="py-6 text-right">
-                            <button className="p-2 hover:bg-black hover:text-white dark:hover:bg-[#00d1ff] dark:hover:text-black rounded-full transition-all duration-300">
+                            <button className="p-2 hover:bg-black hover:text-white dark:hover:bg-[#f59e0b] dark:hover:text-black rounded-full transition-all duration-300">
                               <ArrowUpRight size={16} />
                             </button>
                           </td>
@@ -272,23 +272,23 @@ export default function AdminDashboard() {
               <Card className="p-10 border-2 border-black dark:border-white/5 shadow-premium bg-white dark:bg-[#0f172a]">
                 <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-8 mb-12">
                   <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-[0.3em] flex items-center gap-4">
-                    <div className="p-3 bg-black dark:bg-[#00d1ff] rounded-[12px] text-white dark:text-black">
+                    <div className="p-3 bg-black dark:bg-[#f59e0b] rounded-[12px] text-white dark:text-black">
                       <Users size={20} />
                     </div>
                     Force Registry
                   </h3>
                   <div className="flex flex-wrap items-center gap-4">
                     <div className="relative group min-w-[300px]">
-                      <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black dark:group-focus-within:text-[#00d1ff] transition-colors" />
-                      <input placeholder="SCAN OPERATIVES..." className="w-full bg-slate-50 dark:bg-white/5 border-2 border-black/5 dark:border-white/10 rounded-[24px] pl-12 pr-6 py-3 text-xs font-bold text-slate-800 dark:text-white focus:border-slate-800 dark:focus:border-[#00d1ff] outline-none shadow-inner" />
+                      <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black dark:group-focus-within:text-[#f59e0b] transition-colors" />
+                      <input placeholder="SCAN OPERATIVES..." className="w-full bg-slate-50 dark:bg-white/5 border-2 border-black/5 dark:border-white/10 rounded-[24px] pl-12 pr-6 py-3 text-xs font-bold text-slate-800 dark:text-white focus:border-slate-800 dark:focus:border-[#f59e0b] outline-none shadow-inner" />
                     </div>
-                    <Button size="xl" variant="primary" className="shadow-glow-white dark:shadow-glow-cyan px-10">ENROLL ENTITY</Button>
+                    <Button size="xl" variant="primary" className="shadow-glow-white dark:shadow-glow-amber px-10">ENROLL ENTITY</Button>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                   {OFFICERS.map((o) => (
-                    <Card key={o.id} className="p-8 border-2 border-black dark:border-white/10 hover:border-black dark:hover:border-[#00d1ff] transition-all duration-500 group bg-slate-50 dark:bg-white/5">
+                    <Card key={o.id} className="p-8 border-2 border-black dark:border-white/10 hover:border-black dark:hover:border-[#f59e0b] transition-all duration-500 group bg-slate-50 dark:bg-white/5">
                       <div className="flex items-start justify-between mb-8">
                         <Avatar name={o.name} src={o.avatar} size="xl" className="border-4 border-white dark:border-[#0f172a] shadow-lg group-hover:scale-110 transition-transform" />
                         <Badge variant={o.status === 'on_duty' ? 'success' : 'info'}>{o.status.replace('_', ' ')}</Badge>
@@ -317,3 +317,4 @@ export default function AdminDashboard() {
     </div>
   )
 }
+

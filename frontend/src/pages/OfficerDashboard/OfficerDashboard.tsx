@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { 
   ClipboardList, CheckCircle2, Clock, MapPin, 
@@ -9,19 +9,47 @@ import {
 import { Card, StatCard, Badge, Button, Avatar, ProgressBar } from '../../components/ui'
 import { COMPLAINTS, STATUS_META, CATEGORY_META } from '../../utils/mockData'
 import { clsx } from 'clsx'
-import { useAuthStore } from '../../store/authStore'
+import { toast } from 'react-hot-toast';
+import { useAuthStore } from '../../store/authStore';
+import { useUIStore } from '../../store/uiStore';
 import { useComplaints } from '../../hooks/useComplaints'
 import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 
 export default function OfficerDashboard() {
-  const { user } = useAuthStore()
-  const { complaints, updateStatus, assignWorker } = useComplaints()
+  const { user } = useAuthStore();
+  const { complaints, assignWorker, updateStatus } = useComplaints();
+  const { addNotification } = useUIStore();
   const [sortBySla, setSortBySla] = useState(false)
   const [viewAll, setViewAll] = useState(false)
   const [activeWorkerForMessage, setActiveWorkerForMessage] = useState<any>(null)
   const [messageText, setMessageText] = useState('')
   const [isSending, setIsSending] = useState(false)
+  const [prevComplaintCount, setPrevComplaintCount] = useState(0);
+
+  // Notification for new complaints
+  useEffect(() => {
+    if (complaints.length > prevComplaintCount && prevComplaintCount > 0) {
+      const newComplaint = complaints[0];
+      toast.success(`New Report: ${newComplaint.title}`, {
+        duration: 5000,
+        icon: '🔔',
+        style: {
+          borderRadius: '16px',
+          background: '#0f172a',
+          color: '#fff',
+          border: '1px solid rgba(245, 158, 11, 0.2)'
+        }
+      });
+      addNotification({
+        title: 'New Citizen Report',
+        message: `${newComplaint.title} — ${newComplaint.location?.address || 'Unknown location'}`,
+        type: 'alert',
+        icon: '🚨',
+      });
+    }
+    setPrevComplaintCount(complaints.length);
+  }, [complaints.length]);
 
   const MOCK_WORKERS = [
     { id: 'w1', name: 'Rajesh Plumber', role: 'Plumbing Expert', workload: 2, phone: '+91 98765 43210' },
@@ -39,8 +67,22 @@ export default function OfficerDashboard() {
         user?.name || 'Officer', 
         `Manually assigned through Duty Desk.`
       )
+      toast.success(`Assigned to ${worker.name}. Citizen notified!`, {
+        icon: '👷',
+        style: {
+          borderRadius: '16px',
+          background: '#0f172a',
+          color: '#fff',
+        }
+      });
+      addNotification({
+        title: 'Worker Assigned',
+        message: `${worker.name} has been assigned. Citizen will be notified.`,
+        type: 'success',
+        icon: '👷',
+      });
     } catch (err) {
-      console.error("Assignment failed:", err)
+      toast.error('Assignment failed. Please try again.');
     }
   }
 

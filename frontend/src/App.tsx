@@ -38,9 +38,12 @@ const PageLoader = () => (
 
 import { ErrorBoundary } from './components/ErrorBoundary'
 
+import { Toaster } from 'react-hot-toast'
+
 export default function App() {
   return (
     <ErrorBoundary>
+      <Toaster position="top-right" />
       <BrowserRouter>
         <Suspense fallback={<PageLoader />}>
           <Routes>

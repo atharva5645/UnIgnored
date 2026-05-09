@@ -13,6 +13,8 @@ import {
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { format, subDays, isSameDay } from 'date-fns'
+import toast from 'react-hot-toast'
+import { useUIStore } from '../../store/uiStore'
 
 // --- Activity Heatmap Component ---
 function ActivityHeatmap() {
@@ -25,16 +27,16 @@ function ActivityHeatmap() {
 
   const getColor = (c: number) => {
     if (c === 0) return 'bg-slate-100 dark:bg-white/5'
-    if (c === 1) return 'bg-black/20 dark:bg-[#00d1ff]/20'
-    if (c === 2) return 'bg-black/40 dark:bg-[#00d1ff]/40'
-    if (c === 3) return 'bg-black/60 dark:bg-[#00d1ff]/60'
-    return 'bg-black dark:bg-[#00d1ff]'
+    if (c === 1) return 'bg-black/20 dark:bg-[#f59e0b]/20'
+    if (c === 2) return 'bg-black/40 dark:bg-[#f59e0b]/40'
+    if (c === 3) return 'bg-black/60 dark:bg-[#f59e0b]/60'
+    return 'bg-black dark:bg-[#f59e0b]'
   }
 
   return (
     <Card className="p-8 border-2 border-black dark:border-white/5 shadow-premium">
       <h3 className="text-xs font-black text-slate-800 dark:text-white mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
-        <TrendingUp size={16} className="text-slate-800 dark:text-[#00d1ff]" /> Activity Intelligence
+        <TrendingUp size={16} className="text-slate-800 dark:text-[#f59e0b]" /> Activity Intelligence
       </h3>
       <div className="flex gap-1.5 overflow-x-auto pb-4 custom-scrollbar">
         {Array.from({ length: weeks }, (_, wi) => (
@@ -77,18 +79,18 @@ function KanbanBoard({ complaints }: { complaints: any[] }) {
           <div key={col.id} className="min-w-[340px] flex-1 flex flex-col">
             <div className="flex items-center justify-between mb-6 px-4">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-[12px] bg-slate-800 dark:bg-[#00d1ff] flex items-center justify-center text-white dark:text-black">
+                <div className="w-8 h-8 rounded-[12px] bg-slate-800 dark:bg-[#f59e0b] flex items-center justify-center text-white dark:text-black">
                   {col.icon}
                 </div>
                 <h4 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-[0.2em]">{col.label}</h4>
               </div>
-              <Badge variant="info" className="bg-black text-white dark:bg-[#00d1ff] dark:text-black">{items.length}</Badge>
+              <Badge variant="info" className="bg-black text-white dark:bg-[#f59e0b] dark:text-black">{items.length}</Badge>
             </div>
             
             <div className="flex-1 space-y-4 p-4 rounded-[32px] bg-slate-50 dark:bg-white/5 border-2 border-black/5 dark:border-white/5 min-h-[500px]">
               {items.map(c => (
                 <Link to={`/complaints/track/${c.referenceId}`} key={c.id}>
-                  <Card hover className="p-5 bg-white dark:bg-[#0f172a] border-black dark:border-white/5 hover:border-black dark:hover:border-[#00d1ff] shadow-sm">
+                  <Card hover className="p-5 bg-white dark:bg-[#0f172a] border-black dark:border-white/5 hover:border-black dark:hover:border-[#f59e0b] shadow-sm">
                     <div className="flex items-start justify-between mb-4">
                       <div className="w-10 h-10 rounded-[14px] bg-slate-50 dark:bg-white/5 flex items-center justify-center text-xl shadow-inner">
                         {CATEGORY_META[c.category as keyof typeof CATEGORY_META].icon}
@@ -129,8 +131,11 @@ export default function UserDashboard() {
   const { user } = useAuthStore()
   const { viewMode, setViewMode, filterStatus, searchQuery, setFilter } = useComplaintStore()
   const { complaints, filteredComplaints, isLoading: storeLoading } = useComplaints()
+  const { addNotification } = useUIStore()
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+
+  const prevStatuses = React.useRef<Record<string, string>>({})
 
   useEffect(() => {
     setFilter('searchQuery', '');
@@ -140,7 +145,49 @@ export default function UserDashboard() {
     return () => clearTimeout(timer)
   }, [setFilter])
 
-  const myComplaints = complaints.filter(c => c.citizenId === user?.id)
+  const myComplaints = React.useMemo(
+    () => complaints.filter(c => c.citizenId === user?.id),
+    [complaints, user?.id]
+  )
+
+  // Monitor status changes for notifications
+  useEffect(() => {
+    myComplaints.forEach(complaint => {
+      const prevStatus = prevStatuses.current[complaint.id]
+      if (prevStatus && prevStatus !== complaint.status) {
+        if (complaint.status === 'assigned' || complaint.status === 'in_progress') {
+          toast(`Intelligence Update: ${complaint.title} is now being processed!`, {
+            icon: '⚡',
+            duration: 5000,
+            style: {
+              borderRadius: '16px',
+              background: '#333',
+              color: '#fff',
+              border: '1px solid #f59e0b',
+            },
+          })
+          addNotification({
+            title: 'Status Update',
+            message: `Your report "${complaint.title}" is now being processed by officers.`,
+            type: 'warning',
+            icon: '⚡',
+          })
+        } else if (complaint.status === 'resolved') {
+          toast.success(`Mission Success: ${complaint.title} has been resolved!`, {
+            icon: '✅',
+            duration: 6000,
+          })
+          addNotification({
+            title: 'Issue Resolved',
+            message: `Your report "${complaint.title}" has been successfully resolved!`,
+            type: 'success',
+            icon: '✅',
+          })
+        }
+      }
+      prevStatuses.current[complaint.id] = complaint.status
+    })
+  }, [myComplaints])
   const filtered = filteredComplaints
 
   const stats = [
@@ -161,7 +208,7 @@ export default function UserDashboard() {
         >
           <div>
             <div className="flex items-center gap-4 mb-4">
-              <Badge variant="info" className="bg-black text-white dark:bg-[#00d1ff] dark:text-black px-4 py-1.5 shadow-glow-white dark:shadow-glow-cyan">Verified Citizen</Badge>
+              <Badge variant="info" className="bg-black text-white dark:bg-[#f59e0b] dark:text-black px-4 py-1.5 shadow-glow-white dark:shadow-glow-amber">Verified Citizen</Badge>
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs font-black text-slate-400 uppercase tracking-[0.3em]">Live Feed Active</span>
             </div>
@@ -173,7 +220,7 @@ export default function UserDashboard() {
           
           <div className="flex items-center gap-4">
             <Link to="/complaints/new">
-              <Button size="xl" variant="primary" className="shadow-glow-white dark:shadow-glow-cyan group">
+              <Button size="xl" variant="primary" className="shadow-glow-white dark:shadow-glow-amber group">
                 <Plus size={20} className="mr-3 group-hover:rotate-90 transition-transform duration-500" /> FILE NEW INTELLIGENCE
               </Button>
             </Link>
@@ -216,7 +263,7 @@ export default function UserDashboard() {
                     className={clsx(
                       'flex items-center gap-3 px-6 py-3 rounded-[24px] text-xs font-black transition-all duration-500 tracking-[0.1em]',
                       viewMode === v.id 
-                        ? 'bg-black text-white dark:bg-[#00d1ff] dark:text-black shadow-glow-white dark:shadow-glow-cyan' 
+                        ? 'bg-black text-white dark:bg-[#f59e0b] dark:text-black shadow-glow-white dark:shadow-glow-amber' 
                         : 'text-slate-400 hover:text-black dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
                     )}
                   >
@@ -227,10 +274,10 @@ export default function UserDashboard() {
 
               <div className="flex items-center gap-4 flex-1 lg:max-w-md px-4">
                 <div className="relative w-full group">
-                  <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black dark:group-focus-within:text-[#00d1ff] transition-colors" />
+                  <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black dark:group-focus-within:text-[#f59e0b] transition-colors" />
                   <input 
                     placeholder="SCAN INTELLIGENCE FEED..."
-                    className="w-full bg-white dark:bg-[#020617] border-2 border-black/5 dark:border-white/10 rounded-[32px] pl-12 pr-6 py-3.5 text-sm font-bold text-slate-800 dark:text-white focus:border-slate-800 dark:focus:border-[#00d1ff] outline-none transition-all placeholder:text-slate-300 dark:placeholder:text-slate-700 shadow-inner"
+                    className="w-full bg-white dark:bg-[#020617] border-2 border-black/5 dark:border-white/10 rounded-[32px] pl-12 pr-6 py-3.5 text-sm font-bold text-slate-800 dark:text-white focus:border-slate-800 dark:focus:border-[#f59e0b] outline-none transition-all placeholder:text-slate-300 dark:placeholder:text-slate-700 shadow-inner"
                     value={searchQuery}
                     onChange={e => setFilter('searchQuery', e.target.value)}
                   />
@@ -256,7 +303,7 @@ export default function UserDashboard() {
                         transition={{ delay: i * 0.05 }}
                       >
                         <Link to={`/complaints/track/${c.referenceId}`}>
-                          <div className="bg-white dark:bg-[#0f172a] p-8 rounded-[32px] border-2 border-black/5 dark:border-white/5 hover:border-black dark:hover:border-[#00d1ff] transition-all duration-500 group cursor-pointer flex flex-col md:flex-row md:items-center gap-8 shadow-sm hover:shadow-2xl">
+                          <div className="bg-white dark:bg-[#0f172a] p-8 rounded-[32px] border-2 border-black/5 dark:border-white/5 hover:border-black dark:hover:border-[#f59e0b] transition-all duration-500 group cursor-pointer flex flex-col md:flex-row md:items-center gap-8 shadow-sm hover:shadow-2xl">
                             <div className="w-20 h-20 rounded-[24px] bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/10 flex items-center justify-center text-5xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-inner">
                               {CATEGORY_META[c.category].icon}
                             </div>
@@ -269,12 +316,12 @@ export default function UserDashboard() {
                                 </Badge>
                                 {c.severity >= 7 && <div className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />}
                               </div>
-                              <h4 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight group-hover:text-slate-800 dark:group-hover:text-[#00d1ff] transition-colors leading-tight">
+                              <h4 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight group-hover:text-slate-800 dark:group-hover:text-[#f59e0b] transition-colors leading-tight">
                                 {c.title}
                               </h4>
                               <div className="flex items-center gap-6 mt-4">
-                                <p className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><MapIcon size={12} className="text-black dark:text-[#00d1ff]" /> {c.ward}</p>
-                                <p className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><Calendar size={12} className="text-black dark:text-[#00d1ff]" /> {format(new Date(c.createdAt), 'MMM d, yyyy')}</p>
+                                <p className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><MapIcon size={12} className="text-black dark:text-[#f59e0b]" /> {c.ward}</p>
+                                <p className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><Calendar size={12} className="text-black dark:text-[#f59e0b]" /> {format(new Date(c.createdAt), 'MMM d, yyyy')}</p>
                               </div>
                             </div>
 
@@ -283,7 +330,7 @@ export default function UserDashboard() {
                                 <p className="text-xs text-slate-400 font-black uppercase tracking-[0.2em]">Social Trust</p>
                                 <p className="text-xl font-black text-slate-800 dark:text-white mt-1">👍 {c.upvotes}</p>
                               </div>
-                              <div className="w-12 h-12 rounded-full bg-black dark:bg-[#00d1ff] flex items-center justify-center text-white dark:text-black shadow-glow-white dark:shadow-glow-cyan group-hover:translate-x-2 transition-transform duration-500">
+                              <div className="w-12 h-12 rounded-full bg-black dark:bg-[#f59e0b] flex items-center justify-center text-white dark:text-black shadow-glow-white dark:shadow-glow-amber group-hover:translate-x-2 transition-transform duration-500">
                                 <ChevronRight size={24} />
                               </div>
                             </div>
@@ -318,7 +365,7 @@ export default function UserDashboard() {
             {/* Achievements Section */}
             <Card className="p-8 border-2 border-black dark:border-white/5 bg-white dark:bg-[#0f172a] shadow-premium relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                <Award size={120} className="text-black dark:text-[#00d1ff]" />
+                <Award size={120} className="text-black dark:text-[#f59e0b]" />
               </div>
               <h3 className="text-xs font-black text-slate-800 dark:text-white mb-10 uppercase tracking-[0.3em] flex items-center gap-3">
                 <Award size={16} className="text-amber-500" /> Honor Badges
@@ -349,7 +396,7 @@ export default function UserDashboard() {
             {/* Quick Actions */}
             <Card className="p-8 border-2 border-black dark:border-white/5 bg-slate-50 dark:bg-white/5 shadow-premium">
               <h3 className="text-xs font-black text-slate-800 dark:text-white mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
-                <Plus size={16} className="text-slate-800 dark:text-[#00d1ff]" /> Terminal Links
+                <Plus size={16} className="text-slate-800 dark:text-[#f59e0b]" /> Terminal Links
               </h3>
               <div className="space-y-3">
                 {[
@@ -358,9 +405,9 @@ export default function UserDashboard() {
                   { icon: <Share2 size={18} />, label: 'DEPLOY NETWORK INVITE' },
                   { icon: <FileText size={18} />, label: 'ACCESS PUBLIC LEDGER' },
                 ].map((item, i) => (
-                  <button key={i} className="w-full flex items-center justify-between p-5 rounded-[24px] bg-white dark:bg-[#020617] border-2 border-black/5 dark:border-white/10 hover:border-black dark:hover:border-[#00d1ff] transition-all duration-300 group text-left shadow-sm">
+                  <button key={i} className="w-full flex items-center justify-between p-5 rounded-[24px] bg-white dark:bg-[#020617] border-2 border-black/5 dark:border-white/10 hover:border-black dark:hover:border-[#f59e0b] transition-all duration-300 group text-left shadow-sm">
                     <div className="flex items-center gap-4">
-                      <span className="text-slate-400 group-hover:text-black dark:group-hover:text-[#00d1ff] transition-colors">{item.icon}</span>
+                      <span className="text-slate-400 group-hover:text-black dark:group-hover:text-[#f59e0b] transition-colors">{item.icon}</span>
                       <span className="text-xs text-slate-500 group-hover:text-black dark:group-hover:text-white font-black uppercase tracking-widest">{item.label}</span>
                     </div>
                     <ChevronRight size={16} className="text-slate-300 group-hover:translate-x-1 transition-transform" />
@@ -374,3 +421,4 @@ export default function UserDashboard() {
     </div>
   )
 }
+

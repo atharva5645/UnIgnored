@@ -68,7 +68,7 @@ export function CommandPalette() {
             className="relative w-full max-w-2xl bg-white dark:bg-[#0f172a] border-2 border-black dark:border-white/10 rounded-[32px] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] overflow-hidden"
           >
             <div className="flex items-center gap-4 px-8 py-6 border-b-2 border-black/5 dark:border-white/5 bg-slate-50 dark:bg-white/5">
-              <Command size={24} className="text-black dark:text-[#00d1ff]" />
+              <Command size={24} className="text-black dark:text-[#f59e0b]" />
               <input 
                 autoFocus
                 placeholder="Search commands, navigate, or perform actions..." 
@@ -76,7 +76,7 @@ export function CommandPalette() {
                 value={query}
                 onChange={e => setQuery(e.target.value)}
               />
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-[12px] bg-black dark:bg-[#00d1ff] text-[10px] text-white dark:text-black font-black uppercase tracking-widest">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-[12px] bg-black dark:bg-[#f59e0b] text-[10px] text-white dark:text-black font-black uppercase tracking-widest">
                 ESC
               </div>
             </div>
@@ -102,7 +102,7 @@ export function CommandPalette() {
                         <button
                           key={cmd.id}
                           onClick={() => handleSelect(cmd)}
-                          className="w-full flex items-center justify-between px-6 py-4 rounded-[24px] hover:bg-black hover:text-white dark:hover:bg-[#00d1ff] dark:hover:text-black group transition-all duration-300 border border-transparent hover:border-black dark:hover:border-white/10"
+                          className="w-full flex items-center justify-between px-6 py-4 rounded-[24px] hover:bg-black hover:text-white dark:hover:bg-[#f59e0b] dark:hover:text-black group transition-all duration-300 border border-transparent hover:border-black dark:hover:border-white/10"
                         >
                           <div className="flex items-center gap-5">
                             <div className="text-slate-400 group-hover:text-inherit transition-colors">
@@ -140,3 +140,4 @@ export function CommandPalette() {
     </AnimatePresence>
   )
 }
+
