@@ -62,7 +62,7 @@ export default function AdminDashboard() {
             <p className="text-slate-600 dark:text-slate-500">Managing civic infrastructure for <span className="text-slate-900 dark:text-white font-bold underline decoration-primary-500/30">{areaName}</span> · {format(new Date(), 'MMMM d, yyyy')}</p>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" className="hidden sm:flex border-white/10 hover:bg-white/5">
+            <Button variant="outline" size="sm" className="hidden sm:flex border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/5">
               <Download size={16} className="mr-2" /> Daily Report
             </Button>
             <Button size="sm" glow className="bg-primary-500 hover:bg-primary-600 ring-4 ring-primary-500/20">
@@ -83,7 +83,7 @@ export default function AdminDashboard() {
               onClick={() => setTab(t.id as any)}
               className={clsx(
                 'flex items-center gap-2 px-6 py-2.5 rounded-none text-xs font-bold transition-all duration-300',
-                tab === t.id ? 'bg-primary-500 text-white shadow-glow-blue' : 'text-slate-500 hover:text-white'
+                  activeTab === t.id ? 'bg-primary-500 text-white shadow-glow-blue' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
               )}
             >
               {t.icon} {t.label}
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
             <div className="grid lg:grid-cols-3 gap-8">
               <Card className="lg:col-span-2 p-8">
                 <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <TrendingUp size={20} className="text-primary-500" /> Resolution Velocity
                   </h3>
                   <div className="flex gap-2">
@@ -126,8 +126,8 @@ export default function AdminDashboard() {
                       <XAxis dataKey="name" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
                       <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
                       <Tooltip 
-                        contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #ffffff10', borderRadius: '16px' }}
-                        itemStyle={{ color: '#fff' }}
+                        contentStyle={{ backgroundColor: 'var(--tooltip-bg)', border: '1px solid var(--tooltip-border)', borderRadius: '16px' }}
+                        itemStyle={{ color: 'var(--tooltip-text)' }}
                       />
                       <Area type="monotone" dataKey="count" stroke="#06b6d4" strokeWidth={3} fillOpacity={1} fill="url(#colorCount)" />
                       <Area type="monotone" dataKey="resolved" stroke="#10b981" strokeWidth={3} fillOpacity={0} />
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
               </Card>
 
               <Card className="p-8">
-                <h3 className="text-lg font-bold text-white mb-8">Category Mix</h3>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-8">Category Mix</h3>
                 <div className="h-64 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -163,7 +163,7 @@ export default function AdminDashboard() {
                         <div className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS[i] }} />
                         <span className="text-xs text-slate-400">{c.name}</span>
                       </div>
-                      <span className="text-xs font-bold text-white">{c.value}%</span>
+                      <span className="text-xs font-bold text-slate-900 dark:text-white">{c.value}%</span>
                     </div>
                   ))}
                 </div>
@@ -173,7 +173,7 @@ export default function AdminDashboard() {
             {/* Ward Performance Table */}
             <Card className="p-8">
               <div className="flex items-center justify-between mb-8">
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                   <Building2 size={20} className="text-primary-500" /> Zonal Performance
                 </h3>
                 <Button variant="ghost" size="sm" className="text-primary-500">View Map View</Button>
@@ -181,7 +181,7 @@ export default function AdminDashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className="border-b border-white/5">
+                    <tr className="border-b border-slate-200 dark:border-white/5">
                       <th className="pb-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Ward Name</th>
                       <th className="pb-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Active Issues</th>
                       <th className="pb-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">SLA Score</th>
@@ -189,17 +189,17 @@ export default function AdminDashboard() {
                       <th className="pb-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Satisfaction</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody className="divide-y divide-slate-200 dark:divide-white/5">
                     {WARDS.map((ward) => (
-                      <tr key={ward.id} className="group hover:bg-white/5 transition-all">
-                        <td className="py-4 font-bold text-white">{ward.name}</td>
+                      <tr key={ward.id} className="group hover:bg-slate-100 dark:hover:bg-white/5 transition-all">
+                        <td className="py-4 font-bold text-slate-900 dark:text-white">{ward.name}</td>
                         <td className="py-4 text-sm text-slate-400">{ward.totalComplaints}</td>
                         <td className="py-4">
                           <div className="flex items-center gap-3">
                             <div className="w-24">
                               <ProgressBar value={ward.slaComplianceRate} color={ward.slaComplianceRate > 85 ? 'bg-emerald-500' : 'bg-amber-500'} />
                             </div>
-                            <span className="text-xs font-bold text-white">{ward.slaComplianceRate}%</span>
+                            <span className="text-xs font-bold text-slate-900 dark:text-white">{ward.slaComplianceRate}%</span>
                           </div>
                         </td>
                         <td className="py-4 text-sm text-slate-400">{ward.officerCount}</td>
@@ -222,14 +222,14 @@ export default function AdminDashboard() {
             {/* Real-time Triage */}
             <div className="grid lg:grid-cols-4 gap-6">
               <div className="lg:col-span-3">
-                <Card className="p-0 border-white/10 bg-white/5 overflow-hidden">
-                  <div className="p-6 border-b border-white/5 flex items-center justify-between bg-white/5">
+                <Card className="p-0 overflow-hidden">
+                  <div className="p-6 border-b border-slate-200 dark:border-white/5 flex items-center justify-between bg-slate-50 dark:bg-white/5">
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-                        <input placeholder="Filter by ID, Title or Location..." className="bg-dark-950/50 border border-white/10 rounded-none pl-10 pr-4 py-2 text-sm text-white focus:border-primary-500/50 outline-none w-80" />
+                        <input placeholder="Filter by ID, Title or Location..." className="bg-slate-100 dark:bg-slate-950/50 border border-slate-200 dark:border-white/10 rounded-none pl-10 pr-4 py-2 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none w-80" />
                       </div>
-                      <select className="bg-dark-950/50 border border-white/10 rounded-none px-4 py-2 text-xs text-white outline-none">
+                      <select className="bg-slate-100 dark:bg-slate-950/50 border border-slate-200 dark:border-white/10 rounded-none px-4 py-2 text-xs text-slate-900 dark:text-white outline-none">
                         <option>All Status</option>
                         <option>New Submission</option>
                         <option>Escalated</option>
@@ -241,10 +241,10 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   
-                  <div className="divide-y divide-white/5">
+                  <div className="divide-y divide-slate-200 dark:divide-white/5">
                     {complaints.slice(0, 8).map((c) => (
-                      <div key={c.id} className="p-6 flex items-center gap-6 hover:bg-white/5 transition-all group">
-                        <div className="w-12 h-12 rounded-none bg-white/5 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                      <div key={c.id} className="p-6 flex items-center gap-6 hover:bg-slate-100 dark:hover:bg-white/5 transition-all group">
+                        <div className="w-12 h-12 rounded-none bg-slate-200 dark:bg-white/5 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
                           {c.category === 'pothole' ? '🕳️' : '🗑️'}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -252,13 +252,13 @@ export default function AdminDashboard() {
                             <span className="text-[10px] font-mono text-primary-500 font-bold tracking-widest">{c.referenceId}</span>
                             <Badge variant={c.severity >= 7 ? 'error' : 'info'}>Sev {c.severity}</Badge>
                           </div>
-                          <h4 className="text-sm font-bold text-white truncate">{c.title}</h4>
+                          <h4 className="text-sm font-bold text-slate-900 dark:text-white truncate">{c.title}</h4>
                           <p className="text-xs text-slate-500 mt-1">{c.location.address}</p>
                         </div>
                         <div className="flex items-center gap-8">
                           <div className="hidden sm:block text-right">
                             <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">Reported By</p>
-                            <p className="text-xs text-white mt-1 font-medium">{c.citizenName}</p>
+                            <p className="text-xs text-slate-900 dark:text-white mt-1 font-medium">{c.citizenName}</p>
                           </div>
                           <div className="flex gap-2">
                             <Button variant="outline" size="sm" className="px-4">Details</Button>
@@ -272,18 +272,18 @@ export default function AdminDashboard() {
               </div>
 
               <div className="space-y-6">
-                <Card className="p-6 bg-brand-rose/5 border-brand-rose/20">
-                  <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-widest flex items-center gap-2">
-                    <AlertTriangle size={16} className="text-brand-rose" /> Critical Alerts
+                <Card className="p-6 bg-rose-500/5 border-rose-500/20">
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-widest flex items-center gap-2">
+                    <AlertTriangle size={16} className="text-rose-500" /> Critical Alerts
                   </h3>
                   <div className="space-y-4">
                     {[1, 2].map(i => (
-                      <div key={i} className="bg-dark-950/50 p-4 rounded-none border border-brand-rose/10">
+                      <div key={i} className="bg-slate-100 dark:bg-slate-950/50 p-4 rounded-none border border-slate-200 dark:border-rose-500/10">
                         <div className="flex items-center justify-between mb-2">
                           <Badge variant="error">SLA BREACH</Badge>
                           <span className="text-[10px] text-slate-600">2m ago</span>
                         </div>
-                        <p className="text-xs text-white font-bold">CMP-2024-X992</p>
+                        <p className="text-xs text-slate-900 dark:text-white font-bold">CMP-2024-X992</p>
                         <p className="text-[10px] text-slate-500 mt-1">Water Leakage at North Ward has exceeded 48hr SLA.</p>
                       </div>
                     ))}
@@ -291,14 +291,14 @@ export default function AdminDashboard() {
                 </Card>
 
                 <Card className="p-6">
-                  <h3 className="text-sm font-bold text-white mb-6 uppercase tracking-widest">Officer Availability</h3>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-widest">Officer Availability</h3>
                   <div className="space-y-4">
                     {OFFICERS.map(o => (
                       <div key={o.id} className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <Avatar name={o.name} src={o.avatar} size="sm" />
                           <div>
-                            <p className="text-xs font-bold text-white">{o.name.split(' ')[1]}</p>
+                            <p className="text-xs font-bold text-slate-900 dark:text-white">{o.name.split(' ')[1]}</p>
                             <p className="text-[10px] text-slate-600">{o.department}</p>
                           </div>
                         </div>
@@ -315,13 +315,13 @@ export default function AdminDashboard() {
         {tab === 'users' && (
           <Card className="p-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <Users size={20} className="text-primary-500" /> System Directory
               </h3>
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
-                  <input placeholder="Search users..." className="bg-dark-950/50 border border-white/5 rounded-none pl-10 pr-4 py-2 text-xs text-white focus:border-primary-500/50 outline-none w-64" />
+                  <input placeholder="Search users..." className="bg-slate-100 dark:bg-slate-950/50 border border-slate-200 dark:border-white/5 rounded-none pl-10 pr-4 py-2 text-xs text-slate-900 dark:text-white focus:border-primary-500/50 outline-none w-64" />
                 </div>
                 <Button size="sm">Add User</Button>
               </div>
@@ -330,7 +330,7 @@ export default function AdminDashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-white/5">
+                  <tr className="border-b border-slate-200 dark:border-white/5">
                     <th className="pb-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">User</th>
                     <th className="pb-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Role</th>
                     <th className="pb-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Ward</th>
@@ -338,14 +338,14 @@ export default function AdminDashboard() {
                     <th className="pb-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Activity</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-slate-200 dark:divide-white/5">
                   {OFFICERS.map((o) => (
-                    <tr key={o.id} className="hover:bg-white/5 transition-all">
+                    <tr key={o.id} className="hover:bg-slate-100 dark:hover:bg-white/5 transition-all">
                       <td className="py-4">
                         <div className="flex items-center gap-3">
                           <Avatar name={o.name} src={o.avatar} size="sm" />
                           <div>
-                            <p className="text-sm font-bold text-white">{o.name}</p>
+                            <p className="text-sm font-bold text-slate-900 dark:text-white">{o.name}</p>
                             <p className="text-[10px] text-slate-500">{o.email || 'officer@UnIgnored.gov'}</p>
                           </div>
                         </div>
@@ -357,7 +357,7 @@ export default function AdminDashboard() {
                       <td className="py-4">
                         <div className="flex items-center gap-2">
                           <div className={clsx('w-1.5 h-1.5 rounded-full', o.status === 'on_duty' ? 'bg-emerald-500' : 'bg-slate-600')} />
-                          <span className="text-[10px] text-white font-medium uppercase">{o.status.replace('_', ' ')}</span>
+                          <span className="text-[10px] text-slate-900 dark:text-white font-medium uppercase">{o.status.replace('_', ' ')}</span>
                         </div>
                       </td>
                       <td className="py-4 text-xs text-slate-500">2h ago</td>

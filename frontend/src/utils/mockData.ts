@@ -5,7 +5,7 @@ import { Ward } from '../types/officer';
 import { subDays, subHours, subMinutes } from 'date-fns';
 
 export const CATEGORY_META: Record<ComplaintCategory, { label: string; icon: string; color: string }> = {
-  pothole: { label: 'Pothole', icon: '\uD83D\uDDA5\uFE0F', color: 'bg-amber-500' },
+  pothole: { label: 'Pothole', icon: '\uD83D\uDD73\uFE0F', color: 'bg-amber-500' },
   garbage: { label: 'Garbage', icon: '\uD83D\uDDD1\uFE0F', color: 'bg-emerald-500' },
   water_leakage: { label: 'Water Leakage', icon: '\uD83D\uDCA7', color: 'bg-blue-500' },
   electricity: { label: 'Electricity', icon: '\u26A1', color: 'bg-yellow-500' },

@@ -55,7 +55,7 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-white/10 rounded-none hover:bg-white/20;
+    @apply bg-slate-300 dark:bg-white/10 rounded-none hover:bg-slate-400 dark:hover:bg-white/20;
   }
 }
 
@@ -72,7 +72,7 @@
 }
 
 /* Map Dark Mode Overrides */
-.map-tiles-dark {
+.dark .map-tiles-dark {
   filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
@@ -81,11 +81,11 @@
 }
 
 .leaflet-popup-content-wrapper {
-  @apply !bg-dark-900 !text-white !rounded-none !border !border-white/10 !shadow-2xl;
+  @apply !bg-white dark:!bg-dark-900 !text-slate-900 dark:!text-white !rounded-none !border border-slate-200 dark:!border-white/10 !shadow-2xl;
 }
 
 .leaflet-popup-tip {
-  @apply !bg-dark-900;
+  @apply !bg-white dark:!bg-dark-900;
 }
 
 /* Auth Step Transitions */

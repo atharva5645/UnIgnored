@@ -20,11 +20,11 @@ const COLORS = ['#06b6d4', '#8b5cf6', '#10b981', '#f59e0b', '#f43f5e']
 
 export default function AnalyticsPage() {
   return (
-    <div className="min-h-screen bg-dark-950 pb-20 pt-24 px-6">
+    <div className="min-h-screen bg-slate-50 dark:bg-dark-950 pb-20 pt-24 px-6 transition-colors duration-500">
       <div className="max-w-[1400px] mx-auto">
         <div className="text-center mb-16">
           <Badge className="mb-4 bg-primary-500/10 text-primary-400">Open Data Initiative</Badge>
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-4 font-display">City Transparency Hub</h1>
+          <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-4 font-display">City Transparency Hub</h1>
           <p className="text-slate-500 max-w-2xl mx-auto">
             Live insights into civic responsiveness, resolution efficiency, and ward-level performance across the city.
           </p>
@@ -42,7 +42,7 @@ export default function AnalyticsPage() {
           {/* Main Trend Chart */}
           <Card className="lg:col-span-2 p-8">
             <div className="flex items-center justify-between mb-8">
-              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <Activity size={20} className="text-primary-500" /> Hourly Report Frequency
               </h3>
               <div className="flex gap-2">
@@ -62,8 +62,8 @@ export default function AnalyticsPage() {
                   <XAxis dataKey="time" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #ffffff10', borderRadius: '16px' }}
-                    itemStyle={{ color: '#fff' }}
+                    contentStyle={{ backgroundColor: 'var(--tooltip-bg)', border: '1px solid var(--tooltip-border)', borderRadius: '16px' }}
+                    itemStyle={{ color: 'var(--tooltip-text)' }}
                   />
                   <Area type="monotone" dataKey="value" stroke="#06b6d4" strokeWidth={3} fillOpacity={1} fill="url(#cityGrad)" />
                 </AreaChart>
@@ -73,7 +73,7 @@ export default function AnalyticsPage() {
 
           {/* SLA Compliance by Category */}
           <Card className="p-8">
-            <h3 className="text-xl font-bold text-white mb-8">Efficiency by Sector</h3>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-8">Efficiency by Sector</h3>
             <div className="space-y-6">
               {[
                 { label: 'Sanitation', value: 94, color: 'bg-emerald-500' },
@@ -85,15 +85,15 @@ export default function AnalyticsPage() {
                 <div key={s.label} className="space-y-2">
                   <div className="flex justify-between text-xs">
                     <span className="text-slate-400 font-bold uppercase tracking-widest">{s.label}</span>
-                    <span className="text-white font-bold">{s.value}% SLA</span>
+                    <span className="text-slate-900 dark:text-white font-bold">{s.value}% SLA</span>
                   </div>
                   <ProgressBar value={s.value} color={s.color} />
                 </div>
               ))}
             </div>
-            <div className="mt-8 p-4 rounded-2xl bg-white/5 border border-white/5 text-center">
+            <div className="mt-8 p-4 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-center">
               <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Target SLA</p>
-              <p className="text-xl font-black text-white font-display">95.0%</p>
+              <p className="text-xl font-black text-slate-900 dark:text-white font-display">95.0%</p>
             </div>
           </Card>
         </div>
@@ -102,7 +102,7 @@ export default function AnalyticsPage() {
         <Card className="p-8">
           <div className="flex items-center justify-between mb-10">
             <div>
-              <h3 className="text-2xl font-black text-white font-display">Zonal Performance Leaderboard</h3>
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white font-display">Zonal Performance Leaderboard</h3>
               <p className="text-sm text-slate-500 mt-1">Updated every 5 minutes based on live resolution data</p>
             </div>
             <Button variant="outline" size="sm"><Download size={16} className="mr-2" /> Download Full Data</Button>
@@ -119,16 +119,16 @@ export default function AnalyticsPage() {
                 className="glass p-6 rounded-[2rem] border border-white/5 flex items-center justify-between group hover:border-primary-500/30 transition-all"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl font-black text-slate-700">
+                  <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center text-xl font-black text-slate-400 dark:text-slate-700">
                     {i + 1}
                   </div>
                   <div>
-                    <h4 className="text-base font-bold text-white group-hover:text-primary-400">{ward.name}</h4>
+                    <h4 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">{ward.name}</h4>
                     <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold">{ward.totalComplaints} Active Cases</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-xl font-black text-white font-display">{ward.slaComplianceRate}%</p>
+                  <p className="text-xl font-black text-slate-900 dark:text-white font-display">{ward.slaComplianceRate}%</p>
                   <p className="text-[10px] text-emerald-400 uppercase tracking-widest font-bold">Success</p>
                 </div>
               </motion.div>

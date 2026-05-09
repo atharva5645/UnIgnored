@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useComplaintStore } from '../../store/complaintStore'
 import { useAuthStore } from '../../store/authStore'
+import { useComplaints } from '../../hooks/useComplaints'
 import { CATEGORY_META, STATUS_META } from '../../utils/mockData'
 import { Button, StatCard, Card, Badge, Avatar, Skeleton } from '../../components/ui'
 import { Link, useNavigate } from 'react-router-dom'
@@ -23,7 +24,7 @@ function ActivityHeatmap() {
   })
 
   const getColor = (c: number) => {
-    if (c === 0) return 'bg-dark-700'
+    if (c === 0) return 'bg-slate-200 dark:bg-dark-700'
     if (c === 1) return 'bg-primary-900/60'
     if (c === 2) return 'bg-primary-700/70'
     if (c === 3) return 'bg-primary-600'
@@ -32,7 +33,7 @@ function ActivityHeatmap() {
 
   return (
     <Card className="p-6">
-      <h3 className="text-sm font-bold text-white mb-6 uppercase tracking-widest flex items-center gap-2">
+      <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-widest flex items-center gap-2">
         <TrendingUp size={16} className="text-primary-400" /> Activity Insights
       </h3>
       <div className="flex gap-1 overflow-x-auto pb-4 custom-scrollbar">
@@ -77,28 +78,28 @@ function KanbanBoard({ complaints }: { complaints: any[] }) {
             <div className="flex items-center justify-between mb-4 px-2">
               <div className="flex items-center gap-2">
                 <span className="text-primary-400">{col.icon}</span>
-                <h4 className="text-sm font-bold text-white uppercase tracking-widest">{col.label}</h4>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest">{col.label}</h4>
               </div>
               <Badge variant="info">{items.length}</Badge>
             </div>
             
-            <div className="flex-1 space-y-4 p-2 rounded-none bg-dark-900/50 border border-white/5 min-h-[400px]">
+            <div className="flex-1 space-y-4 p-2 rounded-none bg-slate-100/50 dark:bg-dark-900/50 border border-slate-200 dark:border-white/5 min-h-[400px]">
               {items.map(c => (
                 <Link to={`/complaints/track/${c.referenceId}`} key={c.id}>
-                  <Card hover className="p-4 bg-white/5 border-white/5 hover:border-primary-500/30">
+                  <Card hover className="p-4 bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:border-primary-500/30">
                     <div className="flex items-start justify-between mb-3">
                       <span className="text-2xl">{CATEGORY_META[c.category as keyof typeof CATEGORY_META].icon}</span>
                       <Badge variant={c.severity >= 7 ? 'error' : c.severity >= 4 ? 'warning' : 'info'}>
                         Sev {c.severity}
                       </Badge>
                     </div>
-                    <h5 className="text-sm font-bold text-white mb-1 line-clamp-1">{c.title}</h5>
+                    <h5 className="text-sm font-bold text-slate-900 dark:text-white mb-1 line-clamp-1">{c.title}</h5>
                     <p className="text-[10px] text-slate-500 font-mono mb-3">{c.referenceId}</p>
                     
-                    <div className="flex items-center justify-between pt-3 border-t border-white/5">
+                    <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-white/5">
                       <div className="flex -space-x-2">
-                        <Avatar name={c.citizenName} size="sm" className="border-2 border-dark-900" />
-                        {c.assignedOfficer && <Avatar name={c.assignedOfficer} size="sm" className="border-2 border-dark-900 bg-brand-violet" />}
+                        <Avatar name={c.citizenName} size="sm" className="border-2 border-slate-100 dark:border-dark-900" />
+                        {c.assignedOfficer && <Avatar name={c.assignedOfficer} size="sm" className="border-2 border-slate-100 dark:border-dark-900 bg-brand-violet" />}
                       </div>
                       <span className="text-[10px] text-slate-500 font-bold uppercase">{format(new Date(c.createdAt), 'MMM d')}</span>
                     </div>
@@ -106,8 +107,8 @@ function KanbanBoard({ complaints }: { complaints: any[] }) {
                 </Link>
               ))}
               {items.length === 0 && (
-                <div className="h-40 flex flex-col items-center justify-center text-slate-700">
-                  <div className="text-2xl mb-2">\uD83D\uDCEB</div>
+                <div className="h-40 flex flex-col items-center justify-center text-slate-500 dark:text-slate-600">
+                  <div className="text-2xl mb-2">{'\uD83D\uDCEB'}</div>
                   <p className="text-[10px] font-bold uppercase tracking-widest">No items here</p>
                 </div>
               )}
@@ -122,18 +123,22 @@ function KanbanBoard({ complaints }: { complaints: any[] }) {
 // --- Main Dashboard Component ---
 export default function UserDashboard() {
   const { user } = useAuthStore()
-  const { complaints, viewMode, setViewMode, filterStatus, searchQuery, setFilter, getFilteredComplaints } = useComplaintStore()
+  const { viewMode, setViewMode, filterStatus, searchQuery, setFilter } = useComplaintStore()
+  const { complaints, filteredComplaints, isLoading: storeLoading } = useComplaints()
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Simulate initial load
+    // Reset filters on load to ensure new reports are visible
+    setFilter('searchQuery', '');
+    setFilter('filterStatus', 'all');
+    
     const timer = setTimeout(() => setLoading(false), 1200)
     return () => clearTimeout(timer)
-  }, [])
+  }, [setFilter])
 
-  const myComplaints = complaints.slice(0, 15) // In real app, filter by userId
-  const filtered = getFilteredComplaints()
+  const myComplaints = complaints.slice(0, 15)
+  const filtered = filteredComplaints
 
   const stats = [
     { label: 'Total Filed', value: myComplaints.length, icon: '\uD83D\uDCCB', trend: 12 },
@@ -154,7 +159,7 @@ export default function UserDashboard() {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-3xl font-black text-slate-900 dark:text-white font-display">
-                Welcome back, <span className="gradient-text">{user?.name.split(' ')[0]}</span> \uD83D\uDC4B
+                Welcome back, <span className="gradient-text">{user?.name.split(' ')[0]}</span> {'\uD83D\uDC4B'}
               </h1>
               <Badge variant="info" className="animate-pulse bg-primary-500/10 text-primary-600 dark:text-primary-400 border border-primary-500/20">Active Resident</Badge>
             </div>
@@ -192,8 +197,8 @@ export default function UserDashboard() {
           {/* Main Panel */}
           <div className="lg:col-span-8 space-y-8">
             {/* View Controls & Filter */}
-            <Card className="p-4 border-white/5 bg-white/5 flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-2 bg-dark-950/50 p-1 rounded-none border border-white/5">
+            <Card className="p-4 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-2 bg-slate-100 dark:bg-dark-950/50 p-1 rounded-none border border-slate-200 dark:border-white/5">
                 {[
                   { id: 'list', icon: <List size={16} />, label: 'List' },
                   { id: 'kanban', icon: <Layout size={16} />, label: 'Kanban' },
@@ -205,7 +210,7 @@ export default function UserDashboard() {
                     onClick={() => setViewMode(v.id as any)}
                     className={clsx(
                       'flex items-center gap-2 px-4 py-2 rounded-none text-xs font-bold transition-all duration-300',
-                      viewMode === v.id ? 'bg-primary-500 text-white shadow-glow-blue' : 'text-slate-500 hover:text-white'
+                      viewMode === v.id ? 'bg-primary-500 text-white shadow-glow-blue' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
                     )}
                   >
                     {v.icon} <span className="hidden sm:inline">{v.label}</span>
@@ -218,7 +223,7 @@ export default function UserDashboard() {
                   <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
                   <input 
                     placeholder="Search your reports..."
-                    className="w-full bg-dark-950/50 border border-white/5 rounded-none pl-10 pr-4 py-2 text-sm text-white focus:border-primary-500/50 outline-none transition-all"
+                    className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-none pl-10 pr-4 py-2 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600"
                     value={searchQuery}
                     onChange={e => setFilter('searchQuery', e.target.value)}
                   />
@@ -247,8 +252,8 @@ export default function UserDashboard() {
                         transition={{ delay: i * 0.05 }}
                       >
                         <Link to={`/complaints/track/${c.referenceId}`}>
-                          <div className="glass p-5 rounded-none border border-white/5 hover:border-primary-500/30 transition-all duration-300 group cursor-pointer flex flex-col sm:flex-row sm:items-center gap-6">
-                            <div className="w-16 h-16 rounded-none bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform shadow-inner">
+                          <div className="glass p-5 rounded-none hover:border-primary-500/30 transition-all duration-300 group cursor-pointer flex flex-col sm:flex-row sm:items-center gap-6">
+                            <div className="w-16 h-16 rounded-none bg-slate-100 dark:bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform shadow-inner">
                               {CATEGORY_META[c.category].icon}
                             </div>
                             
@@ -268,12 +273,12 @@ export default function UserDashboard() {
                               </div>
                             </div>
 
-                            <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-4 border-t sm:border-t-0 sm:border-l border-white/5 pt-4 sm:pt-0 sm:pl-6">
+                            <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-4 border-t sm:border-t-0 sm:border-l border-slate-200 dark:border-white/5 pt-4 sm:pt-0 sm:pl-6">
                               <div className="text-right">
                                 <p className="text-[10px] text-slate-600 font-bold uppercase tracking-tighter">Engagement</p>
-                                <p className="text-sm font-bold text-white mt-1">👍 {c.upvotes}</p>
+                                <p className="text-sm font-bold text-slate-900 dark:text-white mt-1">👍 {c.upvotes}</p>
                               </div>
-                              <button className="p-2 rounded-none bg-white/5 text-slate-500 hover:text-white transition-colors">
+                              <button className="p-2 rounded-none bg-slate-100 dark:bg-white/5 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
                                 <ChevronRight size={20} />
                               </button>
                             </div>
@@ -284,8 +289,8 @@ export default function UserDashboard() {
                   )}
                   {filtered.length === 0 && !loading && (
                     <div className="py-20 text-center">
-                      <div className="text-6xl mb-4">\uD83D\uDD0D</div>
-                      <h3 className="text-xl font-bold text-white mb-2">No complaints found</h3>
+                      <div className="text-6xl mb-4">{'\uD83D\uDD0D'}</div>
+                      <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No complaints found</h3>
                       <p className="text-slate-500">Try adjusting your search or filters</p>
                     </div>
                   )}
@@ -327,7 +332,7 @@ export default function UserDashboard() {
                 ))}
                 <div className="flex flex-col items-center gap-2 opacity-30 grayscale">
                   <div className="w-14 h-14 rounded-none bg-white/5 border border-dashed border-white/20 flex items-center justify-center text-3xl">
-                    \uD83D\uDD12
+                    {'\uD83D\uDD12'}
                   </div>
                   <span className="text-[10px] font-bold text-slate-600 text-center uppercase">10 Reports</span>
                 </div>

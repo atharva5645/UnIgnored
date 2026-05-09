@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Bell, User, Settings, LogOut, Sun, Moon, Command, Shield, Menu, X } from 'lucide-react'
+import { Search, Bell, User, Settings, LogOut, Sun, Moon, Command, Shield, Menu, X, Eye } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { useUIStore } from '../../store/uiStore'
 import { Avatar, Button, Badge } from '../ui'
@@ -43,8 +43,8 @@ export function Navbar() {
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-primary-500 flex items-center justify-center text-xl shadow-glow-blue group-hover:scale-110 transition-transform text-slate-900 font-black">
-              👁️
+            <div className="w-10 h-10 rounded-xl bg-[#00d1ff] flex items-center justify-center shadow-[0_0_20px_rgba(0,210,255,0.3)] group-hover:scale-110 transition-transform">
+              <Eye className="w-6 h-6 text-white" />
             </div>
             <span className="font-display font-black text-2xl tracking-tight text-slate-900 dark:text-white">UnIgnored</span>
           </Link>

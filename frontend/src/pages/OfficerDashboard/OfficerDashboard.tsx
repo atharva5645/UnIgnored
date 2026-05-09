@@ -44,7 +44,7 @@ export default function OfficerDashboard() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
           <div className="flex items-center gap-6">
-            <Avatar name={user?.name || "Ramesh Kumar"} size="lg" className="w-20 h-20 bg-brand-violet shadow-glow-violet border-4 border-white/5" />
+            <Avatar name={user?.name || "Ramesh Kumar"} size="lg" className="w-20 h-20 bg-brand-violet shadow-glow-violet border-4 border-slate-200 dark:border-white/5" />
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-3xl font-black text-slate-900 dark:text-white font-display">Duty Desk: {user?.name.split(' ')[0]}</h1>
@@ -61,7 +61,7 @@ export default function OfficerDashboard() {
           {/* Tasks Column */}
           <div className="space-y-6">
             <div className="flex items-center justify-between mb-2 px-2">
-              <h3 className="text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
+               <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
                 <ClipboardList size={16} className="text-primary-500" /> Priority Queue
               </h3>
               <div className="flex items-center gap-4">
@@ -69,17 +69,17 @@ export default function OfficerDashboard() {
                   onClick={() => setSortBySla(!sortBySla)}
                   className={clsx(
                     "text-xs font-bold transition-colors",
-                    sortBySla ? "text-primary-400" : "text-slate-500 hover:text-white"
+                     sortBySla ? "text-primary-600 dark:text-primary-400" : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
                   )}
                 >
                   {sortBySla ? 'SORT BY NEWEST' : 'SORT BY SLA'}
                 </button>
-                <div className="w-px h-3 bg-white/10" />
+                 <div className="w-px h-3 bg-slate-200 dark:bg-white/10" />
                 <button 
                   onClick={() => setViewAll(!viewAll)}
                   className={clsx(
                     "text-xs font-bold transition-colors",
-                    viewAll ? "text-primary-400" : "text-slate-500 hover:text-white"
+                     viewAll ? "text-primary-600 dark:text-primary-400" : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
                   )}
                 >
                   {viewAll ? 'VIEW TOP 10' : 'VIEW ALL'}
@@ -95,9 +95,9 @@ export default function OfficerDashboard() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
                 >
-                  <Card className="p-6 border-white/5 bg-white/5 hover:border-primary-500/30 transition-all group">
+                   <Card className="p-6 border-slate-200 dark:border-white/5 hover:border-primary-500/30 transition-all group">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-                      <div className="w-16 h-16 rounded-none bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
+                       <div className="w-16 h-16 rounded-none bg-slate-100 dark:bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
                         {CATEGORY_META[task.category].icon}
                       </div>
                       
@@ -109,7 +109,7 @@ export default function OfficerDashboard() {
                             Due in 4h
                           </Badge>
                         </div>
-                        <h4 className="text-lg font-bold text-white truncate group-hover:text-primary-400 transition-colors">
+                         <h4 className="text-lg font-bold text-slate-900 dark:text-white truncate group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                           {task.title}
                         </h4>
                         <div className="flex items-center gap-4 mt-2">
@@ -118,7 +118,7 @@ export default function OfficerDashboard() {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3 pt-4 sm:pt-0 border-t sm:border-t-0 sm:border-l border-white/5 sm:pl-6">
+                       <div className="flex items-center gap-3 pt-4 sm:pt-0 border-t sm:border-t-0 sm:border-l border-slate-200 dark:border-white/5 sm:pl-6">
                         <Link to={`/complaints/track/${task.referenceId}`}>
                           <Button size="sm" variant="outline">Navigate</Button>
                         </Link>

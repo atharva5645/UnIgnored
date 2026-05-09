@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../../store/authStore'
+import { Eye, Shield } from 'lucide-react'
 
 export function HeroSection() {
   const { t } = useTranslation()
@@ -37,11 +38,15 @@ export function HeroSection() {
             24/7 CIVIC MONITORING AVAILABLE
           </p>
 
-          <h1 className="text-[72px] xl:text-[84px] leading-[1.1] font-extrabold text-slate-900 dark:text-white mb-8 tracking-[-3px]">
-            Professional <br />
-            Civic <br />
-            Dashboard.
-          </h1>
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-14 h-14 bg-[#00d1ff] rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(0,210,255,0.4)] border-2 border-white/20">
+              <Eye className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-6xl font-black tracking-tight text-slate-900 dark:text-white">
+              Professional <br />
+              <span className="text-primary-500">Civic Dashboard</span>
+            </h1>
+          </div>
 
           <p className="text-slate-700 dark:text-slate-400 text-[18px] leading-[32px] mb-14 font-medium max-w-[580px]">
             From complaint tracking to real-time civic issue monitoring, UnIgnored helps citizens report, monitor, and resolve public problems faster with complete transparency.
@@ -59,7 +64,7 @@ export function HeroSection() {
 
         {/* Right Image */}
         <div className="relative flex items-center justify-center pr-6 hidden lg:flex">
-          <div className="relative w-[540px] xl:w-[580px] h-[640px] overflow-hidden rounded-t-full shadow-[0_40px_80px_rgba(0,0,0,0.4)]">
+          <div className="relative w-[540px] xl:w-[580px] h-[640px] overflow-hidden rounded-[48px] shadow-[0_40px_80px_rgba(0,0,0,0.4)]">
             <img
               src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1974&auto=format&fit=crop"
               alt="dashboard"
