@@ -333,7 +333,7 @@ export default function NewComplaint() {
                     {s.icon}
                   </div>
                   <span className={clsx(
-                    'text-[10px] font-bold tracking-[0.2em] uppercase',
+                    'text-xs font-bold tracking-[0.2em] uppercase',
                     step === i ? 'text-slate-900 dark:text-white' : step > i ? 'text-primary-500' : 'text-slate-400 dark:text-slate-700'
                   )}>
                     {s.title}
@@ -353,7 +353,7 @@ export default function NewComplaint() {
                   <motion.div key="step0" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                     <div className="mb-10">
                       <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">How are you reporting?</h2>
-                      <p className="text-slate-500 text-xs">Individual reports are for personal issues. Society reports gather area-wide attention faster.</p>
+                      <p className="text-slate-600 dark:text-slate-400 text-sm">Individual reports are for personal issues. Society reports gather area-wide attention faster.</p>
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
                         {[
@@ -380,7 +380,7 @@ export default function NewComplaint() {
                             </div>
                             <div className="flex-1">
                                <h4 className={clsx('text-xl font-black tracking-tight uppercase', reportType === type.id ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-600')}>{type.label}</h4>
-                              <p className="text-[10px] font-bold text-slate-500 dark:text-slate-500 mt-2 leading-tight tracking-wider uppercase">{type.desc}</p>
+                              <p className="text-xs font-bold text-slate-500 dark:text-slate-500 mt-2 leading-tight tracking-wider uppercase">{type.desc}</p>
                             </div>
                             {reportType === type.id && (
                               <motion.div 
@@ -408,7 +408,7 @@ export default function NewComplaint() {
                             )}
                           >
                             <span className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">{meta.icon}</span>
-                            <span className={clsx('text-[11px] font-black uppercase tracking-[0.2em] text-center', data.category === key ? 'text-primary-500 dark:text-primary-400' : 'text-slate-500 dark:text-slate-600')}>
+                            <span className={clsx('text-xs font-black uppercase tracking-[0.2em] text-center', data.category === key ? 'text-primary-500 dark:text-primary-400' : 'text-slate-500 dark:text-slate-600')}>
                               {meta.label}
                             </span>
                             {data.category === key && (

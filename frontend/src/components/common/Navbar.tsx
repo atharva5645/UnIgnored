@@ -78,8 +78,8 @@ export function Navbar() {
               className="bg-transparent border-none outline-none text-sm font-medium text-black dark:text-white w-full placeholder:text-slate-400 dark:placeholder:text-slate-600"
             />
             <div className="flex flex-col items-center justify-center bg-slate-100 dark:bg-white/10 px-2 py-1 rounded-md border border-slate-200 dark:border-white/5 min-w-[40px]">
-              <span className="text-[8px] text-slate-500 dark:text-slate-400 font-bold uppercase leading-none">CTRL</span>
-              <span className="text-[10px] text-black dark:text-white font-black leading-none mt-0.5">K</span>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase leading-none">CTRL</span>
+              <span className="text-xs text-black dark:text-white font-black leading-none mt-0.5">K</span>
             </div>
           </div>
         </div>
@@ -113,8 +113,8 @@ export function Navbar() {
                 className="flex items-center gap-3 p-1 rounded-full transition-all duration-500 group"
               >
                 <div className="hidden lg:block text-right">
-                  <p className="text-xs font-black leading-none text-black dark:text-white">{user?.name}</p>
-                  <p className="text-[10px] opacity-60 font-black mt-1 uppercase tracking-wider text-slate-500 dark:text-slate-400">{user?.role.replace('_', ' ')}</p>
+                  <p className="text-sm font-black leading-none text-black dark:text-white">{user?.name}</p>
+                  <p className="text-xs opacity-60 font-black mt-1 uppercase tracking-wider text-slate-500 dark:text-slate-400">{user?.role.replace('_', ' ')}</p>
                 </div>
                 <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center text-white font-black text-lg shadow-lg">
                   {user?.name.charAt(0).toUpperCase()}
@@ -171,12 +171,12 @@ export function Navbar() {
           ) : (
             <div className="flex items-center gap-3">
               <Link to="/login">
-                <Button variant="ghost" size="sm" className="text-black dark:text-white hover:bg-black/5 rounded-full font-black uppercase tracking-widest text-[10px]">
+                <Button variant="ghost" size="sm" className="text-black dark:text-white hover:bg-black/5 rounded-full font-black uppercase tracking-widest text-xs">
                   Sign In
                 </Button>
               </Link>
               <Link to="/register">
-                <Button variant="primary" size="sm" className="rounded-full shadow-glow-white dark:shadow-glow-cyan font-black uppercase tracking-widest text-[10px]">
+                <Button variant="primary" size="sm" className="rounded-full shadow-glow-white dark:shadow-glow-cyan font-black uppercase tracking-widest text-xs">
                   Join Now
                 </Button>
               </Link>

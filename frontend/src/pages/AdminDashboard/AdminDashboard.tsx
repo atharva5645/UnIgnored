@@ -60,7 +60,7 @@ export default function AdminDashboard() {
                 {isZonal ? 'ZONAL AUTHORITY' : 'GLOBAL OVERWATCH'}
               </Badge>
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Sector Monitoring Active</span>
+              <span className="text-xs font-black text-slate-400 uppercase tracking-[0.3em]">Sector Monitoring Active</span>
             </div>
             <h1 className="text-6xl font-black text-black dark:text-white font-display tracking-tighter leading-none mb-4">
               {isZonal ? `Zonal HQ: ${areaName}` : 'Command Center'}
@@ -90,7 +90,7 @@ export default function AdminDashboard() {
                 key={t.id}
                 onClick={() => setTab(t.id as any)}
                 className={clsx(
-                  'flex items-center gap-3 px-8 py-3.5 rounded-[24px] text-[10px] font-black transition-all duration-500 tracking-[0.1em]',
+                  'flex items-center gap-3 px-8 py-3.5 rounded-[24px] text-xs font-black transition-all duration-500 tracking-[0.1em]',
                   tab === t.id 
                     ? 'bg-black text-white dark:bg-[#00d1ff] dark:text-black shadow-glow-white dark:shadow-glow-cyan' 
                     : 'text-slate-400 hover:text-black dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'

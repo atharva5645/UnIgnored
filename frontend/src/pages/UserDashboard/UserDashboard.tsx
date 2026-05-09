@@ -33,7 +33,7 @@ function ActivityHeatmap() {
 
   return (
     <Card className="p-8 border-2 border-black dark:border-white/5 shadow-premium">
-      <h3 className="text-[10px] font-black text-black dark:text-white mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
+      <h3 className="text-xs font-black text-black dark:text-white mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
         <TrendingUp size={16} className="text-black dark:text-[#00d1ff]" /> Activity Intelligence
       </h3>
       <div className="flex gap-1.5 overflow-x-auto pb-4 custom-scrollbar">
@@ -50,8 +50,8 @@ function ActivityHeatmap() {
         ))}
       </div>
       <div className="flex items-center justify-between mt-4">
-        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Efficiency Grid</p>
-        <div className="flex items-center gap-2 text-[10px] text-slate-400">
+        <p className="text-xs text-slate-400 font-black uppercase tracking-widest">Efficiency Grid</p>
+        <div className="flex items-center gap-2 text-xs text-slate-400">
           <span>Min</span>
           {[0, 1, 2, 3, 4].map(i => <div key={i} className={clsx('w-2.5 h-2.5 rounded-[2px]', getColor(i))} />)}
           <span>Max</span>
@@ -80,7 +80,7 @@ function KanbanBoard({ complaints }: { complaints: any[] }) {
                 <div className="w-8 h-8 rounded-[12px] bg-black dark:bg-[#00d1ff] flex items-center justify-center text-white dark:text-black">
                   {col.icon}
                 </div>
-                <h4 className="text-xs font-black text-black dark:text-white uppercase tracking-[0.2em]">{col.label}</h4>
+                <h4 className="text-sm font-black text-black dark:text-white uppercase tracking-[0.2em]">{col.label}</h4>
               </div>
               <Badge variant="info" className="bg-black text-white dark:bg-[#00d1ff] dark:text-black">{items.length}</Badge>
             </div>
@@ -97,15 +97,15 @@ function KanbanBoard({ complaints }: { complaints: any[] }) {
                         S{c.severity}
                       </Badge>
                     </div>
-                    <h5 className="text-sm font-black text-black dark:text-white mb-1 line-clamp-1">{c.title}</h5>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-4">{c.referenceId}</p>
+                    <h5 className="text-base font-black text-black dark:text-white mb-1 line-clamp-1">{c.title}</h5>
+                    <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-4">{c.referenceId}</p>
                     
                     <div className="flex items-center justify-between pt-4 border-t-2 border-black/5 dark:border-white/5">
                       <div className="flex -space-x-3">
                         <Avatar name={c.citizenName} size="sm" className="ring-4 ring-white dark:ring-[#0f172a]" />
                         {c.assignedOfficer && <Avatar name={c.assignedOfficer} size="sm" className="ring-4 ring-white dark:ring-[#0f172a]" />}
                       </div>
-                      <span className="text-[10px] text-slate-400 font-black uppercase tracking-tighter">{format(new Date(c.createdAt), 'MMM d')}</span>
+                      <span className="text-xs text-slate-400 font-black uppercase tracking-tighter">{format(new Date(c.createdAt), 'MMM d')}</span>
                     </div>
                   </Card>
                 </Link>
@@ -113,7 +113,7 @@ function KanbanBoard({ complaints }: { complaints: any[] }) {
               {items.length === 0 && (
                 <div className="h-40 flex flex-col items-center justify-center text-slate-300 dark:text-slate-600">
                   <div className="text-4xl mb-4 grayscale opacity-20">📭</div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em]">Sector Clear</p>
+                  <p className="text-xs font-black uppercase tracking-[0.3em]">Sector Clear</p>
                 </div>
               )}
             </div>
@@ -163,7 +163,7 @@ export default function UserDashboard() {
             <div className="flex items-center gap-4 mb-4">
               <Badge variant="info" className="bg-black text-white dark:bg-[#00d1ff] dark:text-black px-4 py-1.5 shadow-glow-white dark:shadow-glow-cyan">Verified Citizen</Badge>
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Live Feed Active</span>
+              <span className="text-xs font-black text-slate-400 uppercase tracking-[0.3em]">Live Feed Active</span>
             </div>
             <h1 className="text-6xl font-black text-black dark:text-white font-display tracking-tighter leading-none mb-4">
               System Console, <span className="text-slate-400 dark:text-slate-600">{user?.name.split(' ')[0]}</span>
@@ -214,7 +214,7 @@ export default function UserDashboard() {
                     key={v.id}
                     onClick={() => setViewMode(v.id as any)}
                     className={clsx(
-                      'flex items-center gap-3 px-6 py-3 rounded-[24px] text-[10px] font-black transition-all duration-500 tracking-[0.1em]',
+                      'flex items-center gap-3 px-6 py-3 rounded-[24px] text-xs font-black transition-all duration-500 tracking-[0.1em]',
                       viewMode === v.id 
                         ? 'bg-black text-white dark:bg-[#00d1ff] dark:text-black shadow-glow-white dark:shadow-glow-cyan' 
                         : 'text-slate-400 hover:text-black dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
@@ -263,7 +263,7 @@ export default function UserDashboard() {
                             
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-4 mb-3">
-                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{c.referenceId}</span>
+                                <span className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">{c.referenceId}</span>
                                 <Badge variant={STATUS_META[c.status].label === 'Resolved' ? 'success' : 'info'} className="px-4 py-1">
                                   {STATUS_META[c.status].label.toUpperCase()}
                                 </Badge>
@@ -273,14 +273,14 @@ export default function UserDashboard() {
                                 {c.title}
                               </h4>
                               <div className="flex items-center gap-6 mt-4">
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><MapIcon size={12} className="text-black dark:text-[#00d1ff]" /> {c.ward}</p>
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><Calendar size={12} className="text-black dark:text-[#00d1ff]" /> {format(new Date(c.createdAt), 'MMM d, yyyy')}</p>
+                                <p className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><MapIcon size={12} className="text-black dark:text-[#00d1ff]" /> {c.ward}</p>
+                                <p className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><Calendar size={12} className="text-black dark:text-[#00d1ff]" /> {format(new Date(c.createdAt), 'MMM d, yyyy')}</p>
                               </div>
                             </div>
 
                             <div className="flex items-center justify-between md:flex-col md:items-end md:justify-center gap-6 border-t-2 md:border-t-0 md:border-l-2 border-black/5 dark:border-white/5 pt-6 md:pt-0 md:pl-10">
                               <div className="text-right">
-                                <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em]">Social Trust</p>
+                                <p className="text-xs text-slate-400 font-black uppercase tracking-[0.2em]">Social Trust</p>
                                 <p className="text-xl font-black text-black dark:text-white mt-1">👍 {c.upvotes}</p>
                               </div>
                               <div className="w-12 h-12 rounded-full bg-black dark:bg-[#00d1ff] flex items-center justify-center text-white dark:text-black shadow-glow-white dark:shadow-glow-cyan group-hover:translate-x-2 transition-transform duration-500">
@@ -296,7 +296,7 @@ export default function UserDashboard() {
                     <div className="py-32 text-center bg-slate-50 dark:bg-white/5 rounded-[48px] border-4 border-dashed border-black/5 dark:border-white/10">
                       <div className="text-8xl mb-8 grayscale opacity-20">🔎</div>
                       <h3 className="text-2xl font-black text-black dark:text-white mb-3 uppercase tracking-tighter">Zero Intelligence</h3>
-                      <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Modify signal parameters or clear filters</p>
+                      <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Modify signal parameters or clear filters</p>
                     </div>
                   )}
                 </motion.div>
