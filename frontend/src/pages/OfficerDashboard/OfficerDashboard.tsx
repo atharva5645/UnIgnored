@@ -68,7 +68,7 @@ export default function OfficerDashboard() {
             <Avatar name={user?.name || "Ramesh Kumar"} size="lg" className="w-20 h-20 bg-brand-violet shadow-glow-violet border-4 border-slate-200 dark:border-white/5" />
             <div>
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-black text-slate-800 dark:text-white font-display">Duty Desk: {user?.name.split(' ')[0]}</h1>
+                <h1 className="text-3xl font-black text-slate-800 dark:text-white font-display">Duty Desk: {user?.name?.split(' ')[0] || 'Officer'}</h1>
                 <Badge variant="success" className="ring-4 ring-emerald-500/10">On Duty</Badge>
               </div>
               <p className="text-slate-600 dark:text-slate-500 font-bold tracking-tight mt-1">
@@ -123,7 +123,7 @@ export default function OfficerDashboard() {
                    <Card className="p-6 border-slate-200 dark:border-white/5 hover:border-primary-500/30 transition-all group">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-6">
                        <div className="w-16 h-16 rounded-none bg-slate-100 dark:bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
-                        {CATEGORY_META[task.category].icon}
+                        {CATEGORY_META[task.category]?.icon || '❓'}
                       </div>
                       
                       <div className="flex-1 min-w-0">
@@ -173,7 +173,7 @@ export default function OfficerDashboard() {
                                     <p className="text-sm font-bold text-slate-800 dark:text-white">{worker.name}</p>
                                     <p className="text-[10px] text-slate-500 uppercase">{worker.role}</p>
                                   </div>
-                                  <Badge size="sm" variant={worker.workload > 3 ? 'warning' : 'success'}>
+                                  <Badge variant={worker.workload > 3 ? 'warning' : 'success'}>
                                     {worker.workload} Active
                                   </Badge>
                                 </button>
@@ -234,7 +234,7 @@ export default function OfficerDashboard() {
                       <span>Daily Workload</span>
                       <span>{Math.round((worker.workload / 5) * 100)}%</span>
                     </div>
-                    <ProgressBar progress={(worker.workload / 5) * 100} color={worker.workload > 3 ? 'warning' : 'success'} size="sm" />
+                    <ProgressBar value={(worker.workload / 5) * 100} color={worker.workload > 3 ? 'bg-amber-500' : 'bg-emerald-500'} />
                   </div>
                   
                   <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100 dark:border-white/5">
