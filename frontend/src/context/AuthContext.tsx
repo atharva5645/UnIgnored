@@ -8,8 +8,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { setUser, setLoading } = useAuthStore();
 
   useEffect(() => {
+    // Safety timeout to prevent infinite loading if Firebase hangs
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
     // Subscribe to Firebase Auth state changes
     const unsubscribe = authService.onAuthStateChanged(async (user) => {
+      clearTimeout(timeout);
       // PROTOTYPE BYPASS: Prevent Firebase from overwriting the hardcoded prototype admin/officer session
       const currentUser = useAuthStore.getState().user;
       if (currentUser?.email === 'admin@gmail.com') {
@@ -31,7 +37,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      clearTimeout(timeout);
+    };
   }, [setUser, setLoading]);
 
   return (

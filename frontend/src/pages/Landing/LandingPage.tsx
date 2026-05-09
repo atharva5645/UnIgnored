@@ -1,4 +1,5 @@
 import React from 'react'
+import { useAuthStore } from '../../store/authStore'
 import { motion } from 'framer-motion'
 import { HeroSection } from '../../components/landing/HeroSection'
 import { LiveTicker } from '../../components/landing/LiveTicker'
@@ -12,6 +13,7 @@ import { Link } from 'react-router-dom'
 import { Trophy, ArrowRight } from 'lucide-react'
 
 export default function LandingPage() {
+  const { user, isAuthenticated } = useAuthStore()
   return (
     <div className="min-h-screen overflow-hidden">
       <HeroSection />
@@ -84,7 +86,15 @@ export default function LandingPage() {
             Join 50,000+ citizens and officers working together to build a better future.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/register"><Button size="xl" glow className="bg-slate-900 hover:bg-slate-800 text-white border-none shadow-2xl">Create Your Account</Button></Link>
+            {isAuthenticated ? (
+              <Link to={user?.role === 'citizen' ? '/dashboard/citizen' : user?.role === 'officer' ? '/dashboard/officer' : '/dashboard/admin'}>
+                <Button size="xl" glow className="bg-slate-900 hover:bg-slate-800 text-white border-none shadow-2xl">Return to Dashboard</Button>
+              </Link>
+            ) : (
+              <Link to="/register">
+                <Button size="xl" glow className="bg-slate-900 hover:bg-slate-800 text-white border-none shadow-2xl">Create Your Account</Button>
+              </Link>
+            )}
             <Link to="/about"><Button variant="ghost" size="xl" className="text-slate-900 dark:text-white">Learn More</Button></Link>
           </div>
         </div>

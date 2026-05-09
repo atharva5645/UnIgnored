@@ -33,8 +33,8 @@ function ActivityHeatmap() {
 
   return (
     <Card className="p-8 border-2 border-black dark:border-white/5 shadow-premium">
-      <h3 className="text-xs font-black text-black dark:text-white mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
-        <TrendingUp size={16} className="text-black dark:text-[#00d1ff]" /> Activity Intelligence
+      <h3 className="text-xs font-black text-slate-800 dark:text-white mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
+        <TrendingUp size={16} className="text-slate-800 dark:text-[#00d1ff]" /> Activity Intelligence
       </h3>
       <div className="flex gap-1.5 overflow-x-auto pb-4 custom-scrollbar">
         {Array.from({ length: weeks }, (_, wi) => (
@@ -77,10 +77,10 @@ function KanbanBoard({ complaints }: { complaints: any[] }) {
           <div key={col.id} className="min-w-[340px] flex-1 flex flex-col">
             <div className="flex items-center justify-between mb-6 px-4">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-[12px] bg-black dark:bg-[#00d1ff] flex items-center justify-center text-white dark:text-black">
+                <div className="w-8 h-8 rounded-[12px] bg-slate-800 dark:bg-[#00d1ff] flex items-center justify-center text-white dark:text-black">
                   {col.icon}
                 </div>
-                <h4 className="text-sm font-black text-black dark:text-white uppercase tracking-[0.2em]">{col.label}</h4>
+                <h4 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-[0.2em]">{col.label}</h4>
               </div>
               <Badge variant="info" className="bg-black text-white dark:bg-[#00d1ff] dark:text-black">{items.length}</Badge>
             </div>
@@ -97,7 +97,7 @@ function KanbanBoard({ complaints }: { complaints: any[] }) {
                         S{c.severity}
                       </Badge>
                     </div>
-                    <h5 className="text-base font-black text-black dark:text-white mb-1 line-clamp-1">{c.title}</h5>
+                    <h5 className="text-base font-black text-slate-800 dark:text-white mb-1 line-clamp-1">{c.title}</h5>
                     <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-4">{c.referenceId}</p>
                     
                     <div className="flex items-center justify-between pt-4 border-t-2 border-black/5 dark:border-white/5">
@@ -140,7 +140,7 @@ export default function UserDashboard() {
     return () => clearTimeout(timer)
   }, [setFilter])
 
-  const myComplaints = complaints.slice(0, 15)
+  const myComplaints = complaints.filter(c => c.citizenId === user?.id)
   const filtered = filteredComplaints
 
   const stats = [
@@ -165,10 +165,10 @@ export default function UserDashboard() {
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs font-black text-slate-400 uppercase tracking-[0.3em]">Live Feed Active</span>
             </div>
-            <h1 className="text-6xl font-black text-black dark:text-white font-display tracking-tighter leading-none mb-4">
-              System Console, <span className="text-slate-400 dark:text-slate-600">{user?.name.split(' ')[0]}</span>
+            <h1 className="text-6xl font-black text-slate-800 dark:text-white font-display tracking-tighter leading-none mb-4">
+              Citizen Console, <span className="text-slate-400 dark:text-slate-600">{user?.name.split(' ')[0]}</span>
             </h1>
-            <p className="text-lg text-slate-500 font-bold tracking-tight">Synchronized overview for <span className="text-black dark:text-white underline decoration-2 underline-offset-4">{format(new Date(), 'MMMM d, yyyy')}</span></p>
+            <p className="text-lg text-slate-500 font-bold tracking-tight">Synchronized overview for <span className="text-slate-800 dark:text-white underline decoration-2 underline-offset-4">{format(new Date(), 'MMMM d, yyyy')}</span></p>
           </div>
           
           <div className="flex items-center gap-4">
@@ -230,7 +230,7 @@ export default function UserDashboard() {
                   <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black dark:group-focus-within:text-[#00d1ff] transition-colors" />
                   <input 
                     placeholder="SCAN INTELLIGENCE FEED..."
-                    className="w-full bg-white dark:bg-[#020617] border-2 border-black/5 dark:border-white/10 rounded-[32px] pl-12 pr-6 py-3.5 text-sm font-bold text-black dark:text-white focus:border-black dark:focus:border-[#00d1ff] outline-none transition-all placeholder:text-slate-300 dark:placeholder:text-slate-700 shadow-inner"
+                    className="w-full bg-white dark:bg-[#020617] border-2 border-black/5 dark:border-white/10 rounded-[32px] pl-12 pr-6 py-3.5 text-sm font-bold text-slate-800 dark:text-white focus:border-slate-800 dark:focus:border-[#00d1ff] outline-none transition-all placeholder:text-slate-300 dark:placeholder:text-slate-700 shadow-inner"
                     value={searchQuery}
                     onChange={e => setFilter('searchQuery', e.target.value)}
                   />
@@ -269,7 +269,7 @@ export default function UserDashboard() {
                                 </Badge>
                                 {c.severity >= 7 && <div className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />}
                               </div>
-                              <h4 className="text-2xl font-black text-black dark:text-white tracking-tight group-hover:text-black dark:group-hover:text-[#00d1ff] transition-colors leading-tight">
+                              <h4 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight group-hover:text-slate-800 dark:group-hover:text-[#00d1ff] transition-colors leading-tight">
                                 {c.title}
                               </h4>
                               <div className="flex items-center gap-6 mt-4">
@@ -281,7 +281,7 @@ export default function UserDashboard() {
                             <div className="flex items-center justify-between md:flex-col md:items-end md:justify-center gap-6 border-t-2 md:border-t-0 md:border-l-2 border-black/5 dark:border-white/5 pt-6 md:pt-0 md:pl-10">
                               <div className="text-right">
                                 <p className="text-xs text-slate-400 font-black uppercase tracking-[0.2em]">Social Trust</p>
-                                <p className="text-xl font-black text-black dark:text-white mt-1">👍 {c.upvotes}</p>
+                                <p className="text-xl font-black text-slate-800 dark:text-white mt-1">👍 {c.upvotes}</p>
                               </div>
                               <div className="w-12 h-12 rounded-full bg-black dark:bg-[#00d1ff] flex items-center justify-center text-white dark:text-black shadow-glow-white dark:shadow-glow-cyan group-hover:translate-x-2 transition-transform duration-500">
                                 <ChevronRight size={24} />
@@ -295,7 +295,7 @@ export default function UserDashboard() {
                   {filtered.length === 0 && !loading && (
                     <div className="py-32 text-center bg-slate-50 dark:bg-white/5 rounded-[48px] border-4 border-dashed border-black/5 dark:border-white/10">
                       <div className="text-8xl mb-8 grayscale opacity-20">🔎</div>
-                      <h3 className="text-2xl font-black text-black dark:text-white mb-3 uppercase tracking-tighter">Zero Intelligence</h3>
+                      <h3 className="text-2xl font-black text-slate-800 dark:text-white mb-3 uppercase tracking-tighter">Zero Intelligence</h3>
                       <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Modify signal parameters or clear filters</p>
                     </div>
                   )}
@@ -320,7 +320,7 @@ export default function UserDashboard() {
               <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
                 <Award size={120} className="text-black dark:text-[#00d1ff]" />
               </div>
-              <h3 className="text-xs font-black text-black dark:text-white mb-10 uppercase tracking-[0.3em] flex items-center gap-3">
+              <h3 className="text-xs font-black text-slate-800 dark:text-white mb-10 uppercase tracking-[0.3em] flex items-center gap-3">
                 <Award size={16} className="text-amber-500" /> Honor Badges
               </h3>
               <div className="grid grid-cols-3 gap-6 relative z-10">
@@ -348,8 +348,8 @@ export default function UserDashboard() {
 
             {/* Quick Actions */}
             <Card className="p-8 border-2 border-black dark:border-white/5 bg-slate-50 dark:bg-white/5 shadow-premium">
-              <h3 className="text-xs font-black text-black dark:text-white mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
-                <Plus size={16} className="text-black dark:text-[#00d1ff]" /> Terminal Links
+              <h3 className="text-xs font-black text-slate-800 dark:text-white mb-8 uppercase tracking-[0.3em] flex items-center gap-3">
+                <Plus size={16} className="text-slate-800 dark:text-[#00d1ff]" /> Terminal Links
               </h3>
               <div className="space-y-3">
                 {[

@@ -75,13 +75,23 @@ export default function LoginPage() {
         isAnonymousCapable: true,
         loginHistory: []
       });
-      navigate('/');
+      const dashboard = role === 'officer' ? '/dashboard/officer' : 
+                        (role === 'super_admin' || role === 'zonal_admin') ? '/dashboard/admin' : 
+                        '/dashboard/citizen'
+      navigate(dashboard);
       return;
     }
 
     try {
       await login(email, password)
-      navigate('/')
+      const loggedInUser = useAuthStore.getState().user;
+      const userRole = loggedInUser?.role || role;
+
+      const dashboard = userRole === 'officer' ? '/dashboard/officer' : 
+                        (userRole === 'super_admin' || userRole === 'zonal_admin') ? '/dashboard/admin' : 
+                        '/dashboard/citizen'
+      
+      navigate(dashboard)
     } catch (err) {
       // Error is handled by the hook and displayed in the UI
     }

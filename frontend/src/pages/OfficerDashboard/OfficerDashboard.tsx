@@ -47,7 +47,7 @@ export default function OfficerDashboard() {
             <Avatar name={user?.name || "Ramesh Kumar"} size="lg" className="w-20 h-20 bg-brand-violet shadow-glow-violet border-4 border-slate-200 dark:border-white/5" />
             <div>
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-black text-slate-900 dark:text-white font-display">Duty Desk: {user?.name.split(' ')[0]}</h1>
+                <h1 className="text-3xl font-black text-slate-800 dark:text-white font-display">Duty Desk: {user?.name.split(' ')[0]}</h1>
                 <Badge variant="success" className="ring-4 ring-emerald-500/10">On Duty</Badge>
               </div>
               <p className="text-slate-600 dark:text-slate-500 font-bold tracking-tight mt-1">
@@ -61,7 +61,7 @@ export default function OfficerDashboard() {
           {/* Tasks Column */}
           <div className="space-y-6">
             <div className="flex items-center justify-between mb-2 px-2">
-               <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
+               <h3 className="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-widest flex items-center gap-2">
                 <ClipboardList size={16} className="text-primary-500" /> Priority Queue
               </h3>
               <div className="flex items-center gap-4">
@@ -69,7 +69,7 @@ export default function OfficerDashboard() {
                   onClick={() => setSortBySla(!sortBySla)}
                   className={clsx(
                     "text-xs font-bold transition-colors",
-                     sortBySla ? "text-primary-600 dark:text-primary-400" : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                     sortBySla ? "text-primary-600 dark:text-primary-400" : "text-slate-500 hover:text-slate-800 dark:hover:text-white"
                   )}
                 >
                   {sortBySla ? 'SORT BY NEWEST' : 'SORT BY SLA'}
@@ -79,7 +79,7 @@ export default function OfficerDashboard() {
                   onClick={() => setViewAll(!viewAll)}
                   className={clsx(
                     "text-xs font-bold transition-colors",
-                     viewAll ? "text-primary-600 dark:text-primary-400" : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                     viewAll ? "text-primary-600 dark:text-primary-400" : "text-slate-500 hover:text-slate-800 dark:hover:text-white"
                   )}
                 >
                   {viewAll ? 'VIEW TOP 10' : 'VIEW ALL'}

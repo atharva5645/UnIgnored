@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Bell, User, Settings, LogOut, Sun, Moon, Command, Shield, Menu, X, Eye } from 'lucide-react'
+import { Search, Bell, User, Settings, LogOut, Sun, Moon, Command, Shield, Menu, X, Eye, Activity } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { useUIStore } from '../../store/uiStore'
 import { Avatar, Button, Badge } from '../ui'
@@ -50,8 +50,8 @@ export function Navbar() {
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
           <Link to="/" className="flex items-center gap-4 group">
-            <div className="w-12 h-12 rounded-[18px] bg-black dark:bg-[#00d1ff] flex items-center justify-center shadow-premium group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-              <Eye className="w-7 h-7 text-white dark:text-black" />
+            <div className="w-12 h-12 rounded-[18px] bg-[#00d1ff] flex items-center justify-center shadow-premium group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+              <Eye className="w-7 h-7 text-white" />
             </div>
             <span className="font-display font-black text-3xl tracking-tighter text-black dark:text-white uppercase">UnIgnored</span>
           </Link>
@@ -142,6 +142,8 @@ export function Navbar() {
                       <div className="space-y-1">
                         {[
                           { icon: <User size={16} />, label: 'My Profile', path: '/profile' },
+                          { icon: <Activity size={16} />, label: 'My Dashboard', path: '/dashboard/citizen', show: user?.role === 'citizen' },
+                          { icon: <Activity size={16} />, label: 'Officer Panel', path: '/dashboard/officer', show: user?.role === 'officer' },
                           { icon: <Shield size={16} />, label: 'Admin Panel', path: '/dashboard/admin', show: user?.role === 'super_admin' || user?.role === 'zonal_admin' },
                           { icon: <Settings size={16} />, label: 'Settings', path: '/profile/settings' },
                         ].map(item => (item.show !== false && (

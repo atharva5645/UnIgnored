@@ -159,6 +159,11 @@ export default function NewComplaint() {
     { id: 'other', label: 'OTHER', icon: '❓' },
   ]
 
+  const REPORT_TYPES = [
+    { id: 'individual', label: 'Individual Report', desc: 'Standard report for personal issues.', icon: <User size={24} /> },
+    { id: 'area', label: 'Society / Area Report', desc: 'Society reports gather area-wide attention.', icon: <Users size={24} /> },
+  ]
+
   useEffect(() => {
     if (step === 5 && submittedId) {
       const timer = setTimeout(() => {
@@ -342,14 +347,13 @@ export default function NewComplaint() {
               {STEPS.map((s, i) => (
                 <div key={s.id} className="flex flex-col items-center gap-3 group cursor-pointer" onClick={() => step > i && setStep(i)}>
                   <div className={clsx(
-                    'w-14 h-14 rounded-[20px] flex items-center justify-center transition-all duration-500 border-2',
+                    'w-14 h-14 flex items-center justify-center transition-all duration-500',
                     step === i 
-                      ? 'bg-[#00d1ff] border-[#00d1ff] text-white shadow-[0_0_20px_rgba(0,209,255,0.3)]' 
-                      : 'bg-white dark:bg-white/5 border-slate-50 dark:border-white/10'
+                      ? 'bg-[#00d1ff] rounded-[18px] text-white shadow-lg' 
+                      : 'text-slate-400'
                   )}>
                     {React.cloneElement(s.icon as React.ReactElement, {
-                      size: 20,
-                      className: step === i ? 'text-white' : s.color
+                      size: 24
                     })}
                   </div>
                   <span className={clsx(
@@ -366,39 +370,36 @@ export default function NewComplaint() {
 
         <div className="grid lg:grid-cols-12 gap-10">
           <div className="lg:col-span-8">
-            <Card className="p-10 min-h-[600px] flex flex-col rounded-[48px] bg-white dark:bg-slate-900/50 border-white/5 shadow-2xl relative overflow-hidden transition-all duration-500">
+            <Card className="p-10 min-h-[600px] flex flex-col rounded-[48px] bg-white dark:bg-slate-900/50 border-slate-100 shadow-2xl relative overflow-hidden transition-all duration-500">
               <AnimatePresence mode="wait">
                 {step === 0 && (
                   <motion.div key="step0" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                      <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">How are you reporting?</h2>
+                      <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-2">How are you reporting?</h2>
                       <p className="text-slate-500 text-xs mb-8">Individual reports are for personal issues. Society reports gather area-wide attention faster.</p>
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        {[
-                          { id: 'individual', label: 'Individual Report', desc: 'Standard report for single concerns.', icon: <User size={24} /> },
-                          { id: 'area', label: 'Society / Area Report', desc: 'Collective voice for high-priority fixes.', icon: <Users size={24} /> },
-                        ].map((type) => (
+                        {REPORT_TYPES.map((type) => (
                           <button
                             key={type.id}
                             onClick={() => setReportType(type.id as any)}
                             className={clsx(
-                              'flex items-center gap-4 p-6 rounded-[32px] border transition-all duration-300 text-left group relative',
+                              'flex items-center gap-6 p-8 rounded-[40px] border transition-all duration-500 text-left group relative',
                               reportType === type.id 
-                                ? 'bg-[#00d1ff]/5 border-[#00d1ff] shadow-sm' 
-                                : 'bg-white dark:bg-white/5 border-slate-100 dark:border-white/10 hover:border-slate-200'
+                                ? 'bg-[#00d1ff]/5 border-[#00d1ff] shadow-[0_20px_40px_rgba(0,209,255,0.1)]' 
+                                : 'bg-slate-50/50 dark:bg-white/5 border-transparent hover:border-slate-200'
                             )}
                           >
                             <div className={clsx(
-                              'w-12 h-12 rounded-2xl flex items-center justify-center transition-all',
+                              'w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500',
                                reportType === type.id 
-                                ? 'bg-[#00d1ff] text-white' 
-                                : 'bg-slate-100 dark:bg-white/5 text-slate-400'
+                                ? 'bg-[#00d1ff] text-white shadow-lg' 
+                                : 'bg-white dark:bg-white/5 shadow-sm text-slate-400'
                             )}>
-                              {type.icon}
+                              {React.cloneElement(type.icon as React.ReactElement, { size: 28 })}
                             </div>
-                            <div>
-                               <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">{type.label}</h4>
-                               <p className="text-[10px] text-slate-500 mt-1 font-medium">{type.desc}</p>
+                            <div className="flex-1">
+                               <h4 className="text-base font-black text-slate-800 dark:text-white uppercase tracking-wider">{type.label}</h4>
+                               <p className="text-[10px] text-slate-500 mt-1 font-bold uppercase tracking-widest opacity-60">{type.desc}</p>
                             </div>
                           </button>
                         ))}
@@ -420,7 +421,7 @@ export default function NewComplaint() {
                               value={data.societyName}
                               onChange={(e) => setData({ ...data, societyName: e.target.value })}
                               placeholder="e.g. Green Valley Apartments, Sector 15 Residents"
-                              className="w-full p-6 rounded-[24px] bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:border-primary-500 transition-all duration-300 text-sm placeholder:text-slate-400 dark:placeholder:text-slate-600 font-medium"
+                              className="w-full p-6 rounded-[24px] bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white focus:outline-none focus:border-primary-500 transition-all duration-300 text-sm placeholder:text-slate-400 dark:placeholder:text-slate-600 font-medium"
                             />
                           </motion.div>
                         )}
@@ -428,21 +429,24 @@ export default function NewComplaint() {
 
 
                     <div className="mt-12">
-                      <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-8">Select Category</h2>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-8">Select Category</h2>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
                         {DISPLAY_CATEGORIES.map((cat) => (
                           <button
                             key={cat.id}
                             onClick={() => setData({...data, category: cat.id})}
                             className={clsx(
-                              'flex flex-col items-center justify-center p-6 rounded-[24px] border transition-all duration-300 group aspect-square relative',
+                              'flex flex-col items-center justify-center p-8 rounded-[40px] border transition-all duration-500 group aspect-square relative',
                               data.category === cat.id 
-                                ? 'bg-[#00d1ff]/5 border-[#00d1ff] shadow-sm' 
-                                : 'bg-white dark:bg-white/5 border-slate-100 dark:border-white/10 hover:border-slate-200'
+                                ? 'bg-white border-[#00d1ff] shadow-[0_20px_40px_rgba(0,209,255,0.1)] scale-105 z-10' 
+                                : 'bg-white border-slate-100 hover:border-slate-200 shadow-sm'
                             )}
                           >
-                            <span className="text-3xl mb-4 group-hover:scale-110 transition-transform">{cat.icon}</span>
-                            <span className={clsx('text-[10px] font-black uppercase tracking-widest text-center', data.category === cat.id ? 'text-[#00d1ff]' : 'text-slate-400')}>
+                            <span className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-500">{cat.icon}</span>
+                            <span className={clsx(
+                              'text-[10px] font-black uppercase tracking-[0.1em] text-center',
+                              data.category === cat.id ? 'text-[#00d1ff]' : 'text-slate-400'
+                            )}>
                               {cat.label}
                             </span>
                           </button>
@@ -453,21 +457,20 @@ export default function NewComplaint() {
                       onClick={() => setStep(step + 1)}
                       disabled={!data.category}
                       className={clsx(
-                        'mt-12 w-full py-6 rounded-[24px] flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest transition-all duration-300',
+                        'mt-12 w-full py-8 rounded-[32px] font-black text-xl tracking-widest uppercase transition-all duration-500',
                         data.category 
-                          ? 'bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.2)] hover:scale-[1.02] active:scale-[0.98]' 
-                          : 'bg-slate-100 dark:bg-white/5 text-slate-400 cursor-not-allowed'
+                          ? 'bg-[#00d1ff] text-white shadow-[0_20px_40px_rgba(0,209,255,0.3)] hover:scale-[1.02] active:scale-95' 
+                          : 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-50'
                       )}
                     >
-                      Continue
-                      <ChevronRight size={20} />
+                      Continue &gt;
                     </button>
                   </motion.div>
                 )}
 
                 {step === 1 && (
                   <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Pin Location</h2>
+                    <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Pin Location</h2>
                     <p className="text-slate-500 text-xs mb-8">Where exactly is this happening? You can use your current location.</p>
                     <div className="space-y-6">
                         <div className="h-[400px] rounded-[32px] overflow-hidden border border-slate-200 dark:border-white/5 relative shadow-2xl">
@@ -533,13 +536,13 @@ export default function NewComplaint() {
                       <div className="space-y-4">
                         <textarea 
                           placeholder="Street name, landmark, building number..."
-                          className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] p-5 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none transition-all resize-none placeholder:text-slate-400 dark:placeholder:text-slate-600"
+                          className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] p-5 text-sm text-slate-800 dark:text-white focus:border-primary-500/50 outline-none transition-all resize-none placeholder:text-slate-400 dark:placeholder:text-slate-600"
                           rows={4}
                           value={data.location.address}
                           onChange={e => setData({...data, location: {...data.location, address: e.target.value}})}
                         />
                         <select 
-                          className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] p-4 text-sm text-slate-900 dark:text-white outline-none"
+                          className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] p-4 text-sm text-slate-800 dark:text-white outline-none"
                           value={data.location.ward}
                           onChange={e => setData({...data, location: {...data.location, ward: e.target.value}})}
                         >
@@ -582,7 +585,7 @@ export default function NewComplaint() {
 
                 {step === 2 && (
                   <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Evidence</h2>
+                    <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Evidence</h2>
                     <p className="text-slate-500 text-xs mb-8">Visuals help officers understand and resolve issues faster.</p>
                     
                     {isCameraOpen ? (
@@ -605,11 +608,11 @@ export default function NewComplaint() {
                         ))}
                         <button onClick={startCamera} className="aspect-square flex flex-col items-center justify-center p-4 rounded-[32px] border border-dashed border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all group">
                           <Camera size={24} className="text-primary-500 mb-2 group-hover:scale-110 transition-transform" />
-                          <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-widest">Take Photo</span>
+                          <span className="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-widest">Take Photo</span>
                         </button>
                         <button onClick={() => fileInputRef.current?.click()} className="aspect-square flex flex-col items-center justify-center p-4 rounded-[32px] border border-dashed border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all group">
                           <ImageIcon size={24} className="text-brand-violet mb-2 group-hover:scale-110 transition-transform" />
-                          <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-widest">Upload Photo</span>
+                          <span className="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-widest">Upload Photo</span>
                         </button>
                       </div>
 
@@ -636,12 +639,12 @@ export default function NewComplaint() {
 
                 {step === 3 && (
                   <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Report Details</h2>
+                    <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Report Details</h2>
                     <p className="text-slate-500 text-xs mb-8">Add a title and detailed description to your report.</p>
                     <div className="space-y-6">
                       <input 
                         placeholder="Short summary (e.g., Pothole near Central Market)" 
-                        className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] px-5 py-4 text-sm text-slate-900 dark:text-white outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600" 
+                        className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] px-5 py-4 text-sm text-slate-800 dark:text-white outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600" 
                         value={data.title} 
                         onChange={e => setData({...data, title: e.target.value})} 
                       />
@@ -784,8 +787,8 @@ export default function NewComplaint() {
 
           {/* Sidebar Area matching screenshot */}
           <div className="lg:col-span-4 space-y-6">
-            <Card className="p-8 rounded-[32px] border-slate-100 bg-white/50 backdrop-blur-sm">
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+            <Card className="p-10 rounded-[48px] border-slate-100 bg-white shadow-xl">
+              <h3 className="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center gap-3">
                 <Info size={18} className="text-[#00d1ff]" /> PRO TIPS
               </h3>
               <ul className="space-y-4">
@@ -796,18 +799,18 @@ export default function NewComplaint() {
                 ].map((tip, i) => (
                   <li key={i} className="flex gap-4 items-start">
                     <span className="text-slate-400 shrink-0 mt-1">{tip.icon}</span>
-                    <p className="text-[11px] text-slate-500 leading-relaxed font-medium">{tip.text}</p>
+                    <p className="text-[11px] text-slate-500 leading-relaxed font-black opacity-60">{tip.text}</p>
                   </li>
                 ))}
               </ul>
             </Card>
 
-            <Card className="p-8 rounded-[32px] border-slate-100 bg-[#e0f7fa]/30 backdrop-blur-sm">
+            <Card className="p-10 rounded-[48px] border-transparent bg-[#e0f7fa]/50 backdrop-blur-sm shadow-xl">
               <div className="flex items-center gap-3 mb-4">
                 <Shield size={20} className="text-[#00d1ff]" />
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Safe Community</h3>
+                <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">Safe Community</h3>
               </div>
-              <p className="text-[11px] text-slate-500 leading-relaxed">
+              <p className="text-[11px] text-slate-500 leading-relaxed font-black opacity-60">
                 UnIgnored is a platform for genuine public concern. All submissions are monitored. 
                 Spam or false reporting may result in account suspension.
               </p>

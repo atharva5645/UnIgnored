@@ -54,9 +54,9 @@ export function HeroSection() {
 
           {/* Buttons */}
           <div className="flex items-center gap-5 pt-2">
-            <Link to={isAuthenticated ? (isStaff ? dashboardLink : "/complaints/new") : "/login"}>
+            <Link to={isAuthenticated ? dashboardLink : "/login"}>
               <button className="bg-primary-500 hover:bg-primary-400 transition-all duration-300 text-slate-900 font-black uppercase tracking-[1px] px-10 py-5 rounded-xl text-[16px] shadow-2xl">
-                ⚡ {isAuthenticated && isStaff ? "ACCESS DASHBOARD" : "REPORT AN ISSUE"}
+                ⚡ JOIN WATCH AND STEP
               </button>
             </Link>
           </div>
