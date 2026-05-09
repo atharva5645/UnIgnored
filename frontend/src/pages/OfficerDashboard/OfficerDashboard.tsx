@@ -16,10 +16,31 @@ import { format } from 'date-fns'
 
 export default function OfficerDashboard() {
   const { user } = useAuthStore()
-  const { complaints, updateStatus } = useComplaints()
+  const { complaints, updateStatus, assignWorker } = useComplaints()
   const [view, setView] = useState<'tasks' | 'map' | 'performance'>('tasks')
   const [sortBySla, setSortBySla] = useState(false)
   const [viewAll, setViewAll] = useState(false)
+
+  const MOCK_WORKERS = [
+    { id: 'w1', name: 'Rajesh Plumber', role: 'Plumbing Expert', workload: 2, phone: '+91 98765 43210' },
+    { id: 'w2', name: 'Suresh Electrician', role: 'Electrical Specialist', workload: 4, phone: '+91 98765 43211' },
+    { id: 'w3', name: 'Amit Cleaner', role: 'Sanitation Lead', workload: 1, phone: '+91 98765 43212' },
+    { id: 'w4', name: 'Vijay Mason', role: 'Construction Worker', workload: 3, phone: '+91 98765 43213' },
+  ]
+
+  const handleAssignWorker = async (complaintId: string, worker: any) => {
+    try {
+      await assignWorker(
+        complaintId, 
+        worker.id, 
+        worker.name, 
+        user?.name || 'Officer', 
+        `Manually assigned through Duty Desk.`
+      )
+    } catch (err) {
+      console.error("Assignment failed:", err)
+    }
+  }
   
   // Officers should see active tasks. For prototyping, we show 'submitted', 'under_review', 'assigned', 'in_progress'
   let myTasks = complaints.filter(c => 
@@ -57,9 +78,9 @@ export default function OfficerDashboard() {
           </div>
         </div>
 
-        <div className="space-y-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           {/* Tasks Column */}
-          <div className="space-y-6">
+          <div className="xl:col-span-2 space-y-6">
             <div className="flex items-center justify-between mb-2 px-2">
                <h3 className="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-widest flex items-center gap-2">
                 <ClipboardList size={16} className="text-primary-500" /> Priority Queue
@@ -88,7 +109,11 @@ export default function OfficerDashboard() {
             </div>
 
             <div className="space-y-4">
-              {myTasks.map((task, i) => (
+              {myTasks.length === 0 ? (
+                <div className="py-20 text-center">
+                  <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">No pending tasks found</p>
+                </div>
+              ) : myTasks.map((task, i) => (
                 <motion.div 
                   key={task.id}
                   initial={{ opacity: 0, x: -20 }}
@@ -108,6 +133,11 @@ export default function OfficerDashboard() {
                           <Badge variant="default" className="bg-brand-rose/10 text-brand-rose border border-brand-rose/20">
                             Due in 4h
                           </Badge>
+                          {task.assignedWorker && (
+                             <Badge variant="success" className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                              Worker: {task.assignedWorker}
+                            </Badge>
+                          )}
                         </div>
                          <h4 className="text-lg font-bold text-slate-900 dark:text-white truncate group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                           {task.title}
@@ -118,31 +148,121 @@ export default function OfficerDashboard() {
                         </div>
                       </div>
 
-                       <div className="flex items-center gap-3 pt-4 sm:pt-0 border-t sm:border-t-0 sm:border-l border-slate-200 dark:border-white/5 sm:pl-6">
+                       <div className="flex flex-wrap items-center gap-3 pt-4 sm:pt-0 border-t sm:border-t-0 sm:border-l border-slate-200 dark:border-white/5 sm:pl-6">
                         <Link to={`/complaints/track/${task.referenceId}`}>
                           <Button size="sm" variant="outline">Navigate</Button>
                         </Link>
-                        <Button 
-                          size="sm" 
-                          onClick={() => {
-                            updateStatus(
-                              task.id, 
-                              'resolved', 
-                              user?.name || 'Field Officer', 
-                              'officer', 
-                              'Issue has been successfully resolved on the field.'
-                            );
-                          }}
-                          className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20"
-                        >
-                          Complete
-                        </Button>
+                        
+                        {!task.assignedWorker ? (
+                          <div className="relative group/assign">
+                            <Button 
+                              size="sm" 
+                              className="bg-primary-500/10 text-primary-400 border border-primary-500/20 hover:bg-primary-500/20 flex items-center gap-2"
+                            >
+                              Assign Worker
+                            </Button>
+                            <div className="absolute right-0 bottom-full mb-2 w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 shadow-2xl rounded-xl p-2 hidden group-hover/assign:block z-50">
+                              <p className="text-[10px] font-bold text-slate-500 px-3 py-2 uppercase tracking-widest">Available Workers</p>
+                              {MOCK_WORKERS.map(worker => (
+                                <button
+                                  key={worker.id}
+                                  onClick={() => handleAssignWorker(task.id, worker)}
+                                  className="w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors flex items-center justify-between group/w"
+                                >
+                                  <div>
+                                    <p className="text-sm font-bold text-slate-800 dark:text-white">{worker.name}</p>
+                                    <p className="text-[10px] text-slate-500 uppercase">{worker.role}</p>
+                                  </div>
+                                  <Badge size="sm" variant={worker.workload > 3 ? 'warning' : 'success'}>
+                                    {worker.workload} Active
+                                  </Badge>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <Button 
+                            size="sm" 
+                            onClick={() => {
+                              updateStatus(
+                                task.id, 
+                                'resolved', 
+                                user?.name || 'Field Officer', 
+                                'officer', 
+                                'Issue has been successfully resolved on the field.'
+                              );
+                            }}
+                            className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20"
+                          >
+                            Complete
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </Card>
                 </motion.div>
               ))}
             </div>
+          </div>
+
+          {/* Workers Section */}
+          <div className="space-y-6">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-widest flex items-center gap-2 px-2">
+              <User size={16} className="text-brand-violet" /> Field Crew Status
+            </h3>
+            
+            <div className="space-y-4">
+              {MOCK_WORKERS.map((worker, i) => (
+                <Card key={worker.id} className="p-5 border-slate-200 dark:border-white/5">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-xl">
+                      👷
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white">{worker.name}</h4>
+                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{worker.role} · {worker.phone}</p>
+                    </div>
+                    <div className="ml-auto flex flex-col items-end">
+                      <Badge variant={worker.workload > 3 ? 'warning' : 'success'}>
+                        {worker.workload > 3 ? 'Busy' : 'Available'}
+                      </Badge>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                      <span>Daily Workload</span>
+                      <span>{Math.round((worker.workload / 5) * 100)}%</span>
+                    </div>
+                    <ProgressBar progress={(worker.workload / 5) * 100} color={worker.workload > 3 ? 'warning' : 'success'} size="sm" />
+                  </div>
+                  
+                  <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100 dark:border-white/5">
+                    <Button variant="ghost" size="sm" className="h-8 text-[10px] flex-1">Call</Button>
+                    <Button variant="ghost" size="sm" className="h-8 text-[10px] flex-1">Message</Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            <Card className="p-6 bg-brand-violet/5 border-brand-violet/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-brand-violet/10 rounded-lg text-brand-violet">
+                  <TrendingUp size={18} />
+                </div>
+                <h4 className="text-sm font-black text-slate-800 dark:text-white font-display">Daily Efficiency</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-500">Avg Resolution Time</span>
+                  <span className="font-bold text-slate-800 dark:text-white">1.8 Hours</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-500">Team Utilization</span>
+                  <span className="font-bold text-slate-800 dark:text-white">82%</span>
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </div>
