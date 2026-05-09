@@ -99,7 +99,7 @@ export const COMPLAINTS: Complaint[] = Array.from({ length: 50 }).map((_, i) => 
       pincode: `1100${10 + (i % 90)}`
     },
     media: [
-      { id: 'm1', url: 'https://images.unsplash.com/photo-1594818379496-da1e345b0ded?auto=format&fit=crop&q=80&w=400', type: 'image', name: 'photo1.jpg', size: 1024 * 1024, createdAt: date.toISOString() }
+      { id: 'm1', url: '/assets/pothole_evidence.png', type: 'image', name: 'photo1.jpg', size: 1024 * 1024, createdAt: date.toISOString() }
     ],
     witnesses: [],
     timeline: [

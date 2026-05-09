@@ -11,7 +11,24 @@
   }
 
   body {
-    @apply bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-200 antialiased selection:bg-primary-500/30 selection:text-white;
+    @apply bg-white dark:bg-[#020617] text-black dark:text-slate-200 antialiased selection:bg-primary-500/30 selection:text-white;
+  }
+  
+  /* High Contrast Monochrome for Light Mode */
+  .light {
+    --primary: 0, 0, 0;
+  }
+  
+  .light .bg-primary-500 {
+    @apply bg-black text-white;
+  }
+  
+  .light .border-primary-500 {
+    @apply border-black;
+  }
+  
+  .light .text-primary-500 {
+    @apply text-black;
   }
   
   /* Light Mode Specific Overrides for High Contrast */
@@ -56,6 +73,14 @@
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
     @apply bg-slate-300 dark:bg-white/10 rounded-none hover:bg-slate-400 dark:hover:bg-white/20;
+  }
+
+  .shadow-glow-cyan {
+    box-shadow: 0 0 20px -5px rgba(6, 182, 212, 0.5);
+  }
+  
+  .shadow-glow-white {
+    box-shadow: 0 0 20px -5px rgba(255, 255, 255, 0.5);
   }
 }
 

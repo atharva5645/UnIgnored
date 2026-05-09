@@ -7,7 +7,7 @@ import { Button, Card, Badge, Avatar, ProgressBar } from '../../components/ui'
 import { 
   ChevronLeft, Clock, MapPin, User, MessageSquare, 
   Share2, AlertCircle, CheckCircle2, TrendingUp, 
-  Calendar, Shield, MoreHorizontal, Send, Phone, Maximize2
+  Calendar, Shield, MoreHorizontal, Send, Phone, Maximize2, ExternalLink
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { format, formatDistanceToNow } from 'date-fns'
@@ -18,13 +18,16 @@ import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 
-// Fix for default marker icons in Leaflet with Vite
-const DefaultIcon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-})
+// Fix Leaflet icon issue
+const DefaultIcon = L.divIcon({
+  className: 'custom-div-icon',
+  html: `<div class="relative w-8 h-8 flex items-center justify-center">
+    <div class="absolute w-6 h-6 bg-blue-500 rounded-full border-4 border-white shadow-xl"></div>
+    <div class="absolute bottom-0 w-1 h-2 bg-blue-500"></div>
+  </div>`,
+  iconSize: [32, 32],
+  iconAnchor: [16, 32]
+});
 
 L.Marker.prototype.options.icon = DefaultIcon
 
@@ -257,7 +260,7 @@ export default function ComplaintTracking() {
               </h3>
               <div 
                 className="h-48 rounded-2xl bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-white/5 mb-4 relative overflow-hidden cursor-pointer group"
-                onClick={() => navigate(`/complaints/map?lat=${complaint.location.lat}&lng=${complaint.location.lng}&id=${complaint.id}`)}
+                onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${complaint.location.lat},${complaint.location.lng}`, '_blank')}
               >
                 <MapContainer 
                   center={[complaint.location.lat, complaint.location.lng]} 
@@ -271,7 +274,6 @@ export default function ComplaintTracking() {
                   <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    className="map-tiles-dark"
                   />
                   <Marker position={[complaint.location.lat, complaint.location.lng]} />
                 </MapContainer>
@@ -279,7 +281,7 @@ export default function ComplaintTracking() {
                 <div className="absolute inset-0 z-10 bg-slate-900/0 group-hover:bg-slate-900/20 transition-all flex items-center justify-center">
                   <div className="bg-white/90 dark:bg-dark-950/90 px-4 py-2 rounded-xl shadow-2xl scale-0 group-hover:scale-100 transition-all duration-300">
                     <span className="text-[10px] font-black uppercase tracking-widest text-primary-500 flex items-center gap-2">
-                      <Maximize2 size={12} /> View Full Map
+                      <ExternalLink size={12} /> Open Google Maps
                     </span>
                   </div>
                 </div>

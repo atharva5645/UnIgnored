@@ -21,17 +21,17 @@ interface ButtonProps extends HTMLMotionProps<"button"> {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading, glow, leftIcon, rightIcon, children, ...props }, ref) => {
     const variants = {
-      primary: 'bg-primary-500 text-white hover:bg-primary-600 ring-2 ring-primary-500/20 hover:ring-primary-500/40',
-      secondary: 'bg-slate-200 text-slate-900 hover:bg-slate-300 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 border border-slate-300 dark:border-white/10',
-      outline: 'border-2 border-slate-200 text-slate-900 hover:bg-slate-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10',
-      ghost: 'text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5',
+      primary: 'bg-black text-white hover:bg-slate-900 dark:bg-[#00d1ff] dark:text-black dark:hover:bg-[#00e5ff] shadow-glow-white dark:shadow-glow-cyan',
+      secondary: 'bg-white text-black hover:bg-slate-100 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 border border-black dark:border-white/10',
+      outline: 'border-2 border-black text-black hover:bg-slate-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10',
+      ghost: 'text-slate-600 hover:text-black hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/5',
       danger: 'bg-brand-rose text-white hover:bg-rose-600 ring-2 ring-rose-500/20',
     };
     const sizes = {
-      sm: 'px-3 py-1.5 text-xs',
-      md: 'px-4 py-2 text-sm',
-      lg: 'px-6 py-3 text-base',
-      xl: 'px-8 py-4 text-lg font-bold',
+      sm: 'px-4 py-2 text-xs',
+      md: 'px-6 py-2.5 text-sm',
+      lg: 'px-8 py-3.5 text-base',
+      xl: 'px-10 py-5 text-lg font-bold',
     };
 
     return (
@@ -39,7 +39,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         whileTap={{ scale: 0.98 }}
         className={cn(
-          'relative inline-flex items-center justify-center gap-2 rounded-none font-medium transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none active:scale-95',
+          'relative inline-flex items-center justify-center gap-2 rounded-[32px] font-bold transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none active:scale-95',
           variants[variant],
           sizes[size],
           className
@@ -61,7 +61,7 @@ export const Card = ({ children, className, hover, onClick }: { children: React.
     whileHover={hover ? { y: -5, scale: 1.01 } : {}}
     onClick={onClick}
     className={cn(
-      'glass rounded-none p-6 overflow-hidden relative transition-all duration-500',
+      'bg-white dark:bg-[#0f172a] border border-black dark:border-white/5 rounded-[32px] p-6 overflow-hidden relative transition-all duration-500',
       className
     )}
   >
@@ -72,14 +72,14 @@ export const Card = ({ children, className, hover, onClick }: { children: React.
 // --- Badge ---
 export const Badge = ({ children, variant = 'default', className }: { children: React.ReactNode; variant?: 'default' | 'success' | 'warning' | 'error' | 'info'; className?: string }) => {
   const styles = {
-    default: 'bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-white',
-    success: 'bg-brand-emerald/20 text-brand-emerald',
-    warning: 'bg-brand-amber/20 text-brand-amber',
-    error: 'bg-brand-rose/20 text-brand-rose',
-    info: 'bg-primary-500/20 text-primary-500 dark:text-primary-400',
+    default: 'bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300',
+    success: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400',
+    warning: 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400',
+    error: 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400',
+    info: 'bg-black text-white dark:bg-[#00d1ff] dark:text-black',
   };
   return (
-    <span className={cn('px-3 py-1 rounded-none text-[10px] font-bold uppercase tracking-wider', styles[variant], className)}>
+    <span className={cn('px-3 py-1 rounded-[32px] text-[10px] font-black uppercase tracking-widest', styles[variant], className)}>
       {children}
     </span>
   );
@@ -91,7 +91,7 @@ export const Avatar = ({ src, name, size = 'md', className }: { src?: string; na
   const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2);
   
   return (
-    <div className={cn('rounded-none overflow-hidden bg-slate-900 dark:bg-white flex items-center justify-center text-white dark:text-slate-900 font-bold shadow-premium', sizes[size], className)}>
+    <div className={cn('rounded-[32px] overflow-hidden bg-black dark:bg-[#00d1ff] flex items-center justify-center text-white dark:text-black font-black shadow-premium border-2 border-white dark:border-[#020617]', sizes[size], className)}>
       {src ? <img src={src} alt={name} className="w-full h-full object-cover" /> : initials}
     </div>
   );
@@ -99,40 +99,42 @@ export const Avatar = ({ src, name, size = 'md', className }: { src?: string; na
 
 // --- Stat Card ---
 export const StatCard = ({ label, value, icon, trend, color }: { label: string; value: string | number; icon: string; trend?: number; color?: string }) => (
-  <Card className={cn('flex flex-col gap-1 border border-slate-200 dark:border-none bg-white dark:bg-dark-900', color)}>
+  <Card className={cn('flex flex-col gap-1 border border-black dark:border-white/5 bg-white dark:bg-[#0f172a]', color)}>
     <div className="flex justify-between items-start">
-      <span className="text-3xl filter grayscale-[0.2]">{icon}</span>
+      <div className="w-12 h-12 rounded-[20px] bg-slate-50 dark:bg-white/5 flex items-center justify-center text-2xl shadow-inner">
+        {icon}
+      </div>
       {trend !== undefined && (
-        <span className={cn('text-[10px] font-black px-2 py-1 rounded-none', trend >= 0 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-rose-500/10 text-rose-600 dark:text-rose-400')}>
+        <span className={cn('text-[10px] font-black px-3 py-1 rounded-[32px] border', trend >= 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400' : 'bg-rose-50 border-rose-200 text-rose-700 dark:bg-rose-500/10 dark:border-rose-500/20 dark:text-rose-400')}>
           {trend >= 0 ? '↑' : '↓'} {Math.abs(trend)}%
         </span>
       )}
     </div>
-    <div className="mt-4">
-      <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">{label}</p>
-      <h3 className="text-3xl font-black text-slate-900 dark:text-white font-display mt-1">{value}</h3>
+    <div className="mt-6">
+      <p className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">{label}</p>
+      <h3 className="text-4xl font-black text-slate-900 dark:text-white font-display mt-1">{value}</h3>
     </div>
-    <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/5 rounded-full -mr-16 -mt-16" />
+    <div className="absolute top-0 right-0 w-32 h-32 bg-black/5 dark:bg-[#00d1ff]/5 rounded-full -mr-16 -mt-16 blur-3xl" />
   </Card>
 );
 
 // --- ProgressBar ---
-export const ProgressBar = ({ value, max = 100, color = 'bg-primary-500', showLabel }: { value: number; max?: number; color?: string; showLabel?: boolean }) => {
+export const ProgressBar = ({ value, max = 100, color = 'bg-black dark:bg-[#00d1ff]', showLabel }: { value: number; max?: number; color?: string; showLabel?: boolean }) => {
   const percent = Math.min((value / max) * 100, 100);
   return (
     <div className="w-full">
       {showLabel && (
-        <div className="flex justify-between text-[10px] mb-2 font-bold uppercase tracking-widest">
+        <div className="flex justify-between text-[10px] mb-2 font-black uppercase tracking-widest">
           <span className="text-slate-500">Progress</span>
           <span className="text-slate-900 dark:text-white">{Math.round(percent)}%</span>
         </div>
       )}
-      <div className="h-2 bg-slate-100 dark:bg-dark-700 rounded-none overflow-hidden border border-slate-200 dark:border-white/5">
+      <div className="h-3 bg-slate-100 dark:bg-white/5 rounded-[32px] overflow-hidden border border-slate-200 dark:border-white/5 p-0.5">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: `${percent}%` }}
           transition={{ duration: 1, ease: 'circOut' }}
-          className={cn('h-full', color)} 
+          className={cn('h-full rounded-[32px]', color)} 
         />
       </div>
     </div>
@@ -141,5 +143,5 @@ export const ProgressBar = ({ value, max = 100, color = 'bg-primary-500', showLa
 
 // --- Skeleton ---
 export const Skeleton = ({ className }: { className?: string }) => (
-  <div className={cn('animate-pulse bg-slate-200 dark:bg-white/5 rounded-none', className)} />
+  <div className={cn('animate-pulse bg-slate-100 dark:bg-white/5 rounded-[32px]', className)} />
 );

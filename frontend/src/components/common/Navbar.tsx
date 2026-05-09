@@ -27,13 +27,20 @@ export function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={clsx(
-        'fixed top-0 left-0 right-0 z-50 py-3 px-6 transition-all duration-300',
+        'fixed top-4 left-6 right-6 z-50 py-3 px-6 transition-all duration-500 rounded-[32px]',
         scrolled 
           ? clsx(
-              'border-b shadow-2xl transition-colors duration-500',
-              darkMode ? 'bg-[#020617]/90 border-white/5' : 'bg-white/90 border-slate-200'
+              'border shadow-2xl backdrop-blur-xl transition-all duration-500',
+              darkMode 
+                ? 'bg-[#020617]/80 border-white/10 shadow-glow-cyan/20' 
+                : 'bg-white/80 border-black shadow-glow-white/20'
             )
-          : 'bg-transparent'
+          : clsx(
+              'border transition-all duration-500',
+              darkMode 
+                ? 'bg-[#020617]/40 border-white/5' 
+                : 'bg-white/40 border-slate-200'
+            )
       )}
     >
       <div className="max-w-[1800px] mx-auto flex items-center justify-between gap-8">
@@ -42,32 +49,37 @@ export function Navbar() {
           <button onClick={toggleSidebar} className="lg:hidden text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-[#00d1ff] flex items-center justify-center shadow-[0_0_20px_rgba(0,210,255,0.3)] group-hover:scale-110 transition-transform">
-              <Eye className="w-6 h-6 text-white" />
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-11 h-11 rounded-[16px] bg-black dark:bg-[#00d1ff] flex items-center justify-center shadow-premium group-hover:scale-110 transition-transform duration-500">
+              <Eye className="w-6 h-6 text-white dark:text-black" />
             </div>
-            <span className="font-display font-black text-2xl tracking-tight text-slate-900 dark:text-white">UnIgnored</span>
+            <span className="font-display font-black text-2xl tracking-tighter text-black dark:text-white uppercase">CivicEye</span>
           </Link>
         </div>
 
         {/* Desktop Search Bar */}
         <div className="hidden md:flex flex-1 max-w-xl relative">
           <div className={clsx(
-            'flex items-center gap-3 w-full px-4 py-2.5 rounded-2xl border transition-all duration-300',
+            'flex items-center gap-3 w-full px-6 py-2.5 rounded-[20px] border transition-all duration-500',
             searchFocused 
-              ? 'bg-slate-100 dark:bg-white/10 border-primary-500/50 shadow-glow-blue' 
-              : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10'
+              ? darkMode 
+                ? 'bg-white/10 border-[#00d1ff] shadow-glow-cyan/20' 
+                : 'bg-slate-50 border-black shadow-lg'
+              : darkMode 
+                ? 'bg-white/5 border-white/10' 
+                : 'bg-slate-50 border-slate-200'
           )}>
-            <Search size={18} className="text-slate-400 dark:text-slate-500" />
+            <Search size={18} className={searchFocused ? 'text-black dark:text-[#00d1ff]' : 'text-slate-400 dark:text-slate-500'} />
             <input 
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setSearchFocused(false)}
               onKeyDown={(e) => e.key === 'k' && (e.ctrlKey || e.metaKey) && toggleCommandPalette()}
               placeholder="Search complaints, wards, or officers..." 
-              className="bg-transparent border-none outline-none text-sm text-slate-900 dark:text-white w-full placeholder:text-slate-400 dark:placeholder:text-slate-600"
+              className="bg-transparent border-none outline-none text-sm font-medium text-black dark:text-white w-full placeholder:text-slate-400 dark:placeholder:text-slate-600"
             />
-            <div className="flex items-center gap-1 bg-white dark:bg-white/5 px-2 py-0.5 rounded-none border border-slate-200 dark:border-white/10">
-              <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-tighter">Ctrl K</span>
+            <div className="flex flex-col items-center justify-center bg-slate-100 dark:bg-white/10 px-2 py-1 rounded-md border border-slate-200 dark:border-white/5 min-w-[40px]">
+              <span className="text-[8px] text-slate-500 dark:text-slate-400 font-bold uppercase leading-none">CTRL</span>
+              <span className="text-[10px] text-black dark:text-white font-black leading-none mt-0.5">K</span>
             </div>
           </div>
         </div>
@@ -76,31 +88,36 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
           
-          <button onClick={toggleDarkMode} className="p-2.5 rounded-none hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all border border-transparent hover:border-slate-200 dark:hover:border-white/10">
+          <button 
+            onClick={toggleDarkMode} 
+            className="p-3 rounded-full hover:bg-black hover:text-white dark:hover:bg-[#00d1ff] dark:hover:text-black text-slate-500 dark:text-slate-400 transition-all duration-500 border border-transparent hover:border-black dark:hover:border-white/10"
+          >
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           
           <div className="relative">
-            <button className="p-2.5 rounded-none hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all relative border border-transparent hover:border-slate-200 dark:hover:border-white/10">
+            <button className="p-3 rounded-full hover:bg-black hover:text-white dark:hover:bg-[#00d1ff] dark:hover:text-black text-slate-500 dark:text-slate-400 transition-all duration-500 relative border border-transparent hover:border-black dark:hover:border-white/10">
               <Bell size={20} />
               {notifications.length > 0 && (
-                <span className="absolute top-2 right-2 w-2 h-2 bg-brand-rose rounded-full animate-pulse" />
+                <span className="absolute top-3 right-3 w-2 h-2 bg-brand-rose rounded-full border-2 border-white dark:border-[#020617] animate-pulse" />
               )}
             </button>
           </div>
 
-          <div className="h-6 w-px bg-slate-200 dark:bg-white/10 mx-2 hidden sm:block" />
+          <div className="h-8 w-px bg-slate-200 dark:bg-white/10 mx-2 hidden sm:block" />
 
           {isAuthenticated ? (
             <div className="relative">
               <button 
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-3 p-1 pr-3 rounded-none hover:bg-slate-100 dark:hover:bg-white/5 transition-all border border-transparent hover:border-slate-200 dark:hover:border-white/10"
+                className="flex items-center gap-3 p-1 rounded-full transition-all duration-500 group"
               >
-                <Avatar name={user!.name} src={user?.avatar} size="sm" />
-                <div className="hidden lg:block text-left">
-                  <p className="text-xs font-bold text-slate-900 dark:text-white leading-none">{user?.name}</p>
-                  <p className="text-[10px] text-slate-500 font-bold mt-1 uppercase tracking-wider">{user?.role.replace('_', ' ')}</p>
+                <div className="hidden lg:block text-right">
+                  <p className="text-xs font-black leading-none text-black dark:text-white">{user?.name}</p>
+                  <p className="text-[10px] opacity-60 font-black mt-1 uppercase tracking-wider text-slate-500 dark:text-slate-400">{user?.role.replace('_', ' ')}</p>
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center text-white font-black text-lg shadow-lg">
+                  {user?.name.charAt(0).toUpperCase()}
                 </div>
               </button>
 
@@ -109,14 +126,14 @@ export function Navbar() {
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setProfileOpen(false)} />
                     <motion.div 
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      initial={{ opacity: 0, y: 15, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      className="absolute right-0 mt-3 w-64 glass border border-slate-300 dark:border-white/10 rounded-none shadow-2xl z-20 p-2"
+                      exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                      className="absolute right-0 mt-4 w-72 bg-white dark:bg-[#0f172a] border-2 border-black dark:border-white/10 rounded-[32px] shadow-2xl z-20 p-3 overflow-hidden"
                     >
-                      <div className="p-4 border-b border-slate-200 dark:border-white/5 mb-2">
-                        <p className="text-sm font-bold text-slate-900 dark:text-white">{user?.email}</p>
-                        <div className="flex items-center gap-2 mt-2">
+                      <div className="p-5 border-b-2 border-black/5 dark:border-white/5 mb-2 bg-slate-50 dark:bg-white/5 rounded-[24px]">
+                        <p className="text-sm font-black text-black dark:text-white truncate">{user?.email}</p>
+                        <div className="flex items-center gap-2 mt-3">
                           <Badge variant="info">{user?.rewardPoints} Points</Badge>
                           <Badge variant="success">Level 4</Badge>
                         </div>
@@ -131,18 +148,18 @@ export function Navbar() {
                           <button 
                             key={item.label}
                             onClick={() => { navigate(item.path); setProfileOpen(false); }}
-                            className="w-full flex items-center gap-3 px-3 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-none transition-all"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-[20px] transition-all duration-300"
                           >
                             {item.icon} {item.label}
                           </button>
                         )))}
                       </div>
                       
-                      <div className="h-px bg-slate-200 dark:bg-white/5 my-2" />
+                      <div className="h-px bg-slate-100 dark:bg-white/5 my-2 mx-4" />
                       
                       <button 
                         onClick={() => { logout(); navigate('/'); setProfileOpen(false); }}
-                        className="w-full flex items-center gap-3 px-3 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 rounded-none transition-all font-bold"
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-[20px] transition-all duration-300 font-black"
                       >
                         <LogOut size={16} /> Sign Out
                       </button>
@@ -152,9 +169,17 @@ export function Navbar() {
               </AnimatePresence>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
-              <Link to="/login"><Button variant="ghost" size="sm" className="text-slate-900 dark:text-white rounded-xl">Sign In</Button></Link>
-              <Link to="/register"><Button size="sm" className="rounded-xl">Get Started</Button></Link>
+            <div className="flex items-center gap-3">
+              <Link to="/login">
+                <Button variant="ghost" size="sm" className="text-black dark:text-white hover:bg-black/5 rounded-full font-black uppercase tracking-widest text-[10px]">
+                  Sign In
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button variant="primary" size="sm" className="rounded-full shadow-glow-white dark:shadow-glow-cyan font-black uppercase tracking-widest text-[10px]">
+                  Join Now
+                </Button>
+              </Link>
             </div>
           )}
         </div>

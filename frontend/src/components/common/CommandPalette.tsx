@@ -57,34 +57,35 @@ export function CommandPalette() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setOpen(false)}
-            className="fixed inset-0 bg-dark-950/90"
+            className="fixed inset-0 bg-black/80 dark:bg-[#020617]/90 backdrop-blur-md"
           />
           
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95, y: -20 }}
+            initial={{ opacity: 0, scale: 0.9, y: -40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="relative w-full max-w-2xl glass border border-white/10 rounded-3xl shadow-2xl overflow-hidden"
+            exit={{ opacity: 0, scale: 0.9, y: -40 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="relative w-full max-w-2xl bg-white dark:bg-[#0f172a] border-2 border-black dark:border-white/10 rounded-[32px] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] overflow-hidden"
           >
-            <div className="flex items-center gap-3 px-6 py-4 border-b border-white/5 bg-white/5">
-              <Command size={20} className="text-primary-500" />
+            <div className="flex items-center gap-4 px-8 py-6 border-b-2 border-black/5 dark:border-white/5 bg-slate-50 dark:bg-white/5">
+              <Command size={24} className="text-black dark:text-[#00d1ff]" />
               <input 
                 autoFocus
-                placeholder="What do you want to do?" 
-                className="w-full bg-transparent border-none outline-none text-lg text-white placeholder:text-slate-600"
+                placeholder="Search commands, navigate, or perform actions..." 
+                className="w-full bg-transparent border-none outline-none text-xl font-black text-black dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
                 value={query}
                 onChange={e => setQuery(e.target.value)}
               />
-              <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-dark-800 border border-white/10 text-[10px] text-slate-500 font-bold">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-[12px] bg-black dark:bg-[#00d1ff] text-[10px] text-white dark:text-black font-black uppercase tracking-widest">
                 ESC
               </div>
             </div>
 
-            <div className="max-h-[60vh] overflow-y-auto p-2 custom-scrollbar">
+            <div className="max-h-[60vh] overflow-y-auto p-4 custom-scrollbar">
               {filtered.length === 0 ? (
-                <div className="p-12 text-center">
-                  <div className="text-4xl mb-4">🔍</div>
-                  <p className="text-slate-500">No commands found for "{query}"</p>
+                <div className="p-16 text-center">
+                  <div className="text-6xl mb-6 filter grayscale">🔍</div>
+                  <p className="text-slate-400 font-black uppercase tracking-widest text-xs">No intelligence found for "{query}"</p>
                 </div>
               ) : (
                 Object.entries(
@@ -94,24 +95,24 @@ export function CommandPalette() {
                     return acc
                   }, {} as Record<string, typeof COMMANDS>)
                 ).map(([category, cmds]) => (
-                  <div key={category}>
-                    <div className="px-4 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{category}</div>
-                    <div className="space-y-1">
+                  <div key={category} className="mb-6 last:mb-0">
+                    <div className="px-6 py-2 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-2">{category}</div>
+                    <div className="space-y-1.5">
                       {cmds.map((cmd) => (
                         <button
                           key={cmd.id}
                           onClick={() => handleSelect(cmd)}
-                          className="w-full flex items-center justify-between px-4 py-3 rounded-2xl hover:bg-white/5 group transition-all"
+                          className="w-full flex items-center justify-between px-6 py-4 rounded-[24px] hover:bg-black hover:text-white dark:hover:bg-[#00d1ff] dark:hover:text-black group transition-all duration-300 border border-transparent hover:border-black dark:hover:border-white/10"
                         >
-                          <div className="flex items-center gap-4">
-                            <div className="text-slate-400 group-hover:text-primary-400 transition-colors">
+                          <div className="flex items-center gap-5">
+                            <div className="text-slate-400 group-hover:text-inherit transition-colors">
                               {cmd.icon}
                             </div>
-                            <span className="text-sm font-medium text-slate-300 group-hover:text-white">
+                            <span className="text-base font-bold tracking-tight">
                               {cmd.label}
                             </span>
                           </div>
-                          <span className="text-[10px] font-bold text-slate-600 group-hover:text-slate-400 transition-colors uppercase tracking-widest">
+                          <span className="text-[10px] font-black opacity-40 group-hover:opacity-100 uppercase tracking-widest">
                             {cmd.category}
                           </span>
                         </button>
@@ -122,16 +123,16 @@ export function CommandPalette() {
               )}
             </div>
 
-            <div className="p-4 border-t border-white/5 bg-white/5 flex items-center justify-between">
-              <div className="flex gap-4">
-                <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                  <span className="px-1.5 py-0.5 rounded bg-dark-800 border border-white/10 text-slate-400">↑↓</span> Navigate
+            <div className="px-8 py-5 border-t-2 border-black/5 dark:border-white/5 bg-slate-50 dark:bg-white/5 flex items-center justify-between">
+              <div className="flex gap-6">
+                <div className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                  <span className="px-2 py-1 rounded-lg bg-white dark:bg-white/10 border border-black/10 dark:border-white/10 text-black dark:text-white shadow-sm">↑↓</span> Navigate
                 </div>
-                <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
-                  <span className="px-1.5 py-0.5 rounded bg-dark-800 border border-white/10 text-slate-400">ENTER</span> Select
+                <div className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                  <span className="px-2 py-1 rounded-lg bg-white dark:bg-white/10 border border-black/10 dark:border-white/10 text-black dark:text-white shadow-sm">ENTER</span> Select
                 </div>
               </div>
-              <p className="text-[10px] text-slate-600">UnIgnored Intelligence Console</p>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">CivicEye v2.0</p>
             </div>
           </motion.div>
         </div>

@@ -18,9 +18,13 @@ import L from 'leaflet'
 // Fix Leaflet icon issue
 const DefaultIcon = L.divIcon({
   className: 'custom-div-icon',
-  html: `<div class="w-4 h-4 bg-primary-500 rounded-none border-2 border-white shadow-glow-blue"></div>`,
-  iconSize: [16, 16],
-  iconAnchor: [8, 8]
+  html: `<div class="relative w-10 h-10 flex items-center justify-center">
+    <div class="absolute w-10 h-10 bg-blue-500/20 rounded-full animate-ping"></div>
+    <div class="absolute w-8 h-8 bg-blue-500 rounded-full border-[6px] border-white shadow-[0_0_20px_rgba(59,130,246,0.5)] z-10"></div>
+    <div class="absolute w-2 h-2 bg-white rounded-full z-20"></div>
+  </div>`,
+  iconSize: [40, 40],
+  iconAnchor: [20, 20]
 });
 
 const STEPS = [
@@ -34,7 +38,10 @@ const STEPS = [
 function RecenterMap({ lat, lng }: { lat: number; lng: number }) {
   const map = useMap();
   useEffect(() => {
-    map.setView([lat, lng], 16);
+    map.flyTo([lat, lng], 16, {
+      duration: 1.5,
+      easeLinearity: 0.25
+    });
   }, [lat, lng, map]);
   return null;
 }
@@ -80,7 +87,7 @@ const ImageItem = ({ file, onRemove, onUploadComplete }: { file: File, onRemove:
   }, [file]);
 
   return (
-    <div className="relative aspect-square rounded-none overflow-hidden border border-white/10 group bg-dark-900">
+    <div className="relative aspect-square rounded-[32px] overflow-hidden border border-white/10 group bg-dark-900">
       {url ? (
         <motion.img 
           initial={{ opacity: 0, scale: 0.9 }} 
@@ -91,7 +98,7 @@ const ImageItem = ({ file, onRemove, onUploadComplete }: { file: File, onRemove:
         />
       ) : (
         <div className="w-full h-full bg-white/5 flex flex-col items-center justify-center p-4">
-          <div className="w-full bg-white/10 h-1.5 rounded-none overflow-hidden mb-3">
+          <div className="w-full bg-white/10 h-1.5 rounded-[32px] overflow-hidden mb-3">
             <motion.div 
               className="bg-primary-500 h-full shadow-glow-blue" 
               initial={{ width: '0%' }}
@@ -116,7 +123,7 @@ const ImageItem = ({ file, onRemove, onUploadComplete }: { file: File, onRemove:
 export default function NewComplaint() {
   const [step, setStep] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [reportType, setReportType] = useState<'public' | 'private'>('public')
+  const [reportType, setReportType] = useState<'individual' | 'area'>('individual')
   const [submittedId, setSubmittedId] = useState<string | null>(null)
   const [data, setData] = useState<any>({
     category: '',
@@ -311,7 +318,7 @@ export default function NewComplaint() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-dark-950 pb-20 pt-24 px-6 transition-colors duration-500">
+    <div className="min-h-screen bg-white dark:bg-[#020617] pb-20 pt-24 px-6 transition-colors duration-500">
       <div className="max-w-[1600px] mx-auto">
         {/* Horizontal Progress Steps */}
         {step < 5 && (
@@ -320,8 +327,8 @@ export default function NewComplaint() {
               {STEPS.map((s, i) => (
                 <div key={s.id} className="flex flex-col items-center gap-2 group cursor-pointer" onClick={() => step > i && setStep(i)}>
                   <div className={clsx(
-                    'w-10 h-10 rounded-none flex items-center justify-center text-lg transition-all duration-300',
-                    step === i ? 'bg-primary-500 text-white shadow-glow-blue' : step > i ? 'text-primary-500' : 'text-slate-400 dark:text-slate-700'
+                    'w-12 h-12 rounded-2xl flex items-center justify-center text-xl transition-all duration-500',
+                    step === i ? 'bg-primary-500 text-white shadow-glow-cyan scale-110' : step > i ? 'text-primary-500' : 'text-slate-400 dark:text-slate-800'
                   )}>
                     {s.icon}
                   </div>
@@ -331,7 +338,7 @@ export default function NewComplaint() {
                   )}>
                     {s.title}
                   </span>
-                  {step === i && <motion.div layoutId="activeStep" className="w-1 h-1 rounded-none bg-primary-500 mt-1" />}
+                  {step === i && <motion.div layoutId="activeStep" className="w-1 h-1 rounded-[32px] bg-primary-500 mt-1" />}
                 </div>
               ))}
             </div>
@@ -339,9 +346,8 @@ export default function NewComplaint() {
         )}
 
         <div className="grid lg:grid-cols-12 gap-10">
-          {/* Main Content Card */}
           <div className="lg:col-span-8">
-            <Card className="p-10 min-h-[600px] flex flex-col rounded-none">
+            <Card className="p-10 min-h-[600px] flex flex-col rounded-[48px] bg-white dark:bg-slate-900/50 border-white/5 shadow-2xl relative overflow-hidden transition-all duration-500">
               <AnimatePresence mode="wait">
                 {step === 0 && (
                   <motion.div key="step0" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
@@ -349,54 +355,71 @@ export default function NewComplaint() {
                       <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">How are you reporting?</h2>
                       <p className="text-slate-500 text-xs">Individual reports are for personal issues. Society reports gather area-wide attention faster.</p>
                       
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
                         {[
-                          { id: 'individual', label: 'Individual Report', desc: 'Standard report for single concerns.', icon: <User size={20} /> },
-                          { id: 'society', label: 'Society / Area Report', desc: 'Collective voice for high-priority fixes.', icon: <Users size={20} /> },
+                          { id: 'individual', label: 'Individual Report', desc: 'REPORT ISSUES THAT DIRECTLY IMPACT YOU OR YOUR PROPERTY.', icon: <User size={32} /> },
+                          { id: 'area', label: 'Area/Community Issue', desc: 'REPORT PUBLIC INFRASTRUCTURE ISSUES OR COMMUNITY CONCERNS.', icon: <Users size={32} /> },
                         ].map((type) => (
                           <button
                             key={type.id}
-                            onClick={() => setReportType(type.id)}
+                            onClick={() => setReportType(type.id as any)}
                             className={clsx(
-                              'flex items-center gap-4 p-5 rounded-none border transition-all duration-300 text-left group',
+                              'flex items-center gap-6 p-8 rounded-[40px] border transition-all duration-500 text-left group relative overflow-hidden',
                               reportType === type.id 
-                                ? 'bg-primary-500/5 border-primary-500/50 shadow-glow-blue' 
-                                : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:border-primary-500/30'
+                                ? 'bg-black/5 dark:bg-primary-500/10 border-black dark:border-primary-500 scale-[1.02]' 
+                                : 'bg-white dark:bg-[#0f172a] border-slate-200 dark:border-white/5 hover:border-black dark:hover:border-primary-500/30'
                             )}
                           >
                             <div className={clsx(
-                              'w-12 h-12 rounded-none flex items-center justify-center transition-colors',
-                               reportType === type.id ? 'bg-primary-500 text-white' : 'bg-slate-200 dark:bg-white/5 text-slate-500'
+                              'w-20 h-20 rounded-3xl flex items-center justify-center transition-all duration-500',
+                               reportType === type.id 
+                                ? 'bg-primary-500 text-white shadow-glow-cyan' 
+                                : 'bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-600'
                             )}>
                               {type.icon}
                             </div>
-                            <div>
-                               <h4 className={clsx('text-sm font-bold', reportType === type.id ? 'text-primary-500 dark:text-white' : 'text-slate-500 dark:text-slate-400')}>{type.label}</h4>
-                              <p className="text-[10px] text-slate-600 mt-0.5">{type.desc}</p>
+                            <div className="flex-1">
+                               <h4 className={clsx('text-xl font-black tracking-tight uppercase', reportType === type.id ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-600')}>{type.label}</h4>
+                              <p className="text-[10px] font-bold text-slate-500 dark:text-slate-500 mt-2 leading-tight tracking-wider uppercase">{type.desc}</p>
                             </div>
+                            {reportType === type.id && (
+                              <motion.div 
+                                layoutId="activeReporting"
+                                className="absolute inset-0 border-2 border-primary-500 rounded-[40px] pointer-events-none shadow-glow-cyan-inset"
+                              />
+                            )}
                           </button>
                         ))}
                       </div>
                     </div>
 
                     <div>
-                      <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Select Category</h2>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-8 font-display">Select Category</h2>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
                         {Object.entries(CATEGORY_META).map(([key, meta]) => (
                           <button
                             key={key}
                             onClick={() => setData({...data, category: key})}
                             className={clsx(
-                              'flex flex-col items-center justify-center p-6 rounded-none border transition-all duration-300 group aspect-square',
+                              'flex flex-col items-center justify-center p-8 rounded-[32px] border transition-all duration-500 group aspect-square relative overflow-hidden',
                               data.category === key 
-                                ? 'bg-primary-500/5 border-primary-500/50 shadow-glow-blue' 
-                                : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:border-primary-500/30'
+                                ? 'bg-black/5 dark:bg-[#16213e] border-black dark:border-primary-500 scale-[1.05]' 
+                                : 'bg-white dark:bg-[#0f172a] border-slate-200 dark:border-white/5 hover:border-black dark:hover:border-primary-500/30'
                             )}
                           >
-                            <span className="text-3xl mb-4 group-hover:scale-110 transition-transform">{meta.icon}</span>
-                            <span className={clsx('text-[10px] font-bold uppercase tracking-widest text-center', data.category === key ? 'text-primary-400' : 'text-slate-500')}>
+                            <span className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">{meta.icon}</span>
+                            <span className={clsx('text-[11px] font-black uppercase tracking-[0.2em] text-center', data.category === key ? 'text-primary-500 dark:text-primary-400' : 'text-slate-500 dark:text-slate-600')}>
                               {meta.label}
                             </span>
+                            {data.category === key && (
+                              <motion.div 
+                                layoutId="activeCategory"
+                                className={clsx(
+                                  "absolute inset-0 border-2 rounded-[32px] pointer-events-none",
+                                  "border-black dark:border-primary-500 shadow-glow-cyan"
+                                )}
+                              />
+                            )}
                           </button>
                         ))}
                       </div>
@@ -409,7 +432,7 @@ export default function NewComplaint() {
                     <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Pin Location</h2>
                     <p className="text-slate-500 text-xs mb-8">Where exactly is this happening? You can use your current location.</p>
                     <div className="space-y-6">
-                      <div className="h-72 rounded-none bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-white/5 relative overflow-hidden">
+                        <div className="h-[400px] rounded-[32px] overflow-hidden border border-slate-200 dark:border-white/5 relative shadow-2xl">
                         <MapContainer 
                           center={[data.location.lat, data.location.lng]} 
                           zoom={16} 
@@ -417,35 +440,68 @@ export default function NewComplaint() {
                           zoomControl={false}
                         >
                           <TileLayer
-                            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                           />
-                          <Marker position={[data.location.lat, data.location.lng]} icon={DefaultIcon} />
+                          <Marker 
+                            position={[data.location.lat, data.location.lng]} 
+                            icon={DefaultIcon} 
+                            eventHandlers={{
+                              click: () => {
+                                const url = `https://www.google.com/maps/search/?api=1&query=${data.location.lat},${data.location.lng}`;
+                                window.open(url, '_blank');
+                              }
+                            }}
+                          />
                           <RecenterMap lat={data.location.lat} lng={data.location.lng} />
                           <LocationPicker onLocationSelect={handleManualLocationSelect} />
                         </MapContainer>
+
+                        {/* Top Left Instructions */}
+                        <div className="absolute top-4 left-4 z-[1000]">
+                          <div className="bg-slate-100/90 backdrop-blur-sm border border-slate-200 px-4 py-2 rounded-xl">
+                            <span className="text-[10px] font-bold text-slate-700 uppercase tracking-widest">
+                              Click map to pin exact spot
+                            </span>
+                          </div>
+                        </div>
                         
-                        <Button 
-                          size="sm" 
-                          onClick={handleGetCurrentLocation}
-                          isLoading={isFetchingLocation}
-                           className="absolute bottom-6 right-6 bg-white dark:bg-dark-950/95 border border-slate-200 dark:border-white/5 shadow-premium max-w-[80%] overflow-hidden z-[1000] text-slate-900 dark:text-white"
-                        >
-                          <span className="truncate">
-                            {'\uD83D\uDCCD'} {isFetchingLocation ? 'Locating...' : (data.location.address ? data.location.address : 'Use My GPS')}
-                          </span>
-                        </Button>
+                        {/* Control Stack at Bottom Right */}
+                        <div className="absolute bottom-6 right-6 z-[1000] flex flex-col gap-3 items-end">
+                          <Button 
+                            variant="secondary" 
+                            size="lg"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(`https://www.google.com/maps/search/?api=1&query=${data.location.lat},${data.location.lng}`, '_blank');
+                            }}
+                            className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-2 border-black/5 dark:border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-primary-500 shadow-2xl px-6 h-12 flex items-center gap-3 rounded-[20px] hover:scale-105 transition-all duration-300"
+                          >
+                            <MapIcon size={16} /> Open in Maps
+                          </Button>
+                          
+                          <Button 
+                            size="lg" 
+                            glow
+                            onClick={handleGetCurrentLocation}
+                            isLoading={isFetchingLocation}
+                            className="bg-primary-500 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-glow-cyan px-6 h-12 flex items-center gap-3 rounded-[20px] hover:scale-105 transition-all duration-300"
+                          >
+                            <MapPin size={16} /> 
+                            {isFetchingLocation ? 'Tracking Signal...' : 'Auto-Detect GPS'}
+                          </Button>
+                        </div>
                       </div>
                       <div className="space-y-4">
                         <textarea 
                           placeholder="Street name, landmark, building number..."
-                          className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-none p-5 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none transition-all resize-none placeholder:text-slate-400 dark:placeholder:text-slate-600"
+                          className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] p-5 text-sm text-slate-900 dark:text-white focus:border-primary-500/50 outline-none transition-all resize-none placeholder:text-slate-400 dark:placeholder:text-slate-600"
                           rows={4}
                           value={data.location.address}
                           onChange={e => setData({...data, location: {...data.location, address: e.target.value}})}
                         />
                         <select 
-                          className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-none p-4 text-sm text-slate-900 dark:text-white outline-none"
+                          className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] p-4 text-sm text-slate-900 dark:text-white outline-none"
                           value={data.location.ward}
                           onChange={e => setData({...data, location: {...data.location, ward: e.target.value}})}
                         >
@@ -469,7 +525,7 @@ export default function NewComplaint() {
                     <p className="text-slate-500 text-xs mb-8">Visuals help officers understand and resolve issues faster.</p>
                     
                     {isCameraOpen ? (
-                      <div className="relative rounded-none overflow-hidden bg-black mb-6">
+                      <div className="relative rounded-[32px] overflow-hidden bg-black mb-6">
                         <video ref={videoRef} autoPlay playsInline className="w-full aspect-video object-cover" />
                         <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-4">
                           <Button size="lg" glow onClick={capturePhoto}>
@@ -486,11 +542,11 @@ export default function NewComplaint() {
                         {files.map((file, i) => (
                           <ImageItem key={i} file={file} onRemove={() => removeFile(i)} onUploadComplete={handleUploadComplete} />
                         ))}
-                        <button onClick={startCamera} className="aspect-square flex flex-col items-center justify-center p-4 rounded-none border border-dashed border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all group">
+                        <button onClick={startCamera} className="aspect-square flex flex-col items-center justify-center p-4 rounded-[32px] border border-dashed border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all group">
                           <Camera size={24} className="text-primary-500 mb-2 group-hover:scale-110 transition-transform" />
                           <span className="text-[10px] font-bold text-slate-900 dark:text-white uppercase tracking-widest">Take Photo</span>
                         </button>
-                        <button onClick={() => fileInputRef.current?.click()} className="aspect-square flex flex-col items-center justify-center p-4 rounded-none border border-dashed border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all group">
+                        <button onClick={() => fileInputRef.current?.click()} className="aspect-square flex flex-col items-center justify-center p-4 rounded-[32px] border border-dashed border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all group">
                           <ImageIcon size={24} className="text-brand-violet mb-2 group-hover:scale-110 transition-transform" />
                           <span className="text-[10px] font-bold text-slate-900 dark:text-white uppercase tracking-widest">Upload Photo</span>
                         </button>
@@ -504,8 +560,8 @@ export default function NewComplaint() {
                     <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Report Details</h2>
                     <p className="text-slate-500 text-xs mb-8">Add a title and detailed description to your report.</p>
                     <div className="space-y-6">
-                      <input placeholder="Short summary (e.g., Pothole near Central Market)" className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-none px-5 py-4 text-sm text-slate-900 dark:text-white outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600" value={data.title} onChange={e => setData({...data, title: e.target.value})} />
-                      <textarea placeholder="Describe the issue in detail..." className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-none p-5 text-sm text-slate-900 dark:text-white outline-none resize-none placeholder:text-slate-400 dark:placeholder:text-slate-600" rows={6} value={data.description} onChange={e => setData({...data, description: e.target.value})} />
+                      <input placeholder="Short summary (e.g., Pothole near Central Market)" className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] px-5 py-4 text-sm text-slate-900 dark:text-white outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600" value={data.title} onChange={e => setData({...data, title: e.target.value})} />
+                      <textarea placeholder="Describe the issue in detail..." className="w-full bg-slate-100 dark:bg-dark-950/50 border border-slate-200 dark:border-white/5 rounded-[32px] p-5 text-sm text-slate-900 dark:text-white outline-none resize-none placeholder:text-slate-400 dark:placeholder:text-slate-600" rows={6} value={data.description} onChange={e => setData({...data, description: e.target.value})} />
                     </div>
                   </motion.div>
                 )}
@@ -515,7 +571,7 @@ export default function NewComplaint() {
                     <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Final Review</h2>
                     <p className="text-slate-500 text-xs mb-8">Verify the information before submitting to authorities.</p>
                     <div className="space-y-6">
-                      <div className="p-6 rounded-none bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/5 space-y-6">
+                      <div className="p-6 rounded-[32px] bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/5 space-y-6">
                         
                         <div>
                           <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest block mb-2">Report Details</span>
@@ -561,7 +617,7 @@ export default function NewComplaint() {
 
                 {step === 5 && (
                   <motion.div key="step5" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex flex-col items-center justify-center text-center py-10">
-                    <div className="w-24 h-24 rounded-none bg-emerald-500/20 flex items-center justify-center text-5xl mb-6 shadow-glow-emerald animate-bounce">✅</div>
+                    <div className="w-24 h-24 rounded-[32px] bg-emerald-500/20 flex items-center justify-center text-5xl mb-6 shadow-glow-emerald animate-bounce">✅</div>
                     <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-4">Report Submitted!</h2>
                     <p className="text-slate-500 mb-10 max-w-sm text-sm">Your civic contribution has been registered. You'll receive real-time updates as we work on this.</p>
                     
@@ -590,7 +646,7 @@ export default function NewComplaint() {
               {step < 5 && (
                 <div className="mt-auto pt-10">
                   <Button 
-                    className="w-full rounded-none h-14 text-sm font-bold tracking-widest" 
+                    className="w-full rounded-[32px] h-14 text-sm font-bold tracking-widest" 
                     size="lg" 
                     glow 
                     isLoading={loading}
@@ -610,9 +666,9 @@ export default function NewComplaint() {
 
           {/* Sidebar Area */}
           <div className="lg:col-span-4 space-y-6">
-            <Card className="p-8 rounded-none">
+            <Card className="p-8 rounded-[32px]">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-[0.2em] flex items-center gap-3">
-                <div className="w-1.5 h-4 bg-primary-500 rounded-none" /> PRO TIPS
+                <div className="w-1.5 h-4 bg-primary-500 rounded-[32px]" /> PRO TIPS
               </h3>
               <ul className="space-y-6">
                 {[
@@ -628,7 +684,7 @@ export default function NewComplaint() {
               </ul>
             </Card>
 
-            <Card className="p-8 border-primary-500/10 bg-primary-500/5 rounded-none">
+            <Card className="p-8 border-primary-500/10 bg-primary-500/5 rounded-[32px]">
               <div className="flex items-center gap-3 mb-4">
                 <Shield size={20} className="text-primary-500" />
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest">Safe Community</h3>

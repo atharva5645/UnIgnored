@@ -7,19 +7,22 @@ import { COMPLAINTS, CATEGORY_META, STATUS_META } from '../../utils/mockData'
 import { Card, Badge, Button, Avatar } from '../../components/ui'
 import { 
   Filter, Search, Navigation, Layers, Info, 
-  ChevronRight, Maximize2, MapPin, AlertCircle
+  ChevronRight, Maximize2, MapPin, AlertCircle, ExternalLink
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useComplaints } from '../../hooks/useComplaints'
 
-// Fix for default marker icons in Leaflet with Vite
-const DefaultIcon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-})
+// Fix Leaflet icon issue
+const DefaultIcon = L.divIcon({
+  className: 'custom-div-icon',
+  html: `<div class="relative w-8 h-8 flex items-center justify-center">
+    <div class="absolute w-6 h-6 bg-blue-500 rounded-full border-4 border-white shadow-xl"></div>
+    <div class="absolute bottom-0 w-1 h-2 bg-blue-500"></div>
+  </div>`,
+  iconSize: [32, 32],
+  iconAnchor: [16, 32]
+});
 
 L.Marker.prototype.options.icon = DefaultIcon
 
@@ -74,7 +77,6 @@ export default function MapPage() {
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            className="map-tiles-dark"
           />
           
           {filteredComplaints.map(c => (
@@ -89,9 +91,20 @@ export default function MapPage() {
               }}
             >
               <Popup className="custom-popup">
-                <div className="p-2">
-                  <p className="text-xs font-bold mb-1">{c.title}</p>
-                  <Badge variant="info" className="text-[8px]">{c.status}</Badge>
+                <div className="p-2 min-w-[150px]">
+                  <p className="text-xs font-bold mb-1 text-slate-900 dark:text-white">{c.title}</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <Badge variant="info" className="text-[8px]">{c.status}</Badge>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(`https://www.google.com/maps/search/?api=1&query=${c.location.lat},${c.location.lng}`, '_blank');
+                      }}
+                      className="text-[10px] text-primary-500 font-bold hover:underline flex items-center gap-1"
+                    >
+                      <ExternalLink size={10} /> Google Maps
+                    </button>
+                  </div>
                 </div>
               </Popup>
             </Marker>
@@ -223,7 +236,15 @@ export default function MapPage() {
                     <Link to={`/complaints/track/${selectedComplaint.referenceId}`}>
                       <Button size="sm" glow>Track Full Process</Button>
                     </Link>
-                    <Button variant="ghost" size="sm">👍 {selectedComplaint.upvotes} Upvotes</Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${selectedComplaint.location.lat},${selectedComplaint.location.lng}`, '_blank')}
+                      className="text-primary-500 hover:text-primary-600 flex items-center gap-2"
+                    >
+                      <MapPin size={14} /> Google Maps
+                    </Button>
+                    <Button variant="ghost" size="sm" className="text-slate-500">👍 {selectedComplaint.upvotes}</Button>
                   </div>
                 </div>
               </div>
