@@ -4,7 +4,13 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { UserRole } from '../../types/user'
 import { Button, Card, Badge } from '../../components/ui'
-import { Mail, Phone, Lock, ShieldCheck, Github, Smartphone, Eye } from 'lucide-react'
+import { ChevronLeft, Mail, Phone, Lock, ArrowRight, ShieldCheck, Github, Smartphone, Eye } from 'lucide-react'
+import { AnimatePresence } from 'framer-motion'
+
+const ROLES: { id: UserRole; label: string; icon: string; desc: string }[] = [
+  { id: 'citizen', label: 'Citizen', icon: '👤', desc: 'File & track public issues' },
+  { id: 'officer', label: 'Field Officer', icon: '👮', desc: 'Manage assigned tasks' },
+]
 import { useAuth } from '../../hooks/useAuth'
 import { clsx } from 'clsx'
 import { signInAnonymously } from 'firebase/auth'
@@ -13,9 +19,10 @@ import { auth } from '../../firebase/config'
 
 
 export default function LoginPage() {
+  const [step, setStep] = useState<'role' | 'credentials'>('role')
+  const [role, setRole] = useState<UserRole>('citizen')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [role] = useState<UserRole>('citizen') // Default fallback
   const { login, loginWithGoogle, isLoading, error, clearError } = useAuth()
   const navigate = useNavigate()
 
@@ -34,7 +41,9 @@ export default function LoginPage() {
     
     // Prototype Bypass for Admins
     if (email === 'admin@gmail.com' && password === '12345678') {
-      const prototypeRole: UserRole = 'super_admin'; // Default bypass role
+      // If they are on the bypass email, we determine if they are officer or admin
+      // In this version, we default to super_admin for this email unless specified
+      const prototypeRole: UserRole = role === 'officer' ? 'officer' : 'super_admin';
       try {
         // Authenticate anonymously in Firebase so Firestore security rules allow reads
         await signInAnonymously(auth);
@@ -114,9 +123,53 @@ export default function LoginPage() {
         </div>
 
         <Card className="p-8 shadow-2xl border-slate-200 dark:border-white/10 bg-white dark:bg-transparent">
-          <div className="space-y-6">
+          <AnimatePresence mode="wait">
+            {step === 'role' && (
+              <motion.div 
+                key="step-role"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+              >
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Select Your Role</h2>
+                <div className="grid grid-cols-2 gap-4 mb-8">
+                  {ROLES.map((r) => (
+                    <button
+                      key={r.id}
+                      onClick={() => setRole(r.id)}
+                      className={clsx(
+                        'flex flex-col items-center justify-center p-4 rounded-none border transition-all duration-300 text-left',
+                        role === r.id 
+                          ? 'bg-primary-500/10 border-primary-500 shadow-glow-blue' 
+                          : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20'
+                      )}
+                    >
+                      <span className="text-3xl mb-3">{r.icon}</span>
+                      <span className={clsx('text-sm font-black', role === r.id ? 'text-primary-600 dark:text-primary-400' : 'text-slate-900 dark:text-white')}>{r.label}</span>
+                      <span className="text-[10px] text-slate-500 mt-2 font-bold uppercase tracking-[0.2em] text-center">{r.desc}</span>
+                    </button>
+                  ))}
+                </div>
+                <Button className="w-full" size="lg" onClick={() => setStep('credentials')}>
+                  Continue as {ROLES.find(r => r.id === role)?.label} <ArrowRight size={18} className="ml-2" />
+                </Button>
+              </motion.div>
+            )}
 
-                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Login to your account</h2>
+            {step === 'credentials' && (
+              <motion.div 
+                key="step-creds"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+              >
+                <button 
+                  onClick={() => { setStep('role'); clearError(); }}
+                  className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white mb-6 transition-colors"
+                >
+                  <ChevronLeft size={14} /> Back to role selection
+                </button>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Login with {role.replace('_', ' ')} ID</h2>
                 
                 {error && (
                   <div className="mb-6 p-3 rounded-none bg-red-500/10 border border-red-500/20 text-red-500 text-xs flex items-center gap-3">
@@ -190,7 +243,9 @@ export default function LoginPage() {
                       <Smartphone size={18} className="text-violet-500" /> DigiLocker
                     </button>
                   </div>
-          </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </Card>
 
         <p className="text-center mt-8 text-sm text-slate-600">
